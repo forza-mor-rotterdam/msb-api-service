@@ -1,0 +1,13 @@
+{% if bijlagenField %}
+<msb:bijlagenField>
+    {% for f in bijlagenField %}
+    <msb:Bestand>
+        <msb:bytesField>{{ f.bytesField }}</msb:bytesField>
+        <msb:mimeTypeField>{{ f.mimeTypeField }}</msb:mimeTypeField>
+        <msb:naamField>{{ f.naamField }}</msb:naamField>
+    </msb:Bestand>
+    {% endfor %}
+</msb:bijlagenField>
+{% else %}
+<msb:bijlagenField/>
+{% endif %}

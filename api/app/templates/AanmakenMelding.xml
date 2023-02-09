@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<soap-env:Envelope xmlns:soap-env="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tem="http://tempuri.org/" xmlns:msb="http://schemas.datacontract.org/2004/07/Msb.Extern.Services.MsbMorServiceProxy" xmlns:arr="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
+    <soap-env:Header xmlns:wsa="http://www.w3.org/2005/08/addressing">
+        <wsa:Action>{{ action_url}}</wsa:Action>
+        <wsa:MessageID>urn:uuid:{{ message_uuid }}</wsa:MessageID>
+        <wsa:To>{{ services_url }}</wsa:To>
+    </soap-env:Header>
+    <soap-env:Body>
+      <tem:AanmakenMelding>
+         <tem:morMeldingAanmakenRequest>
+            <msb:aanvullendeInformatieField>{{ aanvullendeInformatieField }}</msb:aanvullendeInformatieField>
+            {% include "bijlagenField.xml" %}
+            {% include "fotosField.xml" %}
+            <msb:huisnummerField>{{ huisnummerField }}</msb:huisnummerField>
+            <msb:kanaalField>{{ kanaalField }}</msb:kanaalField>
+            {% include "lichtpuntenField.xml" %}
+            <msb:loginnaamField>{{ loginnaamField }}</msb:loginnaamField>
+            <msb:melderEmailField>{{ melderEmailField }}</msb:melderEmailField>
+            <msb:melderNaamField>{{ melderNaamField }}</msb:melderNaamField>
+            <msb:melderTelefoonField>{{ melderTelefoonField }}</msb:melderTelefoonField>
+            <msb:meldingsnummerField>{{ meldingsnummerField }}</msb:meldingsnummerField>
+            <msb:naderePlaatsbepalingField>{{ naderePlaatsbepalingField }}</msb:naderePlaatsbepalingField>
+            <msb:omschrijvingField>{{ omschrijvingField }}</msb:omschrijvingField>
+            <msb:onderwerpField>{{ onderwerpField }}</msb:onderwerpField>
+            <msb:spoedField>{{ spoedField|lower }}</msb:spoedField>
+            <msb:straatnaamField>{{ straatnaamField }}</msb:straatnaamField>
+            <msb:xCoordField>{{ xCoordField }}</msb:xCoordField>
+            <msb:yCoordField>{{ yCoordField }}</msb:yCoordField>
+         </tem:morMeldingAanmakenRequest>
+      </tem:AanmakenMelding>
+    </soap-env:Body>
+</soap-env:Envelope>

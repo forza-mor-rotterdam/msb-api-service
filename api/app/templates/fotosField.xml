@@ -1,0 +1,9 @@
+{% if fotosField %}
+<msb:fotosField>
+    {% for f in fotosField %}
+    <arr:base64Binary>{{f}}</arr:base64Binary>
+    {% endfor %}
+</msb:fotosField>
+{% else %}
+<msb:fotosField/>
+{% endif %}

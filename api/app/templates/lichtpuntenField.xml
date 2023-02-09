@@ -1,0 +1,9 @@
+{% if lichtpuntenField %}
+<msb:lichtpuntenField>
+    {% for f in lichtpuntenField %}
+    <arr:int>{{f}}</arr:int>
+    {% endfor %}
+</msb:lichtpuntenField>
+{% else %}
+<msb:lichtpuntenField/>
+{% endif %}
