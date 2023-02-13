@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import Union, Any, cast, Optional
+from typing import Union, Any, Optional
 from datetime import datetime
 
 
@@ -10,21 +10,21 @@ class Bestand(BaseModel):
 
 
 class MorMeldingAanmakenRequest(BaseModel):
-    aanvullendeInformatieField: Union[str, None] = "my_aanvullendeInformatie"
-    bijlagenField: Union[list[Bestand], None] = [cast(Bestand, {"bytesField": "base64_string_voorbeeld_1", "mimeTypeField": "text/txt", "naamField": "bestandsnaam"})]
-    fotosField: Union[list[str], None]# = ["base64_string_voorbeeld_1", "base64_string_voorbeeld_2"]
-    huisnummerField: Union[str, None] = "4"
-    kanaalField: Union[str, None] = "238"
-    onderwerpField: Union[str, None] = "MeldR onderwerp"
-    lichtpuntenField: Union[list[str], None] = ["001", "002"]
-    loginnaamField: Union[str, None] = "foo"
-    melderEmailField: Union[str, None] = "foo@bar.org"
-    melderNaamField: Union[str, None] = "foo"
-    melderTelefoonField: Union[str, None] = "0123456789"
-    meldingsnummerField: Union[str, None] = "3000-000052"
-    naderePlaatsbepalingField: Union[str, None] = "my_naderePlaatsbepaling"
-    omschrijvingField: Union[str, None] = "my_omschrijving"
-    straatnaamField: Union[str, None] = "COOLSINGEL"
+    aanvullendeInformatieField: Union[str, None]
+    bijlagenField: Union[list[Bestand], None]
+    fotosField: Union[list[str], None]
+    huisnummerField: Union[str, None]
+    kanaalField: Union[str, None]
+    onderwerpField: Union[str, None]
+    lichtpuntenField: Union[list[str], None]
+    loginnaamField: Union[str, None]
+    melderEmailField: Union[str, None]
+    melderNaamField: Union[str, None]    
+    melderTelefoonField: Union[str, None]
+    meldingsnummerField: Union[str, None]
+    naderePlaatsbepalingField: Union[str, None]
+    omschrijvingField: Union[str, None]
+    straatnaamField: Union[str, None]
     spoedField: bool
     xCoordField: float
     yCoordField: float

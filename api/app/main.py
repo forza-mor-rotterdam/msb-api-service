@@ -5,7 +5,7 @@ from zeep.helpers import serialize_object
 from fastapi.templating import Jinja2Templates
 from zeep import Client
 from jinja2 import Environment, PackageLoader
-from utils import validate_mor_melding_aanmaken_response, generate_message_identification
+from utils import parse_mor_melding_aanmaken_response, generate_message_identification
 from typing import Union
 import os
 
@@ -36,15 +36,15 @@ async def aanmaken_melding(mor_melding: MorMeldingAanmakenRequest):
 
     body = AanmakenMelding_template.render(context_data)
 
-    headers = {'content-type': 'text/xml'}
-    headers.update(
-        {"SOAPAction": action_url}
-    )
+    headers = {
+        "content-type": "text/xml",
+        "SOAPAction": action_url,
+    }
     response = requests.post(url, data=body, headers=headers)
 
     response.raise_for_status()
 
-    return validate_mor_melding_aanmaken_response(response.text)
+    return parse_mor_melding_aanmaken_response(response.text)
 
 
 @app.patch("/MeldingVolgen/", response_model=ResponseOfUpdate)
