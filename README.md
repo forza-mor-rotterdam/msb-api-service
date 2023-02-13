@@ -1,21 +1,36 @@
 
-# Rest API interface for MSB 📝  
-Endpoints are based on the existing external SOAP interface for MSB  
-## Endpoints
+# Rest API interface for MSB 
+Endpoints are based on the existing external SOAP interface for MSB(Meldingen Systeem Buitenruimte) for the municipality Rotterdam, the Netherlands
 
+
+## Tech Stack
+[Uvicorn](https://www.uvicorn.org/), [FastAPI](https://fastapi.tiangolo.com/), [Zeep SOAP client](https://docs.python-zeep.org/en/master/index.html)
 
 ## Get Started 🚀  
-To get started, install Docker  
+To get started, install [Docker](https://www.docker.com/)  
 
-## Prebuilt Components/Templates 🔥  
-You can checkout prebuilt components and templates by clicking on the menu icon
-on the top left corner of the navbar.
-    
-## Save Readme ✨  
-Once you're done, click on the save button to directly save your Readme to your
-project's root directory!
- 
-## API Reference
+### Create .env.local from .env 
+~~~bash  
+    cp .env .env.local
+~~~ 
+
+
+### Build and run Docker container 
+~~~bash  
+    docker compose up
+~~~ 
+
+This will start a webserver on http://localhost:8001,
+So, with a curl call like below 
+~~~bash  
+    curl "http://localhost:8001/v1/MeldingenOpvragen/?dagenField=10"
+~~~ 
+You should get some incidents
+
+### OpenApi Docs
+http://localhost:8001/docs
+
+## API Reference📝 
 
 ### Create incident 
 
@@ -57,7 +72,7 @@ project's root directory!
 ### Get all incidents  
 
 ```http
-  GET /AanmakenMelding/
+  GET /MeldingenOpvragen/
 ```  
 | Parameter | Type     | Reuired    |
 | :--------------------------- | :------- | :------- |

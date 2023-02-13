@@ -10,9 +10,20 @@ from typing import Union
 import os
 
 
+description = """
+API endpoints are based on the existing external SOAP interface for MSB(Meldingen Systeem Buitenruimte) for the municipality Rotterdam, the Netherlands 
+"""
+
+
 client = Client(os.environ.get("MSB_EXTERN_WEBSERVICES_WSDL_URL", "wsdl/MsbMorService.xml"))
 
-app = FastAPI()
+version = "v1"
+
+app = FastAPI(
+    title="Rest API for MSB",
+    description=description,
+    version="0.0.1",
+)
 
 templates = Jinja2Templates(directory="templates")
 env = Environment(loader=PackageLoader("main"))
@@ -22,8 +33,8 @@ env.strip_trailing_newlines = True
 AanmakenMelding_template = env.get_template("AanmakenMelding.xml")
 
 
-@app.post("/AanmakenMelding/", response_model=ResponseOfInsert)
-async def aanmaken_melding(mor_melding: MorMeldingAanmakenRequest):
+@app.post(f"/{version}/AanmakenMelding/", response_model=ResponseOfInsert)
+def aanmaken_melding(mor_melding: MorMeldingAanmakenRequest):
 
     url = os.environ.get("MSB_EXTERN_WEBSERVICES_URL", "https://webservices-acc.rotterdam.nl/Msb.Extern.Services/MsbMorService.svc")
     action_url = "http://tempuri.org/IService/AanmakenMelding"
@@ -47,16 +58,16 @@ async def aanmaken_melding(mor_melding: MorMeldingAanmakenRequest):
     return parse_mor_melding_aanmaken_response(response.text)
 
 
-@app.patch("/MeldingVolgen/", response_model=ResponseOfUpdate)
-async def melding_volgen(melding_volgen: MorMeldingVolgenRequest):
+@app.patch(f"/{version}/MeldingVolgen/", response_model=ResponseOfUpdate)
+def melding_volgen(melding_volgen: MorMeldingVolgenRequest):
 
     response = client.service.MeldingVolgen(dict(melding_volgen))
 
     return serialize_object(response)
 
 
-@app.get("/MeldingenOpvragen/", response_model=ResponseOfGetMorMeldingen)
-async def meldingen_opvragen(dagenField: float, morIdField: Union[str, None] = None):
+@app.get(f"/{version}/MeldingenOpvragen/", response_model=ResponseOfGetMorMeldingen)
+def meldingen_opvragen(dagenField: float, morIdField: Union[str, None] = None):
 
     response = client.service.MeldingenOpvragen(locals())
 
