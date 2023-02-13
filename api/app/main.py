@@ -61,8 +61,3 @@ async def meldingen_opvragen(dagenField: float, morIdField: Union[str, None] = N
     response = client.service.MeldingenOpvragen(locals())
 
     return serialize_object(response)
-
-
-@app.get("/")
-def main(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request})
