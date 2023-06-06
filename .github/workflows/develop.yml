@@ -48,8 +48,8 @@ jobs:
       - name: Start rollout on k8s platform
         uses: actions-hub/kubectl@master
         env:
-          KUBE_HOST: ${{ secrets.KUBE_HOST }}
-          KUBE_CERTIFICATE: ${{ secrets.KUBE_CERTIFICATE }}
+          KUBE_HOST: ${{ vars.KUBE_HOST }}
+          KUBE_CERTIFICATE: ${{ vars.KUBE_CERTIFICATE }}
           KUBE_TOKEN: ${{ secrets.KUBE_TOKEN }}
         with:
           args: rollout restart deployment/app --namespace=msb-api-service-acc
@@ -57,8 +57,8 @@ jobs:
       - name: Start rollout on k8s platform
         uses: actions-hub/kubectl@master
         env:
-          KUBE_HOST: ${{ secrets.KUBE_HOST }}
-          KUBE_CERTIFICATE: ${{ secrets.KUBE_CERTIFICATE }}
+          KUBE_HOST: ${{ vars.KUBE_HOST }}
+          KUBE_CERTIFICATE: ${{ vars.KUBE_CERTIFICATE }}
           KUBE_TOKEN: ${{ secrets.KUBE_TOKEN }}
         with:
           args: rollout status deployment/app --namespace=msb-api-service-acc
