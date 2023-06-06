@@ -62,3 +62,4 @@ jobs:
           KUBE_TOKEN: ${{ secrets.KUBE_TOKEN }}
         with:
           args: rollout status deployment/app --namespace=msb-api-service-acc
+          
