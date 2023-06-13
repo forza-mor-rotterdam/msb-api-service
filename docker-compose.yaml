@@ -3,7 +3,7 @@ services:
   api:
     build: ./api
     ports:
-      - "8001:8001"
+      - "8005:8001"
     volumes:
       - ./api/app:/app/app
     env_file:

@@ -1,152 +1,148 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xs:schema elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/Msb.Extern.Services.MsbMorServiceProxy"
-  xmlns:xs="http://www.w3.org/2001/XMLSchema"
-  xmlns:tns="http://schemas.datacontract.org/2004/07/Msb.Extern.Services.MsbMorServiceProxy">
-  <xs:import schemaLocation="./MsbMorService_xsd3.xml" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+<xs:schema elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/Msb.Extern.Services.MsbMorServiceProxy" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://schemas.datacontract.org/2004/07/Msb.Extern.Services.MsbMorServiceProxy">
+  <xs:import schemaLocation="http://webservices-acc.rotterdam.nl/Msb.Extern.Services/MsbMorService.svc?xsd=xsd3" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
   <xs:complexType name="MorMeldingAanmakenRequest">
     <xs:sequence>
-      <xs:element name="aanvullendeInformatieField" nillable="true" type="xs:string"/>
-      <xs:element name="bijlagenField" nillable="true" type="tns:ArrayOfBestand"/>
-      <xs:element name="fotosField" nillable="true" type="q1:ArrayOfbase64Binary"
-        xmlns:q1="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
-        <xs:element name="huisnummerField" nillable="true" type="xs:string"/>
-        <xs:element name="kanaalField" nillable="true" type="xs:string"/>
-        <xs:element name="lichtpuntenField" nillable="true" type="q2:ArrayOfint"
-          xmlns:q2="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
-          <xs:element name="loginnaamField" nillable="true" type="xs:string"/>
-          <xs:element name="melderEmailField" nillable="true" type="xs:string"/>
-          <xs:element name="melderNaamField" nillable="true" type="xs:string"/>
-          <xs:element name="melderTelefoonField" nillable="true" type="xs:string"/>
-          <xs:element name="meldingsnummerField" nillable="true" type="xs:string"/>
-          <xs:element name="naderePlaatsbepalingField" nillable="true" type="xs:string"/>
-          <xs:element name="omschrijvingField" nillable="true" type="xs:string"/>
-          <xs:element name="onderwerpField" nillable="true" type="xs:string"/>
-          <xs:element name="spoedField" type="xs:boolean"/>
-          <xs:element name="straatnaamField" nillable="true" type="xs:string"/>
-          <xs:element name="xCoordField" type="xs:decimal"/>
-          <xs:element name="yCoordField" type="xs:decimal"/>
-        </xs:sequence>
-      </xs:complexType>
-      <xs:element name="MorMeldingAanmakenRequest" nillable="true" type="tns:MorMeldingAanmakenRequest"/>
-      <xs:complexType name="ArrayOfBestand">
+      <xs:element minOccurs="0" name="aanvullendeInformatieField" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="bijlagenField" nillable="true" type="tns:ArrayOfBestand"/>
+      <xs:element minOccurs="0" name="fotosField" nillable="true" type="q1:ArrayOfbase64Binary" xmlns:q1="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+      <xs:element minOccurs="0" name="huisnummerField" nillable="true" type="xs:string"/>
+      <xs:element name="kanaalField" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="lichtpuntenField" nillable="true" type="q2:ArrayOfint" xmlns:q2="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+      <xs:element name="loginnaamField" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="melderEmailField" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="melderNaamField" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="melderTelefoonField" nillable="true" type="xs:string"/>
+      <xs:element name="meldingsnummerField" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="naderePlaatsbepalingField" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="omschrijvingField" nillable="true" type="xs:string"/>
+      <xs:element name="onderwerpField" nillable="true" type="xs:string"/>
+      <xs:element name="spoedField" type="xs:boolean"/>
+      <xs:element name="straatnaamField" nillable="true" type="xs:string"/>
+      <xs:element name="xCoordField" type="xs:decimal"/>
+      <xs:element name="yCoordField" type="xs:decimal"/>
+      <xs:element minOccurs="0" name="aanmaakDatumField" nillable="true" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="adoptantnummerField" nillable="true" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="MorMeldingAanmakenRequest" nillable="true" type="tns:MorMeldingAanmakenRequest"/>
+  <xs:complexType name="ArrayOfBestand">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Bestand" nillable="true" type="tns:Bestand"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfBestand" nillable="true" type="tns:ArrayOfBestand"/>
+    <xs:complexType name="Bestand">
+      <xs:sequence>
+        <xs:element minOccurs="0" name="bytesField" nillable="true" type="xs:base64Binary"/>
+        <xs:element minOccurs="0" name="mimeTypeField" nillable="true" type="xs:string"/>
+        <xs:element minOccurs="0" name="naamField" nillable="true" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+    <xs:element name="Bestand" nillable="true" type="tns:Bestand"/>
+  <xs:complexType name="MorMeldingResponses">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ResponseBase">
         <xs:sequence>
-          <xs:element minOccurs="0" maxOccurs="unbounded" name="Bestand" nillable="true" type="tns:Bestand"/>
-        </xs:sequence>
-      </xs:complexType>
-      <xs:element name="ArrayOfBestand" nillable="true" type="tns:ArrayOfBestand"/>
-      <xs:complexType name="Bestand">
-        <xs:sequence>
-          <xs:element name="bytesField" nillable="true" type="xs:base64Binary"/>
-          <xs:element name="mimeTypeField" nillable="true" type="xs:string"/>
-          <xs:element name="naamField" nillable="true" type="xs:string"/>
-        </xs:sequence>
-      </xs:complexType>
-      <xs:element name="Bestand" nillable="true" type="tns:Bestand"/>
-      <xs:complexType name="ResponseOfInsert">
-        <xs:complexContent mixed="false">
-          <xs:extension base="tns:ResponseBase">
-            <xs:sequence>
-              <xs:element name="dataField" nillable="true">
-                <xs:complexType>
-                  <xs:annotation>
-                    <xs:appinfo>
-                      <ActualType Name="DataSet" Namespace="http://schemas.datacontract.org/2004/07/System.Data"
-                        xmlns="http://schemas.microsoft.com/2003/10/Serialization/"/>
-                      </xs:appinfo>
-                    </xs:annotation>
-                    <xs:sequence>
-                      <xs:element ref="xs:schema"/>
-                      <xs:any/>
-                    </xs:sequence>
-                  </xs:complexType>
-                </xs:element>
-                <xs:element name="newIdField" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="dataField" nillable="true">
+            <xs:complexType>
+              <xs:annotation>
+                <xs:appinfo>
+                  <ActualType Name="DataSet" Namespace="http://schemas.datacontract.org/2004/07/System.Data" xmlns="http://schemas.microsoft.com/2003/10/Serialization/"/>
+                </xs:appinfo>
+              </xs:annotation>
+              <xs:sequence>
+                <xs:element ref="xs:schema"/>
+                <xs:any/>
               </xs:sequence>
-            </xs:extension>
-          </xs:complexContent>
-        </xs:complexType>
-        <xs:element name="ResponseOfInsert" nillable="true" type="tns:ResponseOfInsert"/>
-        <xs:complexType name="ResponseBase">
-          <xs:sequence>
-            <xs:element name="messagesField" nillable="true" type="q3:ArrayOfstring"
-              xmlns:q3="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
-              <xs:element name="serviceResultField" nillable="true" type="tns:ServiceResult"/>
-            </xs:sequence>
-          </xs:complexType>
-          <xs:element name="ResponseBase" nillable="true" type="tns:ResponseBase"/>
-          <xs:complexType name="ServiceResult">
-            <xs:sequence>
-              <xs:element name="codeField" nillable="true" type="xs:string"/>
-              <xs:element name="errorsField" nillable="true" type="tns:ArrayOfError"/>
-              <xs:element name="messageField" nillable="true" type="xs:string"/>
-            </xs:sequence>
-          </xs:complexType>
-          <xs:element name="ServiceResult" nillable="true" type="tns:ServiceResult"/>
-          <xs:complexType name="ArrayOfError">
-            <xs:sequence>
-              <xs:element minOccurs="0" maxOccurs="unbounded" name="Error" nillable="true" type="tns:Error"/>
-            </xs:sequence>
-          </xs:complexType>
-          <xs:element name="ArrayOfError" nillable="true" type="tns:ArrayOfError"/>
-          <xs:complexType name="Error">
-            <xs:sequence>
-              <xs:element name="codeField" nillable="true" type="xs:string"/>
-              <xs:element name="messageField" nillable="true" type="xs:string"/>
-            </xs:sequence>
-          </xs:complexType>
-          <xs:element name="Error" nillable="true" type="tns:Error"/>
-          <xs:complexType name="MorMeldingVolgenRequest">
-            <xs:sequence>
-              <xs:element name="emailVolgerField" nillable="true" type="xs:string"/>
-              <xs:element name="morIdField" nillable="true" type="xs:string"/>
-              <xs:element name="toevoegenField" type="xs:boolean"/>
-            </xs:sequence>
-          </xs:complexType>
-          <xs:element name="MorMeldingVolgenRequest" nillable="true" type="tns:MorMeldingVolgenRequest"/>
-          <xs:complexType name="ResponseOfUpdate">
-            <xs:complexContent mixed="false">
-              <xs:extension base="tns:ResponseBase">
-                <xs:sequence>
-                  <xs:element name="rowsUpdatedField" type="xs:int"/>
-                </xs:sequence>
-              </xs:extension>
-            </xs:complexContent>
-          </xs:complexType>
-          <xs:element name="ResponseOfUpdate" nillable="true" type="tns:ResponseOfUpdate"/>
-          <xs:complexType name="MorMeldingenOpvragenRequest">
-            <xs:sequence>
-              <xs:element name="dagenField" type="xs:decimal"/>
-              <xs:element name="morIdField" nillable="true" type="xs:string"/>
-            </xs:sequence>
-          </xs:complexType>
-          <xs:element name="MorMeldingenOpvragenRequest" nillable="true" type="tns:MorMeldingenOpvragenRequest"/>
-          <xs:complexType name="ResponseOfGetMorMeldingen">
-            <xs:complexContent mixed="false">
-              <xs:extension base="tns:ResponseBase">
-                <xs:sequence>
-                  <xs:element name="morMeldingenField" nillable="true" type="tns:ArrayOfMorMelding"/>
-                </xs:sequence>
-              </xs:extension>
-            </xs:complexContent>
-          </xs:complexType>
-          <xs:element name="ResponseOfGetMorMeldingen" nillable="true" type="tns:ResponseOfGetMorMeldingen"/>
-          <xs:complexType name="ArrayOfMorMelding">
-            <xs:sequence>
-              <xs:element minOccurs="0" maxOccurs="unbounded" name="MorMelding" nillable="true" type="tns:MorMelding"/>
-            </xs:sequence>
-          </xs:complexType>
-          <xs:element name="ArrayOfMorMelding" nillable="true" type="tns:ArrayOfMorMelding"/>
-          <xs:complexType name="MorMelding">
-            <xs:sequence>
-              <xs:element name="datumAfhandelingField" nillable="true" type="xs:dateTime"/>
-              <xs:element name="datumStatusWijzigingField" nillable="true" type="xs:dateTime"/>
-              <xs:element name="morIdField" nillable="true" type="xs:string"/>
-              <xs:element name="msbIdField" nillable="true" type="xs:decimal"/>
-              <xs:element name="statusBerichtField" nillable="true" type="xs:string"/>
-              <xs:element name="statusField" nillable="true" type="xs:string"/>
-              <xs:element name="statusOmschrijvingField" nillable="true" type="xs:string"/>
-              <xs:element name="statusTemplateField" nillable="true" type="xs:string"/>
-            </xs:sequence>
-          </xs:complexType>
-          <xs:element name="MorMelding" nillable="true" type="tns:MorMelding"/>
-        </xs:schema>
+            </xs:complexType>
+          </xs:element>
+          <xs:element minOccurs="0" name="newIdField" nillable="true" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="MorMeldingResponses" nillable="true" type="tns:MorMeldingResponses"/>
+  <xs:complexType name="ResponseBase">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="messagesField" nillable="true" type="q3:ArrayOfstring" xmlns:q3="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+      <xs:element minOccurs="0" name="serviceResultField" nillable="true" type="tns:ServiceResult"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ResponseBase" nillable="true" type="tns:ResponseBase"/>
+  <xs:complexType name="ServiceResult">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="codeField" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="errorsField" nillable="true" type="tns:ArrayOfError"/>
+      <xs:element minOccurs="0" name="messageField" nillable="true" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ServiceResult" nillable="true" type="tns:ServiceResult"/>
+  <xs:complexType name="ArrayOfError">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Error" nillable="true" type="tns:Error"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfError" nillable="true" type="tns:ArrayOfError"/>
+  <xs:complexType name="Error">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="codeField" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="messageField" nillable="true" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Error" nillable="true" type="tns:Error"/>
+  <xs:complexType name="MorMeldingVolgenRequest">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="emailVolgerField" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="morIdField" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="toevoegenField" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="MorMeldingVolgenRequest" nillable="true" type="tns:MorMeldingVolgenRequest"/>
+  <xs:complexType name="ResponseOfUpdate">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ResponseBase">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="rowsUpdatedField" type="xs:int"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="ResponseOfUpdate" nillable="true" type="tns:ResponseOfUpdate"/>
+  <xs:complexType name="MorMeldingenOpvragenRequest">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="dagenField" type="xs:decimal"/>
+      <xs:element minOccurs="0" name="morIdField" nillable="true" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="MorMeldingenOpvragenRequest" nillable="true" type="tns:MorMeldingenOpvragenRequest"/>
+  <xs:complexType name="ResponseOfGetMorMeldingen">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ResponseBase">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="morMeldingenField" nillable="true" type="tns:ArrayOfMorMelding"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="ResponseOfGetMorMeldingen" nillable="true" type="tns:ResponseOfGetMorMeldingen"/>
+  <xs:complexType name="ArrayOfMorMelding">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="MorMelding" nillable="true" type="tns:MorMelding"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfMorMelding" nillable="true" type="tns:ArrayOfMorMelding"/>
+  <xs:complexType name="MorMelding">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="datumAfhandelingField" nillable="true" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="datumStatusWijzigingField" nillable="true" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="morIdField" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="msbIdField" nillable="true" type="xs:decimal"/>
+      <xs:element minOccurs="0" name="statusBerichtField" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="statusField" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="statusOmschrijvingField" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="statusTemplateField" nillable="true" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="MorMelding" nillable="true" type="tns:MorMelding"/>
+</xs:schema>
