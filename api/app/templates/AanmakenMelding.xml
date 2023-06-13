@@ -26,6 +26,8 @@
             <msb:straatnaamField>{{ straatnaamField }}</msb:straatnaamField>
             <msb:xCoordField>{{ xCoordField }}</msb:xCoordField>
             <msb:yCoordField>{{ yCoordField }}</msb:yCoordField>
+            <msb:aanmaakDatumField>{{ aanmaakDatumField }}</msb:aanmaakDatumField>
+            <msb:adoptantnummerField>{{ adoptantnummerField }}</msb:adoptantnummerField>
          </tem:morMeldingAanmakenRequest>
       </tem:AanmakenMelding>
     </soap-env:Body>

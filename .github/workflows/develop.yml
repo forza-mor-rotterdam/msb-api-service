@@ -4,6 +4,8 @@ on:
   push:
     branches: ['develop']
 
+
+
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
@@ -62,3 +64,4 @@ jobs:
           KUBE_TOKEN: ${{ secrets.KUBE_TOKEN }}
         with:
           args: rollout status deployment/app --namespace=msb-api-service-acc
+          
