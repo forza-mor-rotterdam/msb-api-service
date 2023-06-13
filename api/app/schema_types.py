@@ -1,6 +1,7 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, validator
 from typing import Union, Any, Optional
 from datetime import datetime
+import pytz
 
 
 class Bestand(BaseModel):
@@ -16,7 +17,7 @@ class MorMeldingAanmakenRequest(BaseModel):
     huisnummerField: Union[str, None]
     kanaalField: Union[str, None]
     onderwerpField: Union[str, None]
-    lichtpuntenField: Union[list[str], None]
+    lichtpuntenField: Union[list[int], None]
     loginnaamField: Union[str, None]
     melderEmailField: Union[str, None]
     melderNaamField: Union[str, None]    
@@ -28,6 +29,55 @@ class MorMeldingAanmakenRequest(BaseModel):
     spoedField: bool
     xCoordField: float
     yCoordField: float
+    aanmaakDatumField: Union[datetime, None]
+    adoptantnummerField: Union[int, None]
+
+    @validator("aanmaakDatumField", pre=False)
+    def parse_aanmaakDatumField(cls, value):
+        return value.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
+
+
+    class Config:
+        json_encoders = {
+            datetime: lambda v: v.isoformat(),
+        }
+        now = datetime.now(pytz.timezone("Europe/Amsterdam")).isoformat()
+        schema_extra = {
+            'example': [
+                {
+                "aanvullendeInformatieField": "string",
+                "bijlagenField": [
+                    {
+                    "bytesField": "base64_string",
+                    "mimeTypeField": "string",
+                    "naamField": "string"
+                    }
+                ],
+                "fotosField": [
+                    "base64_string"
+                ],
+                "huisnummerField": "string",
+                "kanaalField": "string",
+                "onderwerpField": "string",
+                "lichtpuntenField": [
+                    0
+                ],
+                "loginnaamField": "string",
+                "melderEmailField": "string",
+                "melderNaamField": "string",
+                "melderTelefoonField": "string",
+                "meldingsnummerField": "string",
+                "naderePlaatsbepalingField": "string",
+                "omschrijvingField": "string",
+                "straatnaamField": "string",
+                "spoedField": True,
+                "xCoordField": 0,
+                "yCoordField": 0,
+                "aanmaakDatumField": now,
+                "adoptantnummerField": 0
+                }
+            ]
+        }
 
 
 class Error(BaseModel):
