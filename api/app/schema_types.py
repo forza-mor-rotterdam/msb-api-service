@@ -20,7 +20,7 @@ class MorMeldingAanmakenRequest(BaseModel):
     lichtpuntenField: Union[list[int], None]
     loginnaamField: Union[str, None]
     melderEmailField: Union[str, None]
-    melderNaamField: Union[str, None]    
+    melderNaamField: Union[str, None]
     melderTelefoonField: Union[str, None]
     meldingsnummerField: Union[str, None]
     naderePlaatsbepalingField: Union[str, None]
@@ -43,7 +43,7 @@ class MorMeldingAanmakenRequest(BaseModel):
         }
         now = datetime.now(pytz.timezone("Europe/Amsterdam")).isoformat()
         schema_extra = {
-            'example': [
+            'example':
                 {
                 "aanvullendeInformatieField": "string",
                 "bijlagenField": [
@@ -76,7 +76,6 @@ class MorMeldingAanmakenRequest(BaseModel):
                 "aanmaakDatumField": now,
                 "adoptantnummerField": 0
                 }
-            ]
         }
 
 
