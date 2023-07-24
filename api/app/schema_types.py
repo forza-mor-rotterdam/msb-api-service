@@ -11,26 +11,26 @@ class Bestand(BaseModel):
 
 
 class MorMeldingAanmakenRequest(BaseModel):
-    aanvullendeInformatieField: Union[str, None]
-    bijlagenField: Union[list[Bestand], None]
+    aanvullendeInformatieField: Union[str, None] = None
+    bijlagenField: Union[list[Bestand], None] = None
     fotosField: Union[list[str], None]
-    huisnummerField: Union[str, None]
+    huisnummerField: Union[str, None] = None
     kanaalField: Union[str, None]
     onderwerpField: Union[str, None]
     lichtpuntenField: Union[list[int], None]
-    loginnaamField: Union[str, None]
-    melderEmailField: Union[str, None]
-    melderNaamField: Union[str, None]
-    melderTelefoonField: Union[str, None]
+    loginnaamField: Union[str, None] = None
+    melderEmailField: Union[str, None] = None
+    melderNaamField: Union[str, None] = None
+    melderTelefoonField: Union[str, None] = None
     meldingsnummerField: Union[str, None]
     naderePlaatsbepalingField: Union[str, None]
-    omschrijvingField: Union[str, None]
+    omschrijvingField: Union[str, None] = None
     straatnaamField: Union[str, None]
     spoedField: bool
     xCoordField: float
     yCoordField: float
     aanmaakDatumField: Union[datetime, None]
-    adoptantnummerField: Union[int, None]
+    adoptantnummerField: Union[int, None] = None
 
     @validator("aanmaakDatumField", pre=False)
     def parse_aanmaakDatumField(cls, value):
