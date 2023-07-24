@@ -49,6 +49,7 @@ def aanmaken_melding(mor_melding: MorMeldingAanmakenRequest):
     message_id = generate_message_identification();
 
     logger.info("New aanmaken melding request, message_id=%s", message_id)
+    logger.info("Client meldingsnummer=%s", mor_melding.meldingsnummerField)
     logger.info("Request content=%s", mor_melding)
 
     url = os.environ.get("MSB_EXTERN_WEBSERVICES_URL")
