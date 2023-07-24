@@ -112,7 +112,7 @@ class MorMelding(BaseModel):
     datumAfhandelingField: Union[datetime, None]
     datumStatusWijzigingField: Union[datetime, None]
     morIdField: Union[str, None]
-    msbIdField: Union[str, None]
+    msbIdField: Union[str, int, None]
     statusBerichtField: Union[str, None]
     statusField: Union[str, None]
     statusOmschrijvingField: Union[str, None]
@@ -121,7 +121,6 @@ class MorMelding(BaseModel):
 
 class MorMeldingenWrapper(BaseModel):
     MorMelding: Union[list[MorMelding], None]
-
 
 class ResponseOfGetMorMeldingen(ResponseBase):
     morMeldingenField: Union[MorMeldingenWrapper, None]
