@@ -67,14 +67,14 @@ def aanmaken_melding(mor_melding: MorMeldingAanmakenRequest):
     context_data.update(dict(mor_melding))
 
     body = AanmakenMelding_template.render(context_data)
-
-    logger.info("Generated body=%s", body)
+    encoded_body = body.encode('utf-8')
+    logger.info("Generated body=%s", encoded_body)
 
     headers = {
         "content-type": "text/xml",
         "SOAPAction": action_url,
     }
-    response = requests.post(url, data=body, headers=headers)
+    response = requests.post(url, data=encoded_body, headers=headers)
 
     logger.info("MSB HTTP status code=%s", response.status_code)
     logger.info("MSB HTTP response=%s", response.text)
