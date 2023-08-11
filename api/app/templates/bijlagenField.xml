@@ -2,9 +2,9 @@
 <msb:bijlagenField>
     {% for f in bijlagenField %}
     <msb:Bestand>
-        <msb:bytesField>{{ f.bytesField }}</msb:bytesField>
-        <msb:mimeTypeField>{{ f.mimeTypeField }}</msb:mimeTypeField>
-        <msb:naamField>{{ f.naamField }}</msb:naamField>
+        <msb:bytesField><![CDATA[{{ f.bytesField }}]]></msb:bytesField>
+        <msb:mimeTypeField><![CDATA[{{ f.mimeTypeField }}]]></msb:mimeTypeField>
+        <msb:naamField><![CDATA[{{ f.naamField }}]]></msb:naamField>
     </msb:Bestand>
     {% endfor %}
 </msb:bijlagenField>

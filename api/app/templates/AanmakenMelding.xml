@@ -8,22 +8,22 @@
     <soap-env:Body>
       <tem:AanmakenMelding>
          <tem:morMeldingAanmakenRequest>
-            <msb:aanvullendeInformatieField>{{ aanvullendeInformatieField }}</msb:aanvullendeInformatieField>
+            <msb:aanvullendeInformatieField><![CDATA[{{ aanvullendeInformatieField }}]]></msb:aanvullendeInformatieField>
             {% include "bijlagenField.xml" %}
             {% include "fotosField.xml" %}
-            <msb:huisnummerField>{{ huisnummerField }}</msb:huisnummerField>
-            <msb:kanaalField>{{ kanaalField }}</msb:kanaalField>
+            <msb:huisnummerField><![CDATA[{{ huisnummerField }}]]></msb:huisnummerField>
+            <msb:kanaalField><![CDATA[{{ kanaalField }}]]></msb:kanaalField>
             {% include "lichtpuntenField.xml" %}
-            <msb:loginnaamField>{{ loginnaamField }}</msb:loginnaamField>
-            <msb:melderEmailField>{{ melderEmailField }}</msb:melderEmailField>
-            <msb:melderNaamField>{{ melderNaamField }}</msb:melderNaamField>
-            <msb:melderTelefoonField>{{ melderTelefoonField }}</msb:melderTelefoonField>
-            <msb:meldingsnummerField>{{ meldingsnummerField }}</msb:meldingsnummerField>
-            <msb:naderePlaatsbepalingField>{{ naderePlaatsbepalingField }}</msb:naderePlaatsbepalingField>
-            <msb:omschrijvingField>{{ omschrijvingField }}</msb:omschrijvingField>
-            <msb:onderwerpField>{{ onderwerpField }}</msb:onderwerpField>
+            <msb:loginnaamField><![CDATA[{{ loginnaamField }}]]></msb:loginnaamField>
+            <msb:melderEmailField><![CDATA[{{ melderEmailField }}]]></msb:melderEmailField>
+            <msb:melderNaamField><![CDATA[{{ melderNaamField }}]]></msb:melderNaamField>
+            <msb:melderTelefoonField><![CDATA[{{ melderTelefoonField }}]]></msb:melderTelefoonField>
+            <msb:meldingsnummerField><![CDATA[{{ meldingsnummerField }}]]></msb:meldingsnummerField>
+            <msb:naderePlaatsbepalingField><![CDATA[{{ naderePlaatsbepalingField }}]]></msb:naderePlaatsbepalingField>
+            <msb:omschrijvingField><![CDATA[{{ omschrijvingField }}]]></msb:omschrijvingField>
+            <msb:onderwerpField><![CDATA[{{ onderwerpField }}]]></msb:onderwerpField>
             <msb:spoedField>{{ spoedField|lower }}</msb:spoedField>
-            <msb:straatnaamField>{{ straatnaamField }}</msb:straatnaamField>
+            <msb:straatnaamField><![CDATA[{{ straatnaamField }}]]></msb:straatnaamField>
             <msb:xCoordField>{{ xCoordField }}</msb:xCoordField>
             <msb:yCoordField>{{ yCoordField }}</msb:yCoordField>
             <msb:aanmaakDatumField>{{ aanmaakDatumField }}</msb:aanmaakDatumField>
