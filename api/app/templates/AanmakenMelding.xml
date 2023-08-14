@@ -27,7 +27,7 @@
             <msb:xCoordField>{{ xCoordField }}</msb:xCoordField>
             <msb:yCoordField>{{ yCoordField }}</msb:yCoordField>
             <msb:aanmaakDatumField>{{ aanmaakDatumField }}</msb:aanmaakDatumField>
-            <msb:adoptantnummerField>{{ adoptantnummerField }}</msb:adoptantnummerField>
+            <msb:adoptantnummerField>{{ adoptantnummerField|d('0') }}</msb:adoptantnummerField>
          </tem:morMeldingAanmakenRequest>
       </tem:AanmakenMelding>
     </soap-env:Body>
