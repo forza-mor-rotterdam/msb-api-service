@@ -4,6 +4,7 @@ ENV PYTHONUNBUFFERED 1
 EXPOSE 8000
 WORKDIR /app/
 COPY requirements.txt /requirements.txt
+COPY openssl.cnf /etc/ssl/openssl.cnf
 
 RUN apt-get update && apt-get install -y build-essential python-dev git traceroute
 
