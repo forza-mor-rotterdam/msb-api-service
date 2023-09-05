@@ -1,4 +1,4 @@
-name: Create and publish a Docker image develop
+name: Create and publish a Docker image acceptance
 
 on:
   push:
@@ -64,4 +64,4 @@ jobs:
           KUBE_TOKEN: ${{ secrets.KUBE_TOKEN }}
         with:
           args: rollout status deployment/app --namespace=msb-api-service-acc
-          
+

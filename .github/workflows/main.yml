@@ -1,4 +1,4 @@
-name: Create and publish a Docker image develop
+name: Create and publish a Docker image production
 
 on:
   push:
