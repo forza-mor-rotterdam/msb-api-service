@@ -8,3 +8,4 @@
 *__py_cache*
 *.py[cod]
 *.pytest_cache*
+.vscode

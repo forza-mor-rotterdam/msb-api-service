@@ -1,6 +1,7 @@
 import requests
 from schema_types import MorMeldingAanmakenRequest, MorMeldingVolgenRequest, ResponseOfUpdate, ResponseOfInsert, ResponseOfGetMorMeldingen
 from fastapi import FastAPI, Request
+from fastapi.exceptions import ResponseValidationError
 from zeep.helpers import serialize_object
 from fastapi.templating import Jinja2Templates
 from zeep import Client
@@ -9,6 +10,10 @@ from utils import parse_mor_melding_aanmaken_response, generate_message_identifi
 from typing import Union
 import os
 import logging
+import uvicorn
+
+from fastapi.encoders import jsonable_encoder
+from fastapi.responses import JSONResponse
 
 description = """
 API endpoints are based on the existing external SOAP interface for MSB(Meldingen Systeem Buitenruimte) for the municipality Rotterdam, the Netherlands.
@@ -49,6 +54,7 @@ def aanmaken_melding(mor_melding: MorMeldingAanmakenRequest):
     message_id = generate_message_identification();
 
     logger.info("New aanmaken melding request, message_id=%s", message_id)
+    logger.info("Client meldingsnummer=%s", mor_melding.meldingsnummerField)
     logger.info("Request content=%s", mor_melding)
 
     url = os.environ.get("MSB_EXTERN_WEBSERVICES_URL")
@@ -61,14 +67,14 @@ def aanmaken_melding(mor_melding: MorMeldingAanmakenRequest):
     context_data.update(dict(mor_melding))
 
     body = AanmakenMelding_template.render(context_data)
-
-    logger.info("Generated body=%s", body)
+    encoded_body = body.encode('utf-8')
+    logger.info("Generated body=%s", encoded_body)
 
     headers = {
         "content-type": "text/xml",
         "SOAPAction": action_url,
     }
-    response = requests.post(url, data=body, headers=headers)
+    response = requests.post(url, data=encoded_body, headers=headers)
 
     logger.info("MSB HTTP status code=%s", response.status_code)
     logger.info("MSB HTTP response=%s", response.text)
@@ -90,5 +96,15 @@ def melding_volgen(melding_volgen: MorMeldingVolgenRequest):
 @app.get(f"/{version}/MeldingenOpvragen/", response_model=ResponseOfGetMorMeldingen)
 def meldingen_opvragen(dagenField: float, morIdField: Union[str, None] = None):
     response = client.service.MeldingenOpvragen(locals())
-
     return serialize_object(response)
+
+@app.exception_handler(ResponseValidationError)
+async def validation_exception_handler(request: Request, exc: ResponseValidationError):
+    return JSONResponse(
+        status_code=500,
+        content=jsonable_encoder({"detail": exc.errors(), "Error": "Name field is missing"}),
+    )
+
+# for debugging
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=8001)

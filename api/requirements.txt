@@ -5,4 +5,3 @@ uvicorn
 pydantic
 jinja2
 xmltodict
-logging

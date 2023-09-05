@@ -1,10 +1,8 @@
-name: Create and publish a Docker image acceptance
+name: Create and publish a Docker image production
 
 on:
   push:
-    branches: ['develop']
-
-
+    branches: ['main']
 
 env:
   REGISTRY: ghcr.io
@@ -36,7 +34,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-develop
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v3
@@ -54,7 +52,7 @@ jobs:
           KUBE_CERTIFICATE: ${{ vars.KUBE_CERTIFICATE }}
           KUBE_TOKEN: ${{ secrets.KUBE_TOKEN }}
         with:
-          args: rollout restart deployment/app --namespace=msb-api-service-acc
+          args: rollout restart deployment/app --namespace=msb-api-service-prod
 
       - name: Start rollout on k8s platform
         uses: actions-hub/kubectl@master
@@ -63,5 +61,5 @@ jobs:
           KUBE_CERTIFICATE: ${{ vars.KUBE_CERTIFICATE }}
           KUBE_TOKEN: ${{ secrets.KUBE_TOKEN }}
         with:
-          args: rollout status deployment/app --namespace=msb-api-service-acc
+          args: rollout status deployment/app --namespace=msb-api-service-prod
 

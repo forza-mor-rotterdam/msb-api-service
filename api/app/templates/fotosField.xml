@@ -1,7 +1,7 @@
 {% if fotosField %}
 <msb:fotosField>
     {% for f in fotosField %}
-    <arr:base64Binary>{{f}}</arr:base64Binary>
+    <arr:base64Binary><![CDATA[{{f}}]]></arr:base64Binary>
     {% endfor %}
 </msb:fotosField>
 {% else %}
