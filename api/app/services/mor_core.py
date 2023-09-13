@@ -317,7 +317,7 @@ class MeldingenService(BaseService):
         if response.status_code == 200:
             response_dict = self._to_json(response)
             logger.info("meldingen_opvragen antwoord: %s", response_dict)
-            meldingen = [response_dict] if not response_dict.get("results") else response_dict.get("results", [])
+            meldingen = [response_dict] if morIdField else response_dict.get("results", [])
             logger.info("meldingen_opvragen meldingen: %s", meldingen)
             mapped_meldingen = [
                 MeldingenService.morcore_melding_to_mormelding_response(m) 
