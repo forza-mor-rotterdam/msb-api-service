@@ -1,6 +1,6 @@
 version: '3'
 services:
-  api:
+  splitter_api:
     build: ./api
     ports:
       - "8005:8001"
@@ -8,3 +8,9 @@ services:
       - ./api/app:/app/app
     env_file:
       - .env.local
+    networks:
+      - mor_bridge_network
+
+networks:
+  mor_bridge_network:
+    external: true

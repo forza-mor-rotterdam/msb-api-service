@@ -10,6 +10,7 @@ RUN apt-get update && apt-get install -y build-essential python-dev git tracerou
 
 RUN apt-get update \
     && apt-get install -y \
+    curl \
     && pip install --upgrade pip setuptools \
     && pip install --no-cache-dir -r /requirements.txt
 
