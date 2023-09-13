@@ -1,5 +1,5 @@
 import requests
-from schema_types import MorMeldingAanmakenRequest, MorMeldingVolgenRequest, ResponseOfUpdate, ResponseOfInsert, ResponseOfGetMorMeldingen
+from schema_types import MorMeldingAanmakenRequest, MorMeldingVolgenRequest, ResponseOfUpdate, ResponseOfInsert, ResponseOfGetMorMeldingen, MorMelding, MorMeldingenWrapper
 from fastapi import FastAPI, Request
 from fastapi.exceptions import ResponseValidationError
 from zeep.helpers import serialize_object
@@ -14,6 +14,11 @@ import uvicorn
 
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
+from splitter import Splitter
+from services.main import BaseService
+from services.msb import MSBService
+from services.mor_core import MeldingenService
+from collections import OrderedDict
 
 description = """
 API endpoints are based on the existing external SOAP interface for MSB(Meldingen Systeem Buitenruimte) for the municipality Rotterdam, the Netherlands.
@@ -42,61 +47,53 @@ app = FastAPI(
     version="0.0.1",
 )
 
-templates = Jinja2Templates(directory="templates")
-env = Environment(loader=PackageLoader("main"))
-env.trim_blocks = True
-env.lstrip_blocks = True
-env.strip_trailing_newlines = True
-AanmakenMelding_template = env.get_template("AanmakenMelding.xml")
-
 @app.post(f"/{version}/AanmakenMelding/", response_model=ResponseOfInsert)
 def aanmaken_melding(mor_melding: MorMeldingAanmakenRequest):
-    message_id = generate_message_identification();
+    service: type[BaseService]
+    validated_address: Union[dict, None]
+    service, validated_address = Splitter(mor_melding).get_service()
+    response = service().aanmaken_melding(mor_melding, validated_address)
 
-    logger.info("New aanmaken melding request, message_id=%s", message_id)
-    logger.info("Client meldingsnummer=%s", mor_melding.meldingsnummerField)
-    logger.info("Request content=%s", mor_melding)
-
-    url = os.environ.get("MSB_EXTERN_WEBSERVICES_URL")
-    action_url = "http://tempuri.org/IService/AanmakenMelding"
-    context_data = {
-        "action_url": action_url,
-        "message_uuid": message_id,
-        "services_url": url,
-    }
-    context_data.update(dict(mor_melding))
-
-    body = AanmakenMelding_template.render(context_data)
-    encoded_body = body.encode('utf-8')
-    logger.info("Generated body=%s", encoded_body)
-
-    headers = {
-        "content-type": "text/xml",
-        "SOAPAction": action_url,
-    }
-    response = requests.post(url, data=encoded_body, headers=headers)
-
-    logger.info("MSB HTTP status code=%s", response.status_code)
-    logger.info("MSB HTTP response=%s", response.text)
-    logger.info("MSB HTTP headers=%s", response.headers)
-
-    response.raise_for_status()
-
-    return parse_mor_melding_aanmaken_response(response.text)
+    return response
 
 
 @app.patch(f"/{version}/MeldingVolgen/", response_model=ResponseOfUpdate)
 def melding_volgen(melding_volgen: MorMeldingVolgenRequest):
-
-    response = client.service.MeldingVolgen(dict(melding_volgen))
-
-    return serialize_object(response)
+    morcore_response = serialize_object(MeldingenService().melding_volgen(melding_volgen))
+    if morcore_response.get("rowsUpdatedField") == 1:
+        return morcore_response
+    return MSBService().melding_volgen(melding_volgen)
 
 
 @app.get(f"/{version}/MeldingenOpvragen/", response_model=ResponseOfGetMorMeldingen)
 def meldingen_opvragen(dagenField: float, morIdField: Union[str, None] = None):
-    response = client.service.MeldingenOpvragen(locals())
-    return serialize_object(response)
+    logger.info("meldingen_opvragen: msb en morecore meldingen opvragen en gecombineert teruggeven")
+    msb_response = serialize_object(MSBService().meldingen_opvragen(dagenField=dagenField, morIdField=morIdField))
+    morcore_response = serialize_object(MeldingenService().meldingen_opvragen(dagenField=dagenField, morIdField=morIdField))
+    msb_meldingen = [] 
+    morcore_meldingen = []
+    if msb_response.get("morMeldingenField"):
+        msb_meldingen = msb_response.get("morMeldingenField", {}).get("MorMelding", [])
+    if morcore_response.get("morMeldingenField"):
+        morcore_meldingen = morcore_response.get("morMeldingenField", {}).get("MorMelding", [])
+    logger.info("msb_meldingen: %s", msb_meldingen)
+    logger.info("morcore_meldingen: %s", morcore_meldingen)
+
+    msb_errors = msb_response.get("serviceResultField", {}).get("errorsField", {}).get("Error", [])
+    morcore_errors = morcore_response.get("serviceResultField", {}).get("errorsField", {}).get("Error", [])
+    standaard_errors = [f"In MORCORE en MSB is een melding aangemaakt met dezelfde morIdField: {morIdField}"] if morIdField and len(list(msb_meldingen + morcore_meldingen)) > 1 else []
+    service_result_field = OrderedDict([
+        ('codeField', '000'), 
+        ('errorsField', OrderedDict([('Error', msb_errors + morcore_errors + standaard_errors)])), 
+        ('messageField', f"Totaal aantal {len(list(msb_meldingen + morcore_meldingen))} gevonden")
+    ])
+
+    return serialize_object(OrderedDict([
+        ("morMeldingenField", OrderedDict([("MorMelding", msb_meldingen + morcore_meldingen)])), 
+        ("messagesField", OrderedDict([("string", [f"MORCORE aantal: {len(morcore_meldingen)}", f"MSB aantal: {len(msb_meldingen)}"])])),
+        ("serviceResultField", service_result_field),
+    ]))
+
 
 @app.exception_handler(ResponseValidationError)
 async def validation_exception_handler(request: Request, exc: ResponseValidationError):
