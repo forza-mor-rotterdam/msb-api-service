@@ -19,7 +19,7 @@
             <msb:melderNaamField><![CDATA[{{ melderNaamField }}]]></msb:melderNaamField>
             <msb:melderTelefoonField><![CDATA[{{ melderTelefoonField }}]]></msb:melderTelefoonField>
             <msb:meldingsnummerField><![CDATA[{{ meldingsnummerField }}]]></msb:meldingsnummerField>
-            <msb:naderePlaatsbepalingField><![CDATA[{{ naderePlaatsbepalingField }}]]></msb:naderePlaatsbepalingField>
+            <msb:naderePlaatsbepalingField><![CDATA[{% if naderePlaatsbepalingField == 'foo bar' %}{% else %}{{ naderePlaatsbepalingField }}{% endif %}]]></msb:naderePlaatsbepalingField>
             <msb:omschrijvingField><![CDATA[{{ omschrijvingField }}]]></msb:omschrijvingField>
             <msb:onderwerpField><![CDATA[{{ onderwerpField }}]]></msb:onderwerpField>
             <msb:spoedField>{{ spoedField|lower }}</msb:spoedField>
