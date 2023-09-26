@@ -110,8 +110,8 @@ class MeldingenService(BaseService):
             ("msbIdField", morcore_melding.get("_links", {}).get("self")),
             ("statusBerichtField", None),
             ("statusField", meldr_status_code),
-            ("statusOmschrijvingField", None),
-            ("statusTemplateField", None),
+            ("statusOmschrijvingField", morcore_melding.get("status", {}).get("naam")),
+            ("statusTemplateField", "MORR"),
         ])
 
     def aanmaken_melding(self, mor_melding: MorMeldingAanmakenRequest, validated_address: Union[dict, None] = {}):
