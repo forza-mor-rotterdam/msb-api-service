@@ -95,13 +95,21 @@ class MeldingenService(BaseService):
 
     @staticmethod
     def morcore_melding_to_mormelding_response(morcore_melding) -> OrderedDict:
+        morcore_status_naar_meldr_status_codes = {
+            "openstaand": "N",
+            "in_behandeling": "I",
+            "controle": "I",
+            "afgehandeld": "X" if morcore_melding["resolutie"] == "niet_opgelost" else "A",
+        }
+        meldr_status_code = morcore_status_naar_meldr_status_codes.get(morcore_melding.get("status", {}).get("naam"))
+
         return OrderedDict([
             ("datumAfhandelingField", morcore_melding.get("afgesloten_op")),
             ("datumStatusWijzigingField", morcore_melding.get("aangepast_op")),
             ("morIdField", None),
             ("msbIdField", morcore_melding.get("_links", {}).get("self")),
             ("statusBerichtField", None),
-            ("statusField", morcore_melding.get("status", {}).get("naam")),
+            ("statusField", meldr_status_code),
             ("statusOmschrijvingField", None),
             ("statusTemplateField", None),
         ])
