@@ -204,10 +204,15 @@ class MeldingenService(BaseService):
                 "newIdField": response_dict.get("_links", {}).get("melding"),
             })
             return response_dict
-        logger.error("signaal_aanmaken error: %s", response.text)
-        raise MeldingenService.DataOphalenFout(
-            f"signaal_aanmaken: Verwacht status code 201, kreeg status code '{response.status_code}'"
-        )
+
+        logentry = f"morcore signaal_aanmaken error: status code: {response.status_code}, text: {response.text}"
+        logger.error(logentry)
+        return serialize_object(OrderedDict([
+            ("serviceResultField", OrderedDict([('codeField', '000'), ('errorsField', OrderedDict([('Error', [logentry])])), ('messageField', None)])),
+            ("messagesField", None),
+            ("dataField", None),
+            ("newIdField", None),
+        ]))
     
     def melding_volgen(self, data):
         morIdField = dict(data).get("morIdField")
