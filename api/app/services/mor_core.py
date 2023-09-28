@@ -153,7 +153,7 @@ class MeldingenService(BaseService):
         fotos = mor_melding_dict.pop("fotosField", [])
         melderEmailField = mor_melding_dict.get("melderEmailField") if validators.email(mor_melding_dict.get("melderEmailField")) else None
         omschrijving_kort = (
-            mor_melding_dict.get("omschrijvingField", "")
+            mor_melding_dict.get("omschrijvingField", "- geen extra informatie beschikbaar -")
             if mor_melding_dict.get("omschrijvingField") is not None
             else mor_melding_dict.get("aanvullendeInformatieField", "- geen extra informatie beschikbaar -")
         )
