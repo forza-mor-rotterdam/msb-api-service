@@ -102,11 +102,22 @@ class MeldingenService(BaseService):
             "afgehandeld": "X" if morcore_melding["resolutie"] == "niet_opgelost" else "A",
         }
         meldr_status_code = morcore_status_naar_meldr_status_codes.get(morcore_melding.get("status", {}).get("naam"))
+        afgesloten_op = morcore_melding.get("afgesloten_op")
+        aangepast_op = morcore_melding.get("aangepast_op")
+        try:
+            afgesloten_op = datetime.strptime(afgesloten_op, "%Y-%m-%dT%H:%M:%S.%f%z").strftime("%Y-%m-%dT%H:%M:%S")
+        except Exception:
+            ...
+        try:
+            aangepast_op = datetime.strptime(aangepast_op, "%Y-%m-%dT%H:%M:%S.%f%z").strftime("%Y-%m-%dT%H:%M:%S")
+        except Exception:
+            ...
 
+        meldingsnummer = morcore_melding.get("meldingsnummer_lijst", [None])[0] if morcore_melding.get("meldingsnummer_lijst") else None
         return OrderedDict([
-            ("datumAfhandelingField", morcore_melding.get("afgesloten_op")),
-            ("datumStatusWijzigingField", morcore_melding.get("aangepast_op")),
-            ("morIdField", None),
+            ("datumAfhandelingField", afgesloten_op),
+            ("datumStatusWijzigingField", aangepast_op),
+            ("morIdField", meldingsnummer),
             ("msbIdField", morcore_melding.get("_links", {}).get("self")),
             ("statusBerichtField", None),
             ("statusField", meldr_status_code),
@@ -144,7 +155,7 @@ class MeldingenService(BaseService):
         omschrijving_kort = (
             mor_melding_dict.get("omschrijvingField", "")
             if mor_melding_dict.get("omschrijvingField") is not None
-            else mor_melding_dict.get("aanvullendeInformatieField", "")
+            else mor_melding_dict.get("aanvullendeInformatieField", "- geen extra informatie beschikbaar -")
         )
         data = {
             "signaal_url": self.get_signaal_url(mor_melding_dict.get('meldingsnummerField')),
