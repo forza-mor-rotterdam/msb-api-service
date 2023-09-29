@@ -113,13 +113,14 @@ class MeldingenService(BaseService):
         except Exception:
             ...
 
+        statusBerichtField = morcore_melding.get("laatste_meldinggebeurtenis", {}).get("omschrijving_extern")
         meldingsnummer = morcore_melding.get("meldingsnummer_lijst", [None])[0] if morcore_melding.get("meldingsnummer_lijst") else None
         return OrderedDict([
             ("datumAfhandelingField", afgesloten_op),
             ("datumStatusWijzigingField", aangepast_op),
             ("morIdField", meldingsnummer),
             ("msbIdField", morcore_melding.get("_links", {}).get("self")),
-            ("statusBerichtField", None),
+            ("statusBerichtField", statusBerichtField),
             ("statusField", meldr_status_code),
             ("statusOmschrijvingField", morcore_melding.get("status", {}).get("naam")),
             ("statusTemplateField", "MORR"),
@@ -152,11 +153,8 @@ class MeldingenService(BaseService):
         mor_melding_dict = dict(mor_melding)
         fotos = mor_melding_dict.pop("fotosField", [])
         melderEmailField = mor_melding_dict.get("melderEmailField") if validators.email(mor_melding_dict.get("melderEmailField")) else None
-        omschrijving_kort = (
-            mor_melding_dict.get("omschrijvingField", "- geen extra informatie beschikbaar -")
-            if mor_melding_dict.get("omschrijvingField") is not None
-            else mor_melding_dict.get("aanvullendeInformatieField", "- geen extra informatie beschikbaar -")
-        )
+        omschrijving_kort = mor_melding_dict.get("omschrijvingField", "") if mor_melding_dict.get("omschrijvingField") else "- geen korte omschrijving beschikbaar -"
+
         data = {
             "signaal_url": self.get_signaal_url(mor_melding_dict.get('meldingsnummerField')),
             "melder": {
