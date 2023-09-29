@@ -7,3 +7,4 @@ pydantic
 jinja2
 xmltodict
 validators
+geojson==3.0.1
