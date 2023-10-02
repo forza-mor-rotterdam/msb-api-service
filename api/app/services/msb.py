@@ -76,8 +76,11 @@ class MSBService(BaseService):
         return serialize_object(response)
 
     def meldingen_opvragen(self, dagenField: float, morIdField: Union[str, None] = None):
+        logger.info(f"meldingen_opvragen request, dagenField={dagenField}, morIdField={morIdField}")
         response = self.client.service.MeldingenOpvragen(locals())
+        logger.info(f"meldingen_opvragen response text={response.text}")
         serialized_object = serialize_object(response)
+        logger.info(f"meldingen_opvragen serialized_object={serialized_object}")
         meldr_status = {
             "MORS": "Z",
             "MORN": "X",
