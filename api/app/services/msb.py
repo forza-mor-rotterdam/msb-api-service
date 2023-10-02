@@ -85,6 +85,7 @@ class MSBService(BaseService):
             "MORS": "Z",
             "MORN": "X",
         }
-        for melding in serialized_object.get("morMeldingenField", {}).get("MorMelding", []):
+        meldingen_field = serialized_object.get("morMeldingenField", {}) if serialized_object.get("morMeldingenField", {}) else {}
+        for melding in meldingen_field.get("MorMelding", []):
             melding["statusField"] = meldr_status.get(melding.get("statusTemplateField"), melding["statusField"])
         return serialized_object
