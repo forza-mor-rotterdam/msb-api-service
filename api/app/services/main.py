@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 class BaseService:
     _api_base_url = None
-    _timeout: tuple[int, ...] = (5, 10)
+    _timeout: tuple[int, ...] = (15, 30)
     _data_type = "json"
 
     class BasisUrlFout(Exception):
