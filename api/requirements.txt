@@ -1,3 +1,4 @@
+requests==2.31.0
 fastapi
 lxml==4.9.2
 zeep==4.2.1
@@ -5,3 +6,5 @@ uvicorn
 pydantic
 jinja2
 xmltodict
+validators
+geojson==3.0.1
