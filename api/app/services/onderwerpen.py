@@ -23,12 +23,15 @@ class OnderwerpenService(BaseService):
         super().__init__(*args, **kwargs)
 
     def get_category_url(self, meldr_onderwerp):
+        logger.info(f'onderwerpen url: {os.environ.get("ONDERWERPEN_URL")}')
+        logger.info(f'self._api_path: {self._api_path}')
         response = self._do_request(
-            f"{self._api_path}/category/?meldr_category={meldr_onderwerp}",
+            f"{self._api_path}/category/?name={meldr_onderwerp}",
         )
         if response.status_code == 200:
             return self._to_json(response)
-        print(response.text)
+        logentry = f"get_category_url: Verwacht status code 200, kreeg status code '{response.status_code}', text: {response.text}"
+        logger.error(logentry)
         raise OnderwerpenService.DataOphalenFout(
-            f"signaal_aanmaken: Verwacht status code 201, kreeg status code '{response.status_code}'"
+            logentry
         )
