@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 
 class Splitter:
     service = MSBService
-    meldr_onderwerpen_for_morcore = []
+    filter_config = {}
     morcore_pdok_wijken = []
     morcore_pdok_buurten = []
     validated_address: Union[dict, None] = None
@@ -25,8 +25,8 @@ class Splitter:
     buurtnaam = None
 
     def __init__(self, request_data: Union[MorMeldingAanmakenRequest, MorMeldingVolgenRequest, dict]):
-        self.meldr_onderwerpen_for_morcore = [onderwerp.strip() for onderwerp in os.environ.get("MORCORE_MELDR_ONDERWERPEN", MORCORE_MELDR_ONDERWERPEN).split(",")]
-        self.morcore_pdok_wijken = [wijk.strip() for wijk in os.environ.get("MORCORE_WIJKEN", MORCORE_WIJKEN).split(",")]
+        self.filter_config = MORCORE_MELDR_ONDERWERPEN
+        self.onderwerpen = [k for k in self.filter_config.keys()]
         data = dict(request_data) 
         logger.info(f"Splitter request_data: {data}")
         self.onderwerp = data.get("onderwerpField")
@@ -53,20 +53,17 @@ class Splitter:
 
     def _set_service(self):
         self.service = MSBService
-
-    def _onderwerp_for_morcore(self):
-        return self.onderwerp in self.meldr_onderwerpen_for_morcore
-    
-    def _wijknaam_for_morcore(self):
-        return self.wijknaam in self.morcore_pdok_wijken
-    
-    def _buurtnaam_for_morcore(self):
-        return self.buurtnaam in self.morcore_pdok_buurten
     
     def _melding_for_morcore(self):
-        if self.morcore_pdok_wijken:
-            return self._onderwerp_for_morcore() and self._wijknaam_for_morcore()
-        return self._onderwerp_for_morcore() and self._buurtnaam_for_morcore()
+        if self.onderwerp in self.onderwerpen:
+            wijken_buurten_filter = self.filter_config.get(self.onderwerp)
+            if not wijken_buurten_filter:
+                return True
+            if self.wijknaam in wijken_buurten_filter.get("wijken", []):
+                return True
+            if self.buurtnaam in wijken_buurten_filter.get("buurten", []):
+                return True
+        return False
 
     def get_service(self) -> tuple[type[BaseService], Union[dict, None]]:
         logger.info(f"Splitter using service: {self.service}")

@@ -1,2 +1,13 @@
-MORCORE_MELDR_ONDERWERPEN = " Grofvuil, "
-MORCORE_WIJKEN = " Delfshaven, Rotterdam Centrum"
+MORCORE_MELDR_ONDERWERPEN = {
+    "Grofvuil": {},
+    "Zwerfafval": {
+        "wijken": ["Delfshaven"]
+    },
+    "Afval naast wijkcontainer": {
+        "buurten": ["Middelland", "Cs Kwartier"],
+    },
+    "Gevaarlijk afval": {
+        "buurten": ["Stadsdriehoek"],
+        "wijken": ["Delfshaven"],
+    },
+}
