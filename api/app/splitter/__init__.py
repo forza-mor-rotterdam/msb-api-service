@@ -6,7 +6,7 @@ from schema_types import MorMeldingAanmakenRequest, MorMeldingVolgenRequest, Res
 from typing import Union
 from services.location import get_validated_address
 import logging
-from config import MORCORE_MELDR_ONDERWERPEN, MORCORE_WIJKEN
+from config import MORCORE_MELDR_ONDERWERPEN
 import os
 
 
