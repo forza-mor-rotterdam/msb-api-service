@@ -1,2 +1,13 @@
-MORCORE_MELDR_ONDERWERPEN = " Grofvuil, "
-MORCORE_WIJKEN = " Delfshaven, Rotterdam Centrum"
+MORCORE_MELDR_ONDERWERPEN = {
+    "Grofvuil": {
+        "wijken": [
+            "Rotterdam Centrum", 
+            "Delfshaven", 
+            "Noord", 
+            "Hillegersberg-Schiebroek", 
+            "Overschie",
+            "Kralingen-Crooswijk",
+            "Prins Alexander",
+        ],
+    },
+}
