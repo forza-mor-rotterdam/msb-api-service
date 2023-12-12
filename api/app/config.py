@@ -11,52 +11,52 @@ MORCORE_MELDR_ONDERWERPEN = {
             "Prins Alexander",
         ],
     },
+    # wrt & inzameling
+    "Afval naast wijkcontainer": {
+        "wijken": [
+            "Rotterdam Centrum", 
+            "Delfshaven", 
+        ],
+    },   
     # wrt
     "Zwerfafval": {
-        "buurten": {
-            "Oude Westen",
-            "Stadsdriehoek",
-            "Cool",
-        },
+        "wijken": [
+            "Rotterdam Centrum", 
+        ],
     },
     # wrt
     "Afvalbak": {
-        "buurten": {
-            "Oude Westen",
-            "Stadsdriehoek",
-            "Cool",
-        },
+        "wijken": [
+            "Rotterdam Centrum", 
+        ],
     },
     # wrt
     "Onkruid": {
-        "buurten": {
-            "Oude Westen",
-            "Stadsdriehoek",
-            "Cool",
-        },
+        "wijken": [
+            "Rotterdam Centrum", 
+        ],
     },
     # wrt
     "Blad of bloesem": {
-        "buurten": {
-            "Oude Westen",
-            "Stadsdriehoek",
-            "Cool",
-        },
+        "wijken": [
+            "Rotterdam Centrum", 
+        ],
     },
     # wrt
     "Uitwerpselen": {
-        "buurten": {
-            "Oude Westen",
-            "Stadsdriehoek",
-            "Cool",
-        },
+        "wijken": [
+            "Rotterdam Centrum", 
+        ],
     },
     # wrt
     "Gladheid": {
-        "buurten": {
-            "Oude Westen",
-            "Stadsdriehoek",
-            "Cool",
+        "wijken": [
+            "Rotterdam Centrum", 
+        ],
+        # "buurten": [
+            # "Oude Westen",
+            # "Stadsdriehoek",
+            # "Cool",
             # "Cs Kwartier",
             # "Nieuwe Werk",
             # "Dijkzigt",
@@ -96,6 +96,6 @@ MORCORE_MELDR_ONDERWERPEN = {
             # "Kralingse Bos",
             # "De Esch",
             # "Struisenburg",
-        },
+        # ],
     },
 }
