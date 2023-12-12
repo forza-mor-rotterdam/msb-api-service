@@ -15,38 +15,48 @@ MORCORE_MELDR_ONDERWERPEN = {
     "Zwerfafval": {
         "buurten": {
             "Oude Westen",
+            "Stadsdriehoek",
+            "Cool",
         },
     },
     # wrt
     "Afvalbak": {
         "buurten": {
             "Oude Westen",
+            "Stadsdriehoek",
+            "Cool",
         },
     },
     # wrt
     "Onkruid": {
         "buurten": {
             "Oude Westen",
+            "Stadsdriehoek",
+            "Cool",
         },
     },
     # wrt
     "Blad of bloesem": {
         "buurten": {
             "Oude Westen",
+            "Stadsdriehoek",
+            "Cool",
         },
     },
     # wrt
     "Uitwerpselen": {
         "buurten": {
             "Oude Westen",
+            "Stadsdriehoek",
+            "Cool",
         },
     },
     # wrt
     "Gladheid": {
         "buurten": {
             "Oude Westen",
-            # "Stadsdriehoek",
-            # "Cool",
+            "Stadsdriehoek",
+            "Cool",
             # "Cs Kwartier",
             # "Nieuwe Werk",
             # "Dijkzigt",
