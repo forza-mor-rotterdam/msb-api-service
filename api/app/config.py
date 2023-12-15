@@ -22,38 +22,73 @@ MORCORE_MELDR_ONDERWERPEN = {
     "Zwerfafval": {
         "wijken": [
             "Rotterdam Centrum", 
+            "Nieuw Mathenesse",
+        ],
+        "buurten": [
+            "Spangen",
+            "Oud Mathenesse",
+            "Schiemond",
         ],
     },
     # wrt
     "Afvalbak": {
         "wijken": [
             "Rotterdam Centrum", 
+            "Nieuw Mathenesse",
+        ],
+        "buurten": [
+            "Spangen",
+            "Oud Mathenesse",
+            "Schiemond",
         ],
     },
     # wrt
     "Onkruid": {
         "wijken": [
             "Rotterdam Centrum", 
+            "Nieuw Mathenesse",
+        ],
+        "buurten": [
+            "Spangen",
+            "Oud Mathenesse",
+            "Schiemond",
         ],
     },
     # wrt
     "Blad of bloesem": {
         "wijken": [
             "Rotterdam Centrum", 
+            "Nieuw Mathenesse",
+        ],
+        "buurten": [
+            "Spangen",
+            "Oud Mathenesse",
+            "Schiemond",
         ],
     },
     # wrt
     "Uitwerpselen": {
         "wijken": [
             "Rotterdam Centrum", 
+            "Nieuw Mathenesse",
+        ],
+        "buurten": [
+            "Spangen",
+            "Oud Mathenesse",
+            "Schiemond",
         ],
     },
     # wrt
     "Gladheid": {
         "wijken": [
             "Rotterdam Centrum", 
+            "Nieuw Mathenesse",
         ],
-        # "buurten": [
+        "buurten": [
+            "Spangen",
+            "Oud Mathenesse",
+            "Schiemond",
+        ],
             # "Oude Westen",
             # "Stadsdriehoek",
             # "Cool",
@@ -96,6 +131,6 @@ MORCORE_MELDR_ONDERWERPEN = {
             # "Kralingse Bos",
             # "De Esch",
             # "Struisenburg",
-        # ],
+        # ,
     },
 }
