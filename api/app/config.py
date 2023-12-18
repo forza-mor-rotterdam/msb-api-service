@@ -22,38 +22,91 @@ MORCORE_MELDR_ONDERWERPEN = {
     "Zwerfafval": {
         "wijken": [
             "Rotterdam Centrum", 
+            "Nieuw Mathenesse",
+        ],
+        "buurten": [
+            "Spangen",
+            "Oud Mathenesse",
+            "Schiemond",
+            "Delfshaven",
+            "Bospolder",
+            "Tussendijken",
         ],
     },
     # wrt
     "Afvalbak": {
         "wijken": [
             "Rotterdam Centrum", 
+            "Nieuw Mathenesse",
+        ],
+        "buurten": [
+            "Spangen",
+            "Oud Mathenesse",
+            "Schiemond",
+            "Delfshaven",
+            "Bospolder",
+            "Tussendijken",
         ],
     },
     # wrt
     "Onkruid": {
         "wijken": [
             "Rotterdam Centrum", 
+            "Nieuw Mathenesse",
+        ],
+        "buurten": [
+            "Spangen",
+            "Oud Mathenesse",
+            "Schiemond",
+            "Delfshaven",
+            "Bospolder",
+            "Tussendijken",
         ],
     },
     # wrt
     "Blad of bloesem": {
         "wijken": [
             "Rotterdam Centrum", 
+            "Nieuw Mathenesse",
+        ],
+        "buurten": [
+            "Spangen",
+            "Oud Mathenesse",
+            "Schiemond",
+            "Delfshaven",
+            "Bospolder",
+            "Tussendijken",
         ],
     },
     # wrt
     "Uitwerpselen": {
         "wijken": [
             "Rotterdam Centrum", 
+            "Nieuw Mathenesse",
+        ],
+        "buurten": [
+            "Spangen",
+            "Oud Mathenesse",
+            "Schiemond",
+            "Delfshaven",
+            "Bospolder",
+            "Tussendijken",
         ],
     },
     # wrt
     "Gladheid": {
         "wijken": [
             "Rotterdam Centrum", 
+            "Nieuw Mathenesse",
         ],
-        # "buurten": [
+        "buurten": [
+            "Spangen",
+            "Oud Mathenesse",
+            "Schiemond",
+            "Delfshaven",
+            "Bospolder",
+            "Tussendijken",
+        ],
             # "Oude Westen",
             # "Stadsdriehoek",
             # "Cool",
@@ -96,6 +149,6 @@ MORCORE_MELDR_ONDERWERPEN = {
             # "Kralingse Bos",
             # "De Esch",
             # "Struisenburg",
-        # ],
+        # ,
     },
 }
