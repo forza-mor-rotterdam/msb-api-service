@@ -162,7 +162,7 @@ class MeldingenService(BaseService):
         try:
             omschrijving_kort_json = json.loads(omschrijving_kort)
             omschrijving_kort = omschrijving_kort_json["orgineleOmschrijving"]
-            geometrie = f"POINT({omschrijving_kort_json['longitude']}, {omschrijving_kort_json['latitude']})"
+            geometrie = f"POINT({omschrijving_kort_json['longitude']} {omschrijving_kort_json['latitude']})"
         except Exception:
             ...
 
@@ -188,6 +188,8 @@ class MeldingenService(BaseService):
             ],
         }
         if validated_address:
+            logger.info(f"new geo: {geometrie}")
+            logger.info(f"existing geo: {validated_address.get('geometrie')}")
             data.update({
                 "adressen": [
                     {
