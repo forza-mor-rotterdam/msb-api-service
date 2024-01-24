@@ -16,6 +16,7 @@ MORCORE_MELDR_ONDERWERPEN = {
         "wijken": [
             "Rotterdam Centrum", 
             "Delfshaven", 
+            "Nieuw Mathenesse",
         ],
     },   
     # wrt
