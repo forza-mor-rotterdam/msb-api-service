@@ -1,5 +1,6 @@
 from schema_types import MorMeldingAanmakenRequest, MorMeldingVolgenRequest, ResponseOfUpdate, ResponseOfInsert, ResponseOfGetMorMeldingen, MorMelding, MorMeldingenWrapper
 import os
+import json
 from services.main import BaseService
 from urllib.parse import urlparse
 import logging
@@ -157,6 +158,14 @@ class MeldingenService(BaseService):
         melderEmailField = mor_melding_dict.get("melderEmailField") if validators.email(mor_melding_dict.get("melderEmailField")) else None
         omschrijving_kort = mor_melding_dict.get("omschrijvingField", "") if mor_melding_dict.get("omschrijvingField") else "- geen korte omschrijving beschikbaar -"
 
+        geometrie = None
+        try:
+            omschrijving_kort_json = json.loads(omschrijving_kort)
+            omschrijving_kort = omschrijving_kort_json["orgineleOmschrijving"]
+            geometrie = f"POINT({omschrijving_kort_json['longitude']} {omschrijving_kort_json['latitude']})"
+        except Exception:
+            ...
+
         data = {
             "signaal_url": self.get_signaal_url(mor_melding_dict.get('meldingsnummerField')),
             "melder": {
@@ -179,6 +188,8 @@ class MeldingenService(BaseService):
             ],
         }
         if validated_address:
+            logger.info(f"new geo: {geometrie}")
+            logger.info(f"existing geo: {validated_address.get('geometrie')}")
             data.update({
                 "adressen": [
                     {
@@ -190,7 +201,7 @@ class MeldingenService(BaseService):
                         "postcode": validated_address.get("postcode"),
                         "buurtnaam": validated_address.get("buurtnaam"),
                         "wijknaam": validated_address.get("wijknaam"),
-                        "geometrie": validated_address.get("geometrie"),
+                        "geometrie": geometrie if geometrie else validated_address.get("geometrie"),
                     },
                 ]
             })
