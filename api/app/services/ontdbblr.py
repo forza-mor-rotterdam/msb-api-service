@@ -66,35 +66,6 @@ class OntdbblRService(BaseService):
                 )
         print(meldingen_token)
         return meldingen_token
-    
-    def _get_token_ontdbblr(self):
-        ontdbblr_token = None
-        if not ontdbblr_token:
-            ontdbblr_username = os.environ.get("ONTDBBLR_USERNAME", "")
-            email = ontdbblr_username
-            if not validators.email(email):
-                email = f"{ontdbblr_username}@forzamor.nl"
-
-            token_url = f"{os.environ.get('ONTDBBLR_URL', '')}/api-token-auth/"
-            print("token_url")
-            print(token_url)
-            password = os.environ.get("ONTDBBLR_PASSWORD", "")
-            token_response = requests.post(
-                token_url,
-                json={
-                    "username": email,
-                    "password": password,
-                },
-            )
-            logger.info(f"token response status code: {token_response.status_code}")
-            if token_response.status_code == 200:
-                ontdbblr_token = token_response.json().get("token")
-            else:
-                raise OntdbblRService.DataOphalenFout(
-                    f"status code: {token_response.status_code}, response text: {token_response.text}"
-                )
-
-        return ontdbblr_token
 
     def _get_headers(self):
         headers = {"Authorization": f"Token {self._get_token()}"}
@@ -165,13 +136,15 @@ class OntdbblRService(BaseService):
 
         data = {
             "signaal_url": self.get_signaal_url(mor_melding_dict.get('meldingsnummerField')),
+            "bron_id": "MeldR",
+            "bron_signaal_id": mor_melding_dict.get('meldingsnummerField'),
             "melder": {
                 "naam": mor_melding_dict.get("melderNaamField"),
                 "email": melderEmailField,
                 "telefoonnummer": mor_melding_dict.get("melderTelefoonField"),
             },
             "origineel_aangemaakt": mor_melding_dict.get("aanmaakDatumField"),
-            "onderwerpen": [self.get_onderwerp_url(mor_melding_dict.get("onderwerpField"))],
+            "onderwerpen": [{"bron_url":self.get_onderwerp_url(mor_melding_dict.get("onderwerpField"))}],
             "omschrijving_kort": omschrijving_kort[:500],
             "omschrijving": mor_melding_dict.get("aanvullendeInformatieField", "")[:5000],
             "meta": mor_melding_dict,
