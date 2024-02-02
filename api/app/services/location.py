@@ -17,17 +17,18 @@ def get_validated_address(data):
         'woonplaats': data["locatie"]["adres"].get("woonplaats", ""),
     }
     lat, lon = rd_to_wgs(data["locatie"]["x"], data["locatie"]["y"])
-    location_validator = PDOKAddressValidation()
     validated_address = None
     try:
-        validated_address = location_validator.validate_address(address=address, lon=lon, lat=lat)
+        address_by_rd = PDOKReverseRD()
+        validated_address = address_by_rd.rd_to_address(
+            rd_x=data["locatie"]["x"], 
+            rd_y=data["locatie"]["y"], 
+        )
     except Exception as e:
+        logger.info("PDOKReverseRD failed, try PDOKAddressValidation")
         try:
-            address_by_rd = PDOKReverseRD()
-            validated_address = address_by_rd.rd_to_address(
-                rd_x=data["locatie"]["x"], 
-                rd_y=data["locatie"]["y"], 
-            )
+            location_validator = PDOKAddressValidation()
+            validated_address = location_validator.validate_address(address=address, lon=lon, lat=lat)
         except Exception as e:
             raise ValidateAddressException(f"error: {e}")
 
