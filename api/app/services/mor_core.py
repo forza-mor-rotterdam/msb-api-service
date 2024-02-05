@@ -24,18 +24,9 @@ logger = logging.getLogger(__name__)
 class MeldingenService(BaseService):
     _v = "v1"
     _api_path: str = f"/api/{_v}"
-
-    def _relatieve_url(self, url: str):
-        if not isinstance(url, str):
-            raise MeldingenService.BasisUrlFout("Url kan niet None zijn")
-        url_o = urlparse(url)
-        if not url_o.scheme and not url_o.netloc:
-            return url
-        if f"{url_o.scheme}://{url_o.netloc}" == self._api_base_url:
-            return f"{url_o.path}{url_o.query}"
-        raise MeldingenService.BasisUrlFout(
-            f"url: {url}, basis_url: {self._api_base_url}"
-        )
+    _enable_ontdbblr = False
+    _mor_core_url = None
+    _ontdbblr_url = None
 
     def _get_token(self):
         meldingen_token = None
@@ -68,9 +59,6 @@ class MeldingenService(BaseService):
         headers = {"Authorization": f"Token {self._get_token()}"}
         return headers
 
-    def _get_url(self, url):
-        return f"{self._api_base_url}{self._relatieve_url(url)}"
-
     def _to_json(self, response):
         try:
             return response.json()
@@ -80,7 +68,8 @@ class MeldingenService(BaseService):
             )
 
     def __init__(self, *args, **kwargs: dict):
-        self._api_base_url = os.environ.get("MELDINGEN_URL")
+        self._mor_core_url = f"{os.environ.get('MELDINGEN_URL')}{self._api_path}"
+        self._ontdbblr_url = f"{os.environ.get('ONTDBBLR_URL')}{self._api_path}"
         super().__init__(*args, **kwargs)
 
     def get_onderwerp_url(self, meldr_onderwerp):
@@ -132,10 +121,7 @@ class MeldingenService(BaseService):
         ])
 
     def aanmaken_melding(self, mor_melding: MorMeldingAanmakenRequest, validated_address: Union[dict, None] = {}):
-        existing_signalen_response = self._do_request(
-            f"{self._api_path}/signaal/?signaal_url={self.get_signaal_url(mor_melding.meldingsnummerField)}",
-            method="get",
-        )
+        existing_signalen_response = self.bestaande_signalen(mor_melding.meldingsnummerField)
         logger.info("bestaande signalen status_code: %s", existing_signalen_response.status_code)
         if existing_signalen_response.status_code == 200:
             existing_signalen_response_dict = self._to_json(existing_signalen_response)
@@ -212,7 +198,7 @@ class MeldingenService(BaseService):
         data["bijlagen"] = [{"bestand": file} for file in fotos]
 
         response = self._do_request(
-            f"{self._api_path}/signaal/",
+            f"{self._mor_core_url if not self._enable_ontdbblr else self._ontdbblr_url}/signaal/",
             method="post",
             data=data,
         )
@@ -243,13 +229,8 @@ class MeldingenService(BaseService):
     def melding_volgen(self, data):
         morIdField = dict(data).get("morIdField")
         errors = []
-        signalen_response = self._do_request(
-            f"{self._api_path}/signaal/",
-            method="get",
-            params={
-                "signaal_url": {self.get_signaal_url(morIdField)},
-            },
-        )
+
+        signalen_response = self.bestaande_signalen(morIdField)
         logger.info("meldingen_opvragen signalen response url: %s", signalen_response.url)
         melding_url = None
         if signalen_response.status_code == 200:
@@ -311,7 +292,7 @@ class MeldingenService(BaseService):
             "ordering": "melding__origineel_aangemaakt",
             "melding__origineel_aangemaakt_gte": dagen_eerder_dan_nu.isoformat(),
         }
-        melding_url = f"{self._api_path}/signaal/"
+        melding_url = f"{self._mor_core_url}/signaal/"
 
         if morIdField:
             filter_params = {
@@ -348,7 +329,7 @@ class MeldingenService(BaseService):
 
     def bestaande_signalen(self, morIdField):
         signalen_response = self._do_request(
-            f"{self._api_path}/signaal/",
+            f"{self._mor_core_url}/signaal/",
             method="get",
             params={
                 "signaal_url": {self.get_signaal_url(morIdField)},
