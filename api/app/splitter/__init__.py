@@ -51,7 +51,7 @@ class Splitter:
             logger.error(f"error validating addres: {e}")
             self.service = MSBService
         if self._melding_for_morcore():
-            self.service = OntdbblRService
+            self.service = MeldingenService
 
     def _set_service(self):
         self.service = MSBService
