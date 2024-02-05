@@ -198,7 +198,7 @@ class MeldingenService(BaseService):
         data["bijlagen"] = [{"bestand": file} for file in fotos]
 
         response = self._do_request(
-            f"{self._mor_core_url if not self._enable_ontdbblr else self._ontdbblr_url}/signaal/",
+            f"{self._ontdbblr_url if self._enable_ontdbblr and os.environ.get('ONTDBBLR_URL') else self._mor_core_url}/signaal/",
             method="post",
             data=data,
         )
