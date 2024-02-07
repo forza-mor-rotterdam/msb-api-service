@@ -1,6 +1,7 @@
 import requests
 from services.msb import MSBService
 from services.mor_core import MeldingenService
+from services.ontdbblr import OntdbblRService
 from services.main import BaseService
 from schema_types import MorMeldingAanmakenRequest, MorMeldingVolgenRequest, ResponseOfUpdate, ResponseOfInsert, ResponseOfGetMorMeldingen
 from typing import Union
@@ -8,6 +9,7 @@ from services.location import get_validated_address
 import logging
 from config import MORCORE_MELDR_ONDERWERPEN
 import os
+import json
 
 
 logger = logging.getLogger(__name__)
@@ -42,7 +44,7 @@ class Splitter:
                     "y": data.get("yCoordField"),
                 }
             })
-            logger.info(f"validated_address: {self.validated_address}")
+            logger.info(f"validated_address: {json.dumps(self.validated_address, indent=4)}")
             self.wijknaam = self.validated_address.get("wijknaam", None)
             self.buurtnaam = self.validated_address.get("buurtnaam", None)
         except Exception as e:
