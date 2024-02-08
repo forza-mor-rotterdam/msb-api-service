@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 class MeldingenService(BaseService):
     _v = "v1"
     _api_path: str = f"/api/{_v}"
-    _enable_ontdbblr = False
+    _enable_ontdbblr = True
     _mor_core_url = None
     _ontdbblr_url = None
 
