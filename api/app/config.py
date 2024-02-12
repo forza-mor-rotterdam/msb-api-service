@@ -17,6 +17,9 @@ MORCORE_MELDR_ONDERWERPEN = {
             "Rotterdam Centrum", 
             "Delfshaven", 
             "Nieuw Mathenesse",
+            "Overschie",
+            "Hillegersberg-Schiebroek",
+            "Prins Alexander"
         ],
     },   
     # wrt
@@ -25,6 +28,9 @@ MORCORE_MELDR_ONDERWERPEN = {
             "Rotterdam Centrum", 
             "Delfshaven", 
             "Nieuw Mathenesse",
+            "Overschie",
+            "Hillegersberg-Schiebroek",
+            "Prins Alexander"
         ],
     },
     # wrt
@@ -33,6 +39,9 @@ MORCORE_MELDR_ONDERWERPEN = {
             "Rotterdam Centrum", 
             "Delfshaven", 
             "Nieuw Mathenesse",
+            "Overschie",
+            "Hillegersberg-Schiebroek",
+            "Prins Alexander"
         ],
     },
     # wrt
@@ -41,6 +50,9 @@ MORCORE_MELDR_ONDERWERPEN = {
             "Rotterdam Centrum", 
             "Delfshaven", 
             "Nieuw Mathenesse",
+            "Overschie",
+            "Hillegersberg-Schiebroek",
+            "Prins Alexander"
         ],
     },
     # wrt
@@ -49,6 +61,9 @@ MORCORE_MELDR_ONDERWERPEN = {
             "Rotterdam Centrum", 
             "Delfshaven", 
             "Nieuw Mathenesse",
+            "Overschie",
+            "Hillegersberg-Schiebroek",
+            "Prins Alexander"
         ],
     },
     # wrt
@@ -57,6 +72,9 @@ MORCORE_MELDR_ONDERWERPEN = {
             "Rotterdam Centrum", 
             "Delfshaven", 
             "Nieuw Mathenesse",
+            "Overschie",
+            "Hillegersberg-Schiebroek",
+            "Prins Alexander"
         ],
     },
     # wrt
@@ -65,6 +83,9 @@ MORCORE_MELDR_ONDERWERPEN = {
             "Rotterdam Centrum", 
             "Delfshaven", 
             "Nieuw Mathenesse",
+            "Overschie",
+            "Hillegersberg-Schiebroek",
+            "Prins Alexander"
         ],
             # "Oude Westen",
             # "Stadsdriehoek",
