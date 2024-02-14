@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 class MeldingenService(BaseService):
     _v = "v1"
     _api_path: str = f"/api/{_v}"
-    _enable_ontdbblr = True
+    _enable_ontdbblr = False
     _mor_core_url = None
     _ontdbblr_url = None
 
@@ -197,6 +197,7 @@ class MeldingenService(BaseService):
             })
         data["bijlagen"] = [{"bestand": file} for file in fotos]
 
+        logger.info(f"morcore signaal_aanmaken data: {data}")
         response = self._do_request(
             f"{self._ontdbblr_url if self._enable_ontdbblr and os.environ.get('ONTDBBLR_URL') else self._mor_core_url}/signaal/",
             method="post",
