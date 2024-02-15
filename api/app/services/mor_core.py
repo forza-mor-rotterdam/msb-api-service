@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 class MeldingenService(BaseService):
     _v = "v1"
     _api_path: str = f"/api/{_v}"
-    _enable_ontdbblr = False
+    _enable_ontdbblr = True
     _mor_core_url = None
     _ontdbblr_url = None
 
@@ -142,8 +142,9 @@ class MeldingenService(BaseService):
 
 
         mor_melding_dict = dict(mor_melding)
+        logger.info(f"MeldR mor_melding: {json.dumps(mor_melding_dict, indent=4)}")
         fotos = mor_melding_dict.pop("fotosField", [])
-        melderEmailField = mor_melding_dict.get("melderEmailField") if validators.email(mor_melding_dict.get("melderEmailField")) else None
+        melderEmailField = mor_melding_dict.get("melderEmailField") if validators.email(mor_melding_dict.get("melderEmailField")) else ""
         omschrijving_kort = mor_melding_dict.get("omschrijvingField", "") if mor_melding_dict.get("omschrijvingField") else "- geen korte omschrijving beschikbaar -"
 
         geometrie = None
@@ -197,7 +198,7 @@ class MeldingenService(BaseService):
             })
         data["bijlagen"] = [{"bestand": file} for file in fotos]
 
-        logger.info(f"morcore signaal_aanmaken data: {data}")
+        logger.info(f"morcore signaal_aanmaken data: {json.dumps(data, indent=4)}")
         response = self._do_request(
             f"{self._ontdbblr_url if self._enable_ontdbblr and os.environ.get('ONTDBBLR_URL') else self._mor_core_url}/signaal/",
             method="post",
