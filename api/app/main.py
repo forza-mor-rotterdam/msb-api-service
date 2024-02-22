@@ -2,6 +2,11 @@ import requests
 from schema_types import MorMeldingAanmakenRequest, MorMeldingVolgenRequest, ResponseOfUpdate, ResponseOfInsert, ResponseOfGetMorMeldingen, MorMelding, MorMeldingenWrapper
 from fastapi import FastAPI, Request
 from fastapi.exceptions import ResponseValidationError
+from fastapi.exception_handlers import (
+    http_exception_handler,
+    request_validation_exception_handler,
+)
+from fastapi.exceptions import RequestValidationError
 from zeep.helpers import serialize_object
 from fastapi.templating import Jinja2Templates
 from zeep import Client
@@ -46,6 +51,12 @@ app = FastAPI(
     description=description,
     version="0.0.1",
 )
+
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(request, exc):
+    logger.error(f"request method: {request.method}, url: {request.url}, validation error: {exc}")
+    return await request_validation_exception_handler(request, exc)
+
 
 @app.post(f"/{version}/AanmakenMelding/", response_model=ResponseOfInsert)
 def aanmaken_melding(mor_melding: MorMeldingAanmakenRequest):
@@ -93,14 +104,6 @@ def meldingen_opvragen(dagenField: float, morIdField: Union[str, None] = None):
         ("messagesField", OrderedDict([("string", [f"MORCORE aantal: {len(morcore_meldingen)}", f"MSB aantal: {len(msb_meldingen)}"])])),
         ("serviceResultField", service_result_field),
     ]))
-
-
-@app.exception_handler(ResponseValidationError)
-async def validation_exception_handler(request: Request, exc: ResponseValidationError):
-    return JSONResponse(
-        status_code=500,
-        content=jsonable_encoder({"detail": exc.errors(), "Error": "Name field is missing"}),
-    )
 
 # for debugging
 if __name__ == "__main__":
