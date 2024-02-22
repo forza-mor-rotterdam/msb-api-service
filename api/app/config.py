@@ -4,11 +4,12 @@ MORCORE_MELDR_ONDERWERPEN = {
         "wijken": [
             "Rotterdam Centrum", 
             "Delfshaven", 
+            "Nieuw Mathenesse",
             "Noord", 
             "Hillegersberg-Schiebroek", 
             "Overschie",
             "Kralingen-Crooswijk",
-            "Prins Alexander",
+            "Prins Alexander"
         ],
     },
     # wrt & inzameling
@@ -17,8 +18,10 @@ MORCORE_MELDR_ONDERWERPEN = {
             "Rotterdam Centrum", 
             "Delfshaven", 
             "Nieuw Mathenesse",
-            "Overschie",
+            "Noord", 
             "Hillegersberg-Schiebroek",
+            "Overschie",
+            "Kralingen-Crooswijk",
             "Prins Alexander"
         ],
     },   
