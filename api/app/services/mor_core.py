@@ -165,7 +165,7 @@ class MeldingenService(BaseService):
                 "telefoonnummer": mor_melding_dict.get("melderTelefoonField"),
             },
             "origineel_aangemaakt": mor_melding_dict.get("aanmaakDatumField"),
-            "urgentie": .5 if mor_melding_dict.get("spoedField") else .2,
+            # "urgentie": .5 if mor_melding_dict.get("spoedField") else .2,
             "onderwerpen": [{"bron_url":self.get_onderwerp_url(mor_melding_dict.get("onderwerpField"))}],
             "omschrijving_kort": omschrijving_kort[:500],
             "omschrijving": mor_melding_dict.get("aanvullendeInformatieField", "")[:5000],
