@@ -20,7 +20,6 @@ logger = logging.getLogger(__name__)
 class MSBService(BaseService):
     client = None
     _api_base_url = None
-    _timeout: tuple[int, ...] = (5, 10)
     _api_path: str = "/api/v1"
     _data_type = "data"
 
