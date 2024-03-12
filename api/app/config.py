@@ -15,6 +15,7 @@ MORCORE_MELDR_ONDERWERPEN = {
     # wrt & inzameling
     "Afval naast wijkcontainer": {
         "wijken": [
+            # noord
             "Rotterdam Centrum", 
             "Delfshaven", 
             "Nieuw Mathenesse",
@@ -22,12 +23,16 @@ MORCORE_MELDR_ONDERWERPEN = {
             "Hillegersberg-Schiebroek", 
             "Overschie",
             "Kralingen-Crooswijk",
-            "Prins Alexander"
+            "Prins Alexander",
+            # zuid 
+            "Feijenoord",
+            "IJsselmonde",
         ],
     },   
     # wrt
     "Zwerfafval": {
         "wijken": [
+            # noord
             "Rotterdam Centrum", 
             "Delfshaven", 
             "Nieuw Mathenesse",
@@ -35,12 +40,16 @@ MORCORE_MELDR_ONDERWERPEN = {
             "Hillegersberg-Schiebroek", 
             "Overschie",
             "Kralingen-Crooswijk",
-            "Prins Alexander"
+            "Prins Alexander",
+            # zuid 
+            "Feijenoord",
+            "IJsselmonde",
         ],
     },
     # wrt
     "Afvalbak": {
         "wijken": [
+            # noord
             "Rotterdam Centrum", 
             "Delfshaven", 
             "Nieuw Mathenesse",
@@ -48,12 +57,16 @@ MORCORE_MELDR_ONDERWERPEN = {
             "Hillegersberg-Schiebroek", 
             "Overschie",
             "Kralingen-Crooswijk",
-            "Prins Alexander"
+            "Prins Alexander",
+            # zuid 
+            "Feijenoord",
+            "IJsselmonde",
         ],
     },
     # wrt
     "Onkruid": {
         "wijken": [
+            # noord
             "Rotterdam Centrum", 
             "Delfshaven", 
             "Nieuw Mathenesse",
@@ -61,12 +74,16 @@ MORCORE_MELDR_ONDERWERPEN = {
             "Hillegersberg-Schiebroek", 
             "Overschie",
             "Kralingen-Crooswijk",
-            "Prins Alexander"
+            "Prins Alexander",
+            # zuid 
+            "Feijenoord",
+            "IJsselmonde",
         ],
     },
     # wrt
     "Blad of bloesem": {
         "wijken": [
+            # noord
             "Rotterdam Centrum", 
             "Delfshaven", 
             "Nieuw Mathenesse",
@@ -74,12 +91,16 @@ MORCORE_MELDR_ONDERWERPEN = {
             "Hillegersberg-Schiebroek", 
             "Overschie",
             "Kralingen-Crooswijk",
-            "Prins Alexander"
+            "Prins Alexander",
+            # zuid 
+            "Feijenoord",
+            "IJsselmonde",
         ],
     },
     # wrt
     "Uitwerpselen": {
         "wijken": [
+            # noord
             "Rotterdam Centrum", 
             "Delfshaven", 
             "Nieuw Mathenesse",
@@ -87,12 +108,16 @@ MORCORE_MELDR_ONDERWERPEN = {
             "Hillegersberg-Schiebroek", 
             "Overschie",
             "Kralingen-Crooswijk",
-            "Prins Alexander"
+            "Prins Alexander",
+            # zuid 
+            "Feijenoord",
+            "IJsselmonde",
         ],
     },
     # wrt
     "Gladheid": {
         "wijken": [
+            # noord
             "Rotterdam Centrum", 
             "Delfshaven", 
             "Nieuw Mathenesse",
@@ -100,11 +125,15 @@ MORCORE_MELDR_ONDERWERPEN = {
             "Hillegersberg-Schiebroek", 
             "Overschie",
             "Kralingen-Crooswijk",
-            "Prins Alexander"
+            "Prins Alexander",
+            # zuid 
+            "Feijenoord",
+            "IJsselmonde",
         ],
     },
     "Graffiti": {
         "wijken": [
+            # noord
             "Rotterdam Centrum", 
             "Delfshaven", 
             "Nieuw Mathenesse",
@@ -112,11 +141,15 @@ MORCORE_MELDR_ONDERWERPEN = {
             "Hillegersberg-Schiebroek", 
             "Overschie",
             "Kralingen-Crooswijk",
-            "Prins Alexander"
+            "Prins Alexander",
+            # zuid 
+            "Feijenoord",
+            "IJsselmonde",
         ],
     },
     "Vervuiling in het water": {
         "wijken": [
+            # noord
             "Rotterdam Centrum", 
             "Delfshaven", 
             "Nieuw Mathenesse",
@@ -124,11 +157,15 @@ MORCORE_MELDR_ONDERWERPEN = {
             "Hillegersberg-Schiebroek", 
             "Overschie",
             "Kralingen-Crooswijk",
-            "Prins Alexander"
+            "Prins Alexander",
+            # zuid 
+            "Feijenoord",
+            "IJsselmonde",
         ],
     },
     "Huiscontainer": {
         "wijken": [
+            # noord
             "Rotterdam Centrum", 
             "Delfshaven", 
             "Nieuw Mathenesse",
@@ -136,11 +173,15 @@ MORCORE_MELDR_ONDERWERPEN = {
             "Hillegersberg-Schiebroek", 
             "Overschie",
             "Kralingen-Crooswijk",
-            "Prins Alexander"
+            "Prins Alexander",
+            # zuid 
+            "Feijenoord",
+            "IJsselmonde",
         ],
     },
     "Wijkcontainer": {
         "wijken": [
+            # noord
             "Rotterdam Centrum", 
             "Delfshaven", 
             "Nieuw Mathenesse",
@@ -148,7 +189,10 @@ MORCORE_MELDR_ONDERWERPEN = {
             "Hillegersberg-Schiebroek", 
             "Overschie",
             "Kralingen-Crooswijk",
-            "Prins Alexander"
+            "Prins Alexander",
+            # zuid 
+            "Feijenoord",
+            "IJsselmonde",
         ],
     },
 }
