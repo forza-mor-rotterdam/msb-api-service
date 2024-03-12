@@ -9,7 +9,8 @@ MORCORE_MELDR_ONDERWERPEN = {
             "Hillegersberg-Schiebroek", 
             "Overschie",
             "Kralingen-Crooswijk",
-            "Prins Alexander"
+            "Prins Alexander",
+            "Spaanse Polder",
         ],
     },
     # wrt & inzameling
@@ -24,6 +25,7 @@ MORCORE_MELDR_ONDERWERPEN = {
             "Overschie",
             "Kralingen-Crooswijk",
             "Prins Alexander",
+            "Spaanse Polder",
             # zuid 
             "Feijenoord",
             "IJsselmonde",
@@ -41,6 +43,7 @@ MORCORE_MELDR_ONDERWERPEN = {
             "Overschie",
             "Kralingen-Crooswijk",
             "Prins Alexander",
+            "Spaanse Polder",
             # zuid 
             "Feijenoord",
             "IJsselmonde",
@@ -58,6 +61,7 @@ MORCORE_MELDR_ONDERWERPEN = {
             "Overschie",
             "Kralingen-Crooswijk",
             "Prins Alexander",
+            "Spaanse Polder",
             # zuid 
             "Feijenoord",
             "IJsselmonde",
@@ -75,6 +79,7 @@ MORCORE_MELDR_ONDERWERPEN = {
             "Overschie",
             "Kralingen-Crooswijk",
             "Prins Alexander",
+            "Spaanse Polder",
             # zuid 
             "Feijenoord",
             "IJsselmonde",
@@ -92,6 +97,7 @@ MORCORE_MELDR_ONDERWERPEN = {
             "Overschie",
             "Kralingen-Crooswijk",
             "Prins Alexander",
+            "Spaanse Polder",
             # zuid 
             "Feijenoord",
             "IJsselmonde",
@@ -109,6 +115,7 @@ MORCORE_MELDR_ONDERWERPEN = {
             "Overschie",
             "Kralingen-Crooswijk",
             "Prins Alexander",
+            "Spaanse Polder",
             # zuid 
             "Feijenoord",
             "IJsselmonde",
@@ -126,6 +133,7 @@ MORCORE_MELDR_ONDERWERPEN = {
             "Overschie",
             "Kralingen-Crooswijk",
             "Prins Alexander",
+            "Spaanse Polder",
             # zuid 
             "Feijenoord",
             "IJsselmonde",
@@ -142,6 +150,7 @@ MORCORE_MELDR_ONDERWERPEN = {
             "Overschie",
             "Kralingen-Crooswijk",
             "Prins Alexander",
+            "Spaanse Polder",
             # zuid 
             "Feijenoord",
             "IJsselmonde",
@@ -158,6 +167,7 @@ MORCORE_MELDR_ONDERWERPEN = {
             "Overschie",
             "Kralingen-Crooswijk",
             "Prins Alexander",
+            "Spaanse Polder",
             # zuid 
             "Feijenoord",
             "IJsselmonde",
@@ -174,6 +184,7 @@ MORCORE_MELDR_ONDERWERPEN = {
             "Overschie",
             "Kralingen-Crooswijk",
             "Prins Alexander",
+            "Spaanse Polder",
             # zuid 
             "Feijenoord",
             "IJsselmonde",
@@ -190,6 +201,7 @@ MORCORE_MELDR_ONDERWERPEN = {
             "Overschie",
             "Kralingen-Crooswijk",
             "Prins Alexander",
+            "Spaanse Polder",
             # zuid 
             "Feijenoord",
             "IJsselmonde",
