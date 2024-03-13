@@ -29,6 +29,7 @@ MORCORE_MELDR_ONDERWERPEN = {
             # zuid 
             "Feijenoord",
             "IJsselmonde",
+            "Charlois",
         ],
     },   
     # wrt
@@ -47,6 +48,7 @@ MORCORE_MELDR_ONDERWERPEN = {
             # zuid 
             "Feijenoord",
             "IJsselmonde",
+            "Charlois",
         ],
     },
     # wrt
@@ -65,6 +67,7 @@ MORCORE_MELDR_ONDERWERPEN = {
             # zuid 
             "Feijenoord",
             "IJsselmonde",
+            "Charlois",
         ],
     },
     # wrt
@@ -83,6 +86,7 @@ MORCORE_MELDR_ONDERWERPEN = {
             # zuid 
             "Feijenoord",
             "IJsselmonde",
+            "Charlois",
         ],
     },
     # wrt
@@ -101,6 +105,7 @@ MORCORE_MELDR_ONDERWERPEN = {
             # zuid 
             "Feijenoord",
             "IJsselmonde",
+            "Charlois",
         ],
     },
     # wrt
@@ -119,6 +124,7 @@ MORCORE_MELDR_ONDERWERPEN = {
             # zuid 
             "Feijenoord",
             "IJsselmonde",
+            "Charlois",
         ],
     },
     # wrt
@@ -137,6 +143,7 @@ MORCORE_MELDR_ONDERWERPEN = {
             # zuid 
             "Feijenoord",
             "IJsselmonde",
+            "Charlois",
         ],
     },
     "Graffiti": {
@@ -154,6 +161,7 @@ MORCORE_MELDR_ONDERWERPEN = {
             # zuid 
             "Feijenoord",
             "IJsselmonde",
+            "Charlois",
         ],
     },
     "Vervuiling in het water": {
@@ -171,6 +179,7 @@ MORCORE_MELDR_ONDERWERPEN = {
             # zuid 
             "Feijenoord",
             "IJsselmonde",
+            "Charlois",
         ],
     },
     "Huiscontainer": {
@@ -188,6 +197,7 @@ MORCORE_MELDR_ONDERWERPEN = {
             # zuid 
             "Feijenoord",
             "IJsselmonde",
+            "Charlois",
         ],
     },
     "Wijkcontainer": {
@@ -205,6 +215,7 @@ MORCORE_MELDR_ONDERWERPEN = {
             # zuid 
             "Feijenoord",
             "IJsselmonde",
+            "Charlois",
         ],
     },
 }
