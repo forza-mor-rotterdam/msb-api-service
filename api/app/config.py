@@ -2,11 +2,11 @@ MORCORE_MELDR_ONDERWERPEN = {
     # inzameling
     "Grofvuil": {
         "wijken": [
-            "Rotterdam Centrum", 
-            "Delfshaven", 
+            "Rotterdam Centrum",
+            "Delfshaven",
             "Nieuw Mathenesse",
-            "Noord", 
-            "Hillegersberg-Schiebroek", 
+            "Noord",
+            "Hillegersberg-Schiebroek",
             "Overschie",
             "Kralingen-Crooswijk",
             "Prins Alexander",
@@ -19,18 +19,18 @@ MORCORE_MELDR_ONDERWERPEN = {
     "Afval naast wijkcontainer": {
         "wijken": [
             # noord
-            "Rotterdam Centrum", 
-            "Delfshaven", 
+            "Rotterdam Centrum",
+            "Delfshaven",
             "Nieuw Mathenesse",
-            "Noord", 
-            "Hillegersberg-Schiebroek", 
+            "Noord",
+            "Hillegersberg-Schiebroek",
             "Overschie",
             "Kralingen-Crooswijk",
             "Prins Alexander",
             "Spaanse Polder",
             "Rotterdam-Noord-West",
             "Rivium",
-            # zuid 
+            # zuid
             "Feijenoord",
             "IJsselmonde",
             "Charlois",
@@ -42,23 +42,23 @@ MORCORE_MELDR_ONDERWERPEN = {
             "Vondelingenplaat",
             "Waalhaven-Eemhaven",
         ],
-    },   
+    },
     # wrt
     "Zwerfafval": {
         "wijken": [
             # noord
-            "Rotterdam Centrum", 
-            "Delfshaven", 
+            "Rotterdam Centrum",
+            "Delfshaven",
             "Nieuw Mathenesse",
-            "Noord", 
-            "Hillegersberg-Schiebroek", 
+            "Noord",
+            "Hillegersberg-Schiebroek",
             "Overschie",
             "Kralingen-Crooswijk",
             "Prins Alexander",
             "Spaanse Polder",
             "Rotterdam-Noord-West",
             "Rivium",
-            # zuid 
+            # zuid
             "Feijenoord",
             "IJsselmonde",
             "Charlois",
@@ -75,18 +75,18 @@ MORCORE_MELDR_ONDERWERPEN = {
     "Afvalbak": {
         "wijken": [
             # noord
-            "Rotterdam Centrum", 
-            "Delfshaven", 
+            "Rotterdam Centrum",
+            "Delfshaven",
             "Nieuw Mathenesse",
-            "Noord", 
-            "Hillegersberg-Schiebroek", 
+            "Noord",
+            "Hillegersberg-Schiebroek",
             "Overschie",
             "Kralingen-Crooswijk",
             "Prins Alexander",
             "Spaanse Polder",
             "Rotterdam-Noord-West",
             "Rivium",
-            # zuid 
+            # zuid
             "Feijenoord",
             "IJsselmonde",
             "Charlois",
@@ -103,18 +103,18 @@ MORCORE_MELDR_ONDERWERPEN = {
     "Onkruid": {
         "wijken": [
             # noord
-            "Rotterdam Centrum", 
-            "Delfshaven", 
+            "Rotterdam Centrum",
+            "Delfshaven",
             "Nieuw Mathenesse",
-            "Noord", 
-            "Hillegersberg-Schiebroek", 
+            "Noord",
+            "Hillegersberg-Schiebroek",
             "Overschie",
             "Kralingen-Crooswijk",
             "Prins Alexander",
             "Spaanse Polder",
             "Rotterdam-Noord-West",
             "Rivium",
-            # zuid 
+            # zuid
             "Feijenoord",
             "IJsselmonde",
             "Charlois",
@@ -131,18 +131,18 @@ MORCORE_MELDR_ONDERWERPEN = {
     "Blad of bloesem": {
         "wijken": [
             # noord
-            "Rotterdam Centrum", 
-            "Delfshaven", 
+            "Rotterdam Centrum",
+            "Delfshaven",
             "Nieuw Mathenesse",
-            "Noord", 
-            "Hillegersberg-Schiebroek", 
+            "Noord",
+            "Hillegersberg-Schiebroek",
             "Overschie",
             "Kralingen-Crooswijk",
             "Prins Alexander",
             "Spaanse Polder",
             "Rotterdam-Noord-West",
             "Rivium",
-            # zuid 
+            # zuid
             "Feijenoord",
             "IJsselmonde",
             "Charlois",
@@ -159,18 +159,18 @@ MORCORE_MELDR_ONDERWERPEN = {
     "Uitwerpselen": {
         "wijken": [
             # noord
-            "Rotterdam Centrum", 
-            "Delfshaven", 
+            "Rotterdam Centrum",
+            "Delfshaven",
             "Nieuw Mathenesse",
-            "Noord", 
-            "Hillegersberg-Schiebroek", 
+            "Noord",
+            "Hillegersberg-Schiebroek",
             "Overschie",
             "Kralingen-Crooswijk",
             "Prins Alexander",
             "Spaanse Polder",
             "Rotterdam-Noord-West",
             "Rivium",
-            # zuid 
+            # zuid
             "Feijenoord",
             "IJsselmonde",
             "Charlois",
@@ -187,18 +187,18 @@ MORCORE_MELDR_ONDERWERPEN = {
     "Gladheid": {
         "wijken": [
             # noord
-            "Rotterdam Centrum", 
-            "Delfshaven", 
+            "Rotterdam Centrum",
+            "Delfshaven",
             "Nieuw Mathenesse",
-            "Noord", 
-            "Hillegersberg-Schiebroek", 
+            "Noord",
+            "Hillegersberg-Schiebroek",
             "Overschie",
             "Kralingen-Crooswijk",
             "Prins Alexander",
             "Spaanse Polder",
             "Rotterdam-Noord-West",
             "Rivium",
-            # zuid 
+            # zuid
             "Feijenoord",
             "IJsselmonde",
             "Charlois",
@@ -214,18 +214,18 @@ MORCORE_MELDR_ONDERWERPEN = {
     "Graffiti": {
         "wijken": [
             # noord
-            "Rotterdam Centrum", 
-            "Delfshaven", 
+            "Rotterdam Centrum",
+            "Delfshaven",
             "Nieuw Mathenesse",
-            "Noord", 
-            "Hillegersberg-Schiebroek", 
+            "Noord",
+            "Hillegersberg-Schiebroek",
             "Overschie",
             "Kralingen-Crooswijk",
             "Prins Alexander",
             "Spaanse Polder",
             "Rotterdam-Noord-West",
             "Rivium",
-            # zuid 
+            # zuid
             "Feijenoord",
             "IJsselmonde",
             "Charlois",
@@ -241,18 +241,18 @@ MORCORE_MELDR_ONDERWERPEN = {
     "Vervuiling in het water": {
         "wijken": [
             # noord
-            "Rotterdam Centrum", 
-            "Delfshaven", 
+            "Rotterdam Centrum",
+            "Delfshaven",
             "Nieuw Mathenesse",
-            "Noord", 
-            "Hillegersberg-Schiebroek", 
+            "Noord",
+            "Hillegersberg-Schiebroek",
             "Overschie",
             "Kralingen-Crooswijk",
             "Prins Alexander",
             "Spaanse Polder",
             "Rotterdam-Noord-West",
             "Rivium",
-            # zuid 
+            # zuid
             "Feijenoord",
             "IJsselmonde",
             "Charlois",
@@ -268,18 +268,18 @@ MORCORE_MELDR_ONDERWERPEN = {
     "Huiscontainer": {
         "wijken": [
             # noord
-            "Rotterdam Centrum", 
-            "Delfshaven", 
+            "Rotterdam Centrum",
+            "Delfshaven",
             "Nieuw Mathenesse",
-            "Noord", 
-            "Hillegersberg-Schiebroek", 
+            "Noord",
+            "Hillegersberg-Schiebroek",
             "Overschie",
             "Kralingen-Crooswijk",
             "Prins Alexander",
             "Spaanse Polder",
             "Rotterdam-Noord-West",
             "Rivium",
-            # zuid 
+            # zuid
             "Feijenoord",
             "IJsselmonde",
             "Charlois",
@@ -295,18 +295,18 @@ MORCORE_MELDR_ONDERWERPEN = {
     "Wijkcontainer": {
         "wijken": [
             # noord
-            "Rotterdam Centrum", 
-            "Delfshaven", 
+            "Rotterdam Centrum",
+            "Delfshaven",
             "Nieuw Mathenesse",
-            "Noord", 
-            "Hillegersberg-Schiebroek", 
+            "Noord",
+            "Hillegersberg-Schiebroek",
             "Overschie",
             "Kralingen-Crooswijk",
             "Prins Alexander",
             "Spaanse Polder",
             "Rotterdam-Noord-West",
             "Rivium",
-            # zuid 
+            # zuid
             "Feijenoord",
             "IJsselmonde",
             "Charlois",

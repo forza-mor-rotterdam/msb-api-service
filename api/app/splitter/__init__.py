@@ -1,15 +1,13 @@
-import requests
-from services.msb import MSBService
-from services.mor_core import MeldingenService
-from services.main import BaseService
-from schema_types import MorMeldingAanmakenRequest, MorMeldingVolgenRequest, ResponseOfUpdate, ResponseOfInsert, ResponseOfGetMorMeldingen
-from typing import Union
-from services.location import get_validated_address
-import logging
-from config import MORCORE_MELDR_ONDERWERPEN
-import os
 import json
+import logging
+from typing import Union
 
+from config import MORCORE_MELDR_ONDERWERPEN
+from schema_types import MorMeldingAanmakenRequest, MorMeldingVolgenRequest
+from services.location import get_validated_address
+from services.main import BaseService
+from services.mor_core import MeldingenService
+from services.msb import MSBService
 
 logger = logging.getLogger(__name__)
 
@@ -25,25 +23,32 @@ class Splitter:
     wijknaam = None
     buurtnaam = None
 
-    def __init__(self, request_data: Union[MorMeldingAanmakenRequest, MorMeldingVolgenRequest, dict]):
+    def __init__(
+        self,
+        request_data: Union[MorMeldingAanmakenRequest, MorMeldingVolgenRequest, dict],
+    ):
         self.filter_config = MORCORE_MELDR_ONDERWERPEN
         self.onderwerpen = [k for k in self.filter_config.keys()]
-        data = dict(request_data) 
+        data = dict(request_data)
         logger.info(f"Splitter request_data: {data}")
         self.onderwerp = data.get("onderwerpField")
         self.straatnaam = data.get("straatnaamField")
         try:
-            self.validated_address = get_validated_address({
-                "locatie": {
-                    "adres": {
-                        "straatNaam": self.straatnaam,
-                        "huisnummer": data.get("huisnummerField"),
-                    },
-                    "x": data.get("xCoordField"),
-                    "y": data.get("yCoordField"),
+            self.validated_address = get_validated_address(
+                {
+                    "locatie": {
+                        "adres": {
+                            "straatNaam": self.straatnaam,
+                            "huisnummer": data.get("huisnummerField"),
+                        },
+                        "x": data.get("xCoordField"),
+                        "y": data.get("yCoordField"),
+                    }
                 }
-            })
-            logger.info(f"validated_address: {json.dumps(self.validated_address, indent=4)}")
+            )
+            logger.info(
+                f"validated_address: {json.dumps(self.validated_address, indent=4)}"
+            )
             self.wijknaam = self.validated_address.get("wijknaam", None)
             self.buurtnaam = self.validated_address.get("buurtnaam", None)
         except Exception as e:
@@ -54,7 +59,7 @@ class Splitter:
 
     def _set_service(self):
         self.service = MSBService
-    
+
     def _melding_for_morcore(self):
         if self.onderwerp in self.onderwerpen:
             wijken_buurten_filter = self.filter_config.get(self.onderwerp)
@@ -69,4 +74,3 @@ class Splitter:
     def get_service(self) -> tuple[type[BaseService], Union[dict, None]]:
         logger.info(f"Splitter using service: {self.service}")
         return self.service, self.validated_address
-

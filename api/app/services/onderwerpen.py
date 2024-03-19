@@ -1,12 +1,7 @@
-from schema_types import MorMeldingAanmakenRequest, MorMeldingVolgenRequest, ResponseOfUpdate, ResponseOfInsert, ResponseOfGetMorMeldingen
-import os
-from services.main import BaseService
-from urllib.parse import urlparse
 import logging
-import re
-import requests
-from typing import Union
+import os
 
+from services.main import BaseService
 
 logger = logging.getLogger(__name__)
 
@@ -24,7 +19,7 @@ class OnderwerpenService(BaseService):
 
     def get_category_url(self, meldr_onderwerp):
         logger.info(f'onderwerpen url: {os.environ.get("ONDERWERPEN_URL")}')
-        logger.info(f'self._api_path: {self._api_path}')
+        logger.info(f"self._api_path: {self._api_path}")
         response = self._do_request(
             f"{self._api_path}/category/?name={meldr_onderwerp}",
         )
@@ -32,6 +27,4 @@ class OnderwerpenService(BaseService):
             return self._to_json(response)
         logentry = f"get_category_url: Verwacht status code 200, kreeg status code '{response.status_code}', text: {response.text}"
         logger.error(logentry)
-        raise OnderwerpenService.DataOphalenFout(
-            logentry
-        )
+        raise OnderwerpenService.DataOphalenFout(logentry)

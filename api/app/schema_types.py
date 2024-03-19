@@ -1,7 +1,8 @@
-from pydantic import BaseModel, validator
-from typing import Union, Any, Optional
 from datetime import datetime
+from typing import Any, Optional, Union
+
 import pytz
+from pydantic import BaseModel, validator
 
 
 class Bestand(BaseModel):
@@ -36,32 +37,26 @@ class MorMeldingAanmakenRequest(BaseModel):
     def parse_aanmaakDatumField(cls, value):
         return value.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
 
-
     class Config:
         json_encoders = {
             datetime: lambda v: v.isoformat(),
         }
         now = datetime.now(pytz.timezone("Europe/Amsterdam")).isoformat()
         schema_extra = {
-            'example':
-                {
+            "example": {
                 "aanvullendeInformatieField": "string",
                 "bijlagenField": [
                     {
-                    "bytesField": "base64_string",
-                    "mimeTypeField": "string",
-                    "naamField": "string"
+                        "bytesField": "base64_string",
+                        "mimeTypeField": "string",
+                        "naamField": "string",
                     }
                 ],
-                "fotosField": [
-                    "base64_string"
-                ],
+                "fotosField": ["base64_string"],
                 "huisnummerField": "string",
                 "kanaalField": "string",
                 "onderwerpField": "string",
-                "lichtpuntenField": [
-                    0
-                ],
+                "lichtpuntenField": [0],
                 "loginnaamField": "string",
                 "melderEmailField": "string",
                 "melderNaamField": "string",
@@ -74,8 +69,8 @@ class MorMeldingAanmakenRequest(BaseModel):
                 "xCoordField": 0,
                 "yCoordField": 0,
                 "aanmaakDatumField": now,
-                "adoptantnummerField": 0
-                }
+                "adoptantnummerField": 0,
+            }
         }
 
 
@@ -121,6 +116,7 @@ class MorMelding(BaseModel):
 
 class MorMeldingenWrapper(BaseModel):
     MorMelding: Union[list[MorMelding], None]
+
 
 class ResponseOfGetMorMeldingen(ResponseBase):
     morMeldingenField: Union[MorMeldingenWrapper, None]
