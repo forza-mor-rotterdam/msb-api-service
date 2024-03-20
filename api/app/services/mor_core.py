@@ -208,7 +208,7 @@ class MeldingenService(BaseService):
             "omschrijving_kort": omschrijving_kort[:500],
             "omschrijving": mor_melding_dict.get("aanvullendeInformatieField", "")[
                 :5000
-            ],
+            ] if mor_melding_dict.get("aanvullendeInformatieField") else "",
             "meta": mor_melding_dict,
             "meta_uitgebreid": {},
             "adressen": [
