@@ -2,6 +2,7 @@ MORCORE_MELDR_ONDERWERPEN = {
     # inzameling
     "Grofvuil": {
         "wijken": [
+            # noord
             "Rotterdam Centrum",
             "Delfshaven",
             "Nieuw Mathenesse",
@@ -13,6 +14,17 @@ MORCORE_MELDR_ONDERWERPEN = {
             "Spaanse Polder",
             "Rotterdam-Noord-West",
             "Rivium",
+            # zuid
+            "Feijenoord",
+            "IJsselmonde",
+            "Charlois",
+            "Hoogvliet",
+            "Pernis",
+            "Rozenburg",
+            "Hoek van Holland",
+            "Botlek-Europoort-Maasvlakte",
+            "Vondelingenplaat",
+            "Waalhaven-Eemhaven",
         ],
     },
     # wrt & inzameling
