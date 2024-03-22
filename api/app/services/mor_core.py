@@ -1,22 +1,18 @@
-from schema_types import MorMeldingAanmakenRequest, MorMeldingVolgenRequest, ResponseOfUpdate, ResponseOfInsert, ResponseOfGetMorMeldingen, MorMelding, MorMeldingenWrapper
-import os
-import json
-from services.main import BaseService
-from urllib.parse import urlparse
-import logging
-import re
-import requests
-from typing import Union
-from services.onderwerpen import OnderwerpenService
 import copy
-from datetime import datetime, timedelta
-import pytz
-import validators
-from urllib.parse import quote
-from zeep.helpers import serialize_object
+import json
+import logging
+import os
 from collections import OrderedDict
-import validators
+from datetime import datetime, timedelta
+from typing import Union
 
+import pytz
+import requests
+import validators
+from schema_types import MorMeldingAanmakenRequest, ResponseOfGetMorMeldingen
+from services.main import BaseService
+from services.onderwerpen import OnderwerpenService
+from zeep.helpers import serialize_object
 
 logger = logging.getLogger(__name__)
 
@@ -73,7 +69,9 @@ class MeldingenService(BaseService):
         super().__init__(*args, **kwargs)
 
     def get_onderwerp_url(self, meldr_onderwerp):
-        default_onderwerp_url = f"{self._api_base_url}/api/v1/onderwerp/grofvuil-op-straat/"
+        default_onderwerp_url = (
+            f"{self._api_base_url}/api/v1/onderwerp/grofvuil-op-straat/"
+        )
         mor_categories = OnderwerpenService().get_category_url(meldr_onderwerp)
         logger.info(f"get_onderwerp_url: meldr_onderwerp={meldr_onderwerp}")
         logger.info(f"get_onderwerp_url: response={mor_categories}")
@@ -81,10 +79,9 @@ class MeldingenService(BaseService):
         if results:
             return results[0].get("_links", {}).get("self", default_onderwerp_url)
         return default_onderwerp_url
-    
+
     def get_signaal_url(self, meldr_meldingsnummer):
         return f"https://meldr.rotterdam.nl/melding/{meldr_meldingsnummer}"
-
 
     @staticmethod
     def morcore_signaal_to_mormelding_response(morcore_signaal) -> OrderedDict:
@@ -93,36 +90,63 @@ class MeldingenService(BaseService):
             "openstaand": "N",
             "in_behandeling": "I",
             "controle": "I",
-            "afgehandeld": "X" if morcore_melding["resolutie"] == "niet_opgelost" else "A",
+            "afgehandeld": "X"
+            if morcore_melding["resolutie"] == "niet_opgelost"
+            else "A",
         }
-        meldr_status_code = morcore_status_naar_meldr_status_codes.get(morcore_melding.get("status", {}).get("naam"))
+        meldr_status_code = morcore_status_naar_meldr_status_codes.get(
+            morcore_melding.get("status", {}).get("naam")
+        )
         afgesloten_op = morcore_melding.get("afgesloten_op")
         aangepast_op = morcore_melding.get("aangepast_op")
         try:
-            afgesloten_op = datetime.strptime(afgesloten_op, "%Y-%m-%dT%H:%M:%S.%f%z").strftime("%Y-%m-%dT%H:%M:%S")
+            afgesloten_op = datetime.strptime(
+                afgesloten_op, "%Y-%m-%dT%H:%M:%S.%f%z"
+            ).strftime("%Y-%m-%dT%H:%M:%S")
         except Exception:
             ...
         try:
-            aangepast_op = datetime.strptime(aangepast_op, "%Y-%m-%dT%H:%M:%S.%f%z").strftime("%Y-%m-%dT%H:%M:%S")
+            aangepast_op = datetime.strptime(
+                aangepast_op, "%Y-%m-%dT%H:%M:%S.%f%z"
+            ).strftime("%Y-%m-%dT%H:%M:%S")
         except Exception:
             ...
 
-        statusBerichtField = morcore_melding.get("laatste_meldinggebeurtenis", {}).get("omschrijving_extern")
-        meldingsnummer = morcore_signaal.get("bron_signaal_id") if morcore_signaal.get("bron_signaal_id") else morcore_melding.get("meta", {}).get("meldingsnummerField")
-        return OrderedDict([
-            ("datumAfhandelingField", afgesloten_op),
-            ("datumStatusWijzigingField", aangepast_op),
-            ("morIdField", meldingsnummer),
-            ("msbIdField", morcore_melding.get("_links", {}).get("self")),
-            ("statusBerichtField", statusBerichtField),
-            ("statusField", meldr_status_code),
-            ("statusOmschrijvingField", morcore_melding.get("status", {}).get("naam")),
-            ("statusTemplateField", "MORR"),
-        ])
+        statusBerichtField = morcore_melding.get("laatste_meldinggebeurtenis", {}).get(
+            "omschrijving_extern"
+        )
+        meldingsnummer = (
+            morcore_signaal.get("bron_signaal_id")
+            if morcore_signaal.get("bron_signaal_id")
+            else morcore_melding.get("meta", {}).get("meldingsnummerField")
+        )
+        return OrderedDict(
+            [
+                ("datumAfhandelingField", afgesloten_op),
+                ("datumStatusWijzigingField", aangepast_op),
+                ("morIdField", meldingsnummer),
+                ("msbIdField", morcore_melding.get("_links", {}).get("self")),
+                ("statusBerichtField", statusBerichtField),
+                ("statusField", meldr_status_code),
+                (
+                    "statusOmschrijvingField",
+                    morcore_melding.get("status", {}).get("naam"),
+                ),
+                ("statusTemplateField", "MORR"),
+            ]
+        )
 
-    def aanmaken_melding(self, mor_melding: MorMeldingAanmakenRequest, validated_address: Union[dict, None] = {}):
-        existing_signalen_response = self.bestaande_signalen(mor_melding.meldingsnummerField)
-        logger.info("bestaande signalen status_code: %s", existing_signalen_response.status_code)
+    def aanmaken_melding(
+        self,
+        mor_melding: MorMeldingAanmakenRequest,
+        validated_address: Union[dict, None] = {},
+    ):
+        existing_signalen_response = self.bestaande_signalen(
+            mor_melding.meldingsnummerField
+        )
+        logger.info(
+            "bestaande signalen status_code: %s", existing_signalen_response.status_code
+        )
         if existing_signalen_response.status_code == 200:
             existing_signalen_response_dict = self._to_json(existing_signalen_response)
             signalen = existing_signalen_response_dict.get("results", [])
@@ -133,19 +157,25 @@ class MeldingenService(BaseService):
                     "serviceResultField": {
                         "codeField": "A107",
                         "errorsField": None,
-                        "messageField": f"MOR Melding {mor_melding.meldingsnummerField} bestaat al onder MOR CORE url {signalen[0].get('_links', {}).get('melding')}"
+                        "messageField": f"MOR Melding {mor_melding.meldingsnummerField} bestaat al onder MOR CORE url {signalen[0].get('_links', {}).get('melding')}",
                     },
                     "dataField": None,
-                    "newIdField": None
+                    "newIdField": None,
                 }
-
-
 
         mor_melding_dict = dict(mor_melding)
         logger.info(f"MeldR mor_melding: {json.dumps(mor_melding_dict, indent=4)}")
         fotos = mor_melding_dict.pop("fotosField", [])
-        melderEmailField = mor_melding_dict.get("melderEmailField") if validators.email(mor_melding_dict.get("melderEmailField")) else ""
-        omschrijving_kort = mor_melding_dict.get("omschrijvingField", "") if mor_melding_dict.get("omschrijvingField") else "- geen korte omschrijving beschikbaar -"
+        melderEmailField = (
+            mor_melding_dict.get("melderEmailField")
+            if validators.email(mor_melding_dict.get("melderEmailField"))
+            else ""
+        )
+        omschrijving_kort = (
+            mor_melding_dict.get("omschrijvingField", "")
+            if mor_melding_dict.get("omschrijvingField")
+            else "- geen korte omschrijving beschikbaar -"
+        )
 
         geometrie = None
         try:
@@ -156,19 +186,29 @@ class MeldingenService(BaseService):
             ...
 
         data = {
-            "signaal_url": self.get_signaal_url(mor_melding_dict.get('meldingsnummerField')),
+            "signaal_url": self.get_signaal_url(
+                mor_melding_dict.get("meldingsnummerField")
+            ),
             "bron_id": "MeldR",
-            "bron_signaal_id": mor_melding_dict.get('meldingsnummerField'),
+            "bron_signaal_id": mor_melding_dict.get("meldingsnummerField"),
             "melder": {
                 "naam": mor_melding_dict.get("melderNaamField"),
                 "email": melderEmailField,
                 "telefoonnummer": mor_melding_dict.get("melderTelefoonField"),
             },
             "origineel_aangemaakt": mor_melding_dict.get("aanmaakDatumField"),
-            "urgentie": .5 if mor_melding_dict.get("spoedField") else .2,
-            "onderwerpen": [{"bron_url":self.get_onderwerp_url(mor_melding_dict.get("onderwerpField"))}],
+            "urgentie": 0.5 if mor_melding_dict.get("spoedField") else 0.2,
+            "onderwerpen": [
+                {
+                    "bron_url": self.get_onderwerp_url(
+                        mor_melding_dict.get("onderwerpField")
+                    )
+                }
+            ],
             "omschrijving_kort": omschrijving_kort[:500],
-            "omschrijving": mor_melding_dict.get("aanvullendeInformatieField", "")[:5000],
+            "omschrijving": mor_melding_dict.get("aanvullendeInformatieField", "")[
+                :5000
+            ] if mor_melding_dict.get("aanvullendeInformatieField") else "",
             "meta": mor_melding_dict,
             "meta_uitgebreid": {},
             "adressen": [
@@ -182,21 +222,27 @@ class MeldingenService(BaseService):
         if validated_address:
             logger.info(f"new geo: {geometrie}")
             logger.info(f"existing geo: {validated_address.get('geometrie')}")
-            data.update({
-                "adressen": [
-                    {
-                        "plaatsnaam": validated_address.get("woonplaats"),
-                        "straatnaam": validated_address.get("straatnaam"),
-                        "huisnummer": validated_address.get("huisnummer"),
-                        "huisletter": validated_address.get("huisletter"),
-                        "toevoeging": validated_address.get("huisnummer_toevoeging"),
-                        "postcode": validated_address.get("postcode"),
-                        "buurtnaam": validated_address.get("buurtnaam"),
-                        "wijknaam": validated_address.get("wijknaam"),
-                        "geometrie": geometrie if geometrie else validated_address.get("geometrie"),
-                    },
-                ]
-            })
+            data.update(
+                {
+                    "adressen": [
+                        {
+                            "plaatsnaam": validated_address.get("woonplaats"),
+                            "straatnaam": validated_address.get("straatnaam"),
+                            "huisnummer": validated_address.get("huisnummer"),
+                            "huisletter": validated_address.get("huisletter"),
+                            "toevoeging": validated_address.get(
+                                "huisnummer_toevoeging"
+                            ),
+                            "postcode": validated_address.get("postcode"),
+                            "buurtnaam": validated_address.get("buurtnaam"),
+                            "wijknaam": validated_address.get("wijknaam"),
+                            "geometrie": geometrie
+                            if geometrie
+                            else validated_address.get("geometrie"),
+                        },
+                    ]
+                }
+            )
         data["bijlagen"] = [{"bestand": file} for file in fotos]
 
         logger.info(f"morcore signaal_aanmaken data: {json.dumps(data, indent=4)}")
@@ -208,33 +254,50 @@ class MeldingenService(BaseService):
         if response.status_code == 201:
             response_dict = self._to_json(response)
             logger.info("signaal_aanmaken antwoord: %s", response_dict)
-            response_dict.update({
-                "messagesField": None,
-                "serviceResultField": {
-                    "codeField": "201",
-                    "errorsField": None,
-                    "messageField": "Het signaal is aangemaakt in MOR CORE",
-                },
-                "dataField": copy.deepcopy(response_dict),
-                "newIdField": response_dict.get("_links", {}).get("melding"),
-            })
+            response_dict.update(
+                {
+                    "messagesField": None,
+                    "serviceResultField": {
+                        "codeField": "201",
+                        "errorsField": None,
+                        "messageField": "Het signaal is aangemaakt in MOR CORE",
+                    },
+                    "dataField": copy.deepcopy(response_dict),
+                    "newIdField": response_dict.get("_links", {}).get("melding"),
+                }
+            )
             return response_dict
 
         logentry = f"morcore signaal_aanmaken error: status code: {response.status_code}, text: {response.text}"
         logger.error(logentry)
-        return serialize_object(OrderedDict([
-            ("serviceResultField", OrderedDict([('codeField', '000'), ('errorsField', OrderedDict([('Error', [logentry])])), ('messageField', None)])),
-            ("messagesField", None),
-            ("dataField", None),
-            ("newIdField", None),
-        ]))
-    
+        return serialize_object(
+            OrderedDict(
+                [
+                    (
+                        "serviceResultField",
+                        OrderedDict(
+                            [
+                                ("codeField", "000"),
+                                ("errorsField", OrderedDict([("Error", [logentry])])),
+                                ("messageField", None),
+                            ]
+                        ),
+                    ),
+                    ("messagesField", None),
+                    ("dataField", None),
+                    ("newIdField", None),
+                ]
+            )
+        )
+
     def melding_volgen(self, data):
         morIdField = dict(data).get("morIdField")
         errors = []
 
         signalen_response = self.bestaande_signalen(morIdField)
-        logger.info("meldingen_opvragen signalen response url: %s", signalen_response.url)
+        logger.info(
+            "meldingen_opvragen signalen response url: %s", signalen_response.url
+        )
         melding_url = None
         if signalen_response.status_code == 200:
             signalen_response_dict = self._to_json(signalen_response)
@@ -252,14 +315,24 @@ class MeldingenService(BaseService):
             errors.append(logentry)
 
         if not melding_url:
-            return serialize_object(OrderedDict([
-                ("rowsUpdatedField", 0), 
-                ("serviceResultField", OrderedDict([
-                    ('codeField', '000'), 
-                    ('errorsField', OrderedDict([('Error', errors)])), 
-                    ('messageField', None)])),
-                ("messagesField", None),
-            ]))
+            return serialize_object(
+                OrderedDict(
+                    [
+                        ("rowsUpdatedField", 0),
+                        (
+                            "serviceResultField",
+                            OrderedDict(
+                                [
+                                    ("codeField", "000"),
+                                    ("errorsField", OrderedDict([("Error", errors)])),
+                                    ("messageField", None),
+                                ]
+                            ),
+                        ),
+                        ("messagesField", None),
+                    ]
+                )
+            )
 
         response = self._do_request(
             melding_url,
@@ -268,26 +341,53 @@ class MeldingenService(BaseService):
         if response.status_code == 200:
             response_dict = self._to_json(response)
             logger.info("melding_volgen antwoord: %s", response_dict)
-            return serialize_object(OrderedDict([
-                ("rowsUpdatedField", 1), 
-                ("serviceResultField", OrderedDict([
-                    ('codeField', '000'), 
-                    ('errorsField', OrderedDict([('Error', [])])), 
-                    ('messageField', "Morcore operatie succesvol uitgevoerd.")])),
-                ("messagesField", None),
-            ]))
-        logentry = f"morcore melding_volgen error: {response.status_code}, {response.text}"
+            return serialize_object(
+                OrderedDict(
+                    [
+                        ("rowsUpdatedField", 1),
+                        (
+                            "serviceResultField",
+                            OrderedDict(
+                                [
+                                    ("codeField", "000"),
+                                    ("errorsField", OrderedDict([("Error", [])])),
+                                    (
+                                        "messageField",
+                                        "Morcore operatie succesvol uitgevoerd.",
+                                    ),
+                                ]
+                            ),
+                        ),
+                        ("messagesField", None),
+                    ]
+                )
+            )
+        logentry = (
+            f"morcore melding_volgen error: {response.status_code}, {response.text}"
+        )
         logger.info(logentry)
-        return serialize_object(OrderedDict([
-            ("rowsUpdatedField", 0), 
-            ("serviceResultField", OrderedDict([
-                ('codeField', '000'), 
-                ('errorsField', OrderedDict([('Error', [logentry])])), 
-                ('messageField', None)])),
-            ("messagesField", None),
-        ]))
+        return serialize_object(
+            OrderedDict(
+                [
+                    ("rowsUpdatedField", 0),
+                    (
+                        "serviceResultField",
+                        OrderedDict(
+                            [
+                                ("codeField", "000"),
+                                ("errorsField", OrderedDict([("Error", [logentry])])),
+                                ("messageField", None),
+                            ]
+                        ),
+                    ),
+                    ("messagesField", None),
+                ]
+            )
+        )
 
-    def meldingen_opvragen(self, dagenField: float, morIdField: Union[str, None] = None) -> ResponseOfGetMorMeldingen:
+    def meldingen_opvragen(
+        self, dagenField: float, morIdField: Union[str, None] = None
+    ) -> ResponseOfGetMorMeldingen:
         now = datetime.now(pytz.timezone("Europe/Amsterdam"))
         dagen_eerder_dan_nu = now - timedelta(days=dagenField)
         filter_params = {
@@ -310,25 +410,59 @@ class MeldingenService(BaseService):
         if response.status_code == 200:
             response_dict = self._to_json(response)
             logger.info("meldingen_opvragen antwoord: %s", response_dict)
-            logger.info("meldingen_opvragen meldingen: %s", response_dict.get("results", []))
+            logger.info(
+                "meldingen_opvragen meldingen: %s", response_dict.get("results", [])
+            )
             mapped_meldingen = [
-                MeldingenService.morcore_signaal_to_mormelding_response(m) 
+                MeldingenService.morcore_signaal_to_mormelding_response(m)
                 for m in response_dict.get("results", [])
             ]
-            
+
             logger.info("meldingen_opvragen mapped_meldingen: %s", mapped_meldingen)
-            return serialize_object(OrderedDict([
-                ("morMeldingenField", OrderedDict([("MorMelding", mapped_meldingen)])), 
-                ("messagesField", None),
-                ("serviceResultField", OrderedDict([('codeField', '000'), ('errorsField', OrderedDict([('Error', [])])), ('messageField', f'Operatie succesvol uitgevoerd. {len(mapped_meldingen)} rij(en) gevonden')])),
-            ]))
+            return serialize_object(
+                OrderedDict(
+                    [
+                        (
+                            "morMeldingenField",
+                            OrderedDict([("MorMelding", mapped_meldingen)]),
+                        ),
+                        ("messagesField", None),
+                        (
+                            "serviceResultField",
+                            OrderedDict(
+                                [
+                                    ("codeField", "000"),
+                                    ("errorsField", OrderedDict([("Error", [])])),
+                                    (
+                                        "messageField",
+                                        f"Operatie succesvol uitgevoerd. {len(mapped_meldingen)} rij(en) gevonden",
+                                    ),
+                                ]
+                            ),
+                        ),
+                    ]
+                )
+            )
         logentry = f"morcore meldingen_opvragen meldingen error: {response.status_code}, {response.text}"
         logger.error(logentry)
-        return serialize_object(OrderedDict([
-            ("morMeldingenField", None), 
-            ("serviceResultField", OrderedDict([('codeField', '000'), ('errorsField', OrderedDict([('Error', [logentry])])), ('messageField', None)])),
-            ("messagesField", None),
-        ]))
+        return serialize_object(
+            OrderedDict(
+                [
+                    ("morMeldingenField", None),
+                    (
+                        "serviceResultField",
+                        OrderedDict(
+                            [
+                                ("codeField", "000"),
+                                ("errorsField", OrderedDict([("Error", [logentry])])),
+                                ("messageField", None),
+                            ]
+                        ),
+                    ),
+                    ("messagesField", None),
+                ]
+            )
+        )
 
     def bestaande_signalen(self, morIdField):
         signalen_response = self._do_request(

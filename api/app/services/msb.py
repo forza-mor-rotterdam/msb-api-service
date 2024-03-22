@@ -1,18 +1,14 @@
 import logging
-from urllib.parse import urlparse
-
-import requests
-from requests import Request, Response
 import os
+from typing import Union
+
+from fastapi.templating import Jinja2Templates
+from jinja2 import Environment, PackageLoader
+from schema_types import MorMeldingAanmakenRequest
+from services.main import BaseService
+from utils import generate_message_identification, parse_mor_melding_aanmaken_response
 from zeep import Client
 from zeep.helpers import serialize_object
-from utils import parse_mor_melding_aanmaken_response, generate_message_identification
-from typing import Union
-from services.main import BaseService
-from jinja2 import Environment, PackageLoader
-from fastapi.templating import Jinja2Templates
-from schema_types import MorMeldingAanmakenRequest, MorMeldingVolgenRequest, ResponseOfUpdate, ResponseOfInsert, ResponseOfGetMorMeldingen
-
 
 logger = logging.getLogger(__name__)
 
@@ -28,7 +24,11 @@ class MSBService(BaseService):
         self.client = Client(os.environ.get("MSB_EXTERN_WEBSERVICES_WSDL_URL"))
         super().__init__(*args, **kwargs)
 
-    def aanmaken_melding(self, mor_melding: MorMeldingAanmakenRequest, validated_address: Union[dict, None] = {}):
+    def aanmaken_melding(
+        self,
+        mor_melding: MorMeldingAanmakenRequest,
+        validated_address: Union[dict, None] = {},
+    ):
         message_id = generate_message_identification()
 
         logger.info("New aanmaken melding request, message_id=%s", message_id)
@@ -51,7 +51,7 @@ class MSBService(BaseService):
         context_data.update(dict(mor_melding))
 
         body = AanmakenMelding_template.render(context_data)
-        encoded_body = body.encode('utf-8')
+        encoded_body = body.encode("utf-8")
         logger.info("Generated body=%s", encoded_body)
 
         headers = {
@@ -59,7 +59,7 @@ class MSBService(BaseService):
             "SOAPAction": action_url,
         }
 
-        response =  self._do_request(
+        response = self._do_request(
             self._api_base_url, method="post", data=encoded_body, extra_headers=headers
         )
 
@@ -74,8 +74,12 @@ class MSBService(BaseService):
         response = self.client.service.MeldingVolgen(dict(data))
         return serialize_object(response)
 
-    def meldingen_opvragen(self, dagenField: float, morIdField: Union[str, None] = None):
-        logger.info(f"meldingen_opvragen request, dagenField={dagenField}, morIdField={morIdField}")
+    def meldingen_opvragen(
+        self, dagenField: float, morIdField: Union[str, None] = None
+    ):
+        logger.info(
+            f"meldingen_opvragen request, dagenField={dagenField}, morIdField={morIdField}"
+        )
         response = self.client.service.MeldingenOpvragen(locals())
         logger.info(f"meldingen_opvragen response={response}")
         serialized_object = serialize_object(response)
@@ -84,7 +88,13 @@ class MSBService(BaseService):
             "MORS": "Z",
             "MORN": "X",
         }
-        meldingen_field = serialized_object.get("morMeldingenField", {}) if serialized_object.get("morMeldingenField", {}) else {}
+        meldingen_field = (
+            serialized_object.get("morMeldingenField", {})
+            if serialized_object.get("morMeldingenField", {})
+            else {}
+        )
         for melding in meldingen_field.get("MorMelding", []):
-            melding["statusField"] = meldr_status.get(melding.get("statusTemplateField"), melding["statusField"])
+            melding["statusField"] = meldr_status.get(
+                melding.get("statusTemplateField"), melding["statusField"]
+            )
         return serialized_object

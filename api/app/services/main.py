@@ -1,9 +1,10 @@
-from schema_types import MorMeldingAanmakenRequest, MorMeldingVolgenRequest, ResponseOfUpdate, ResponseOfInsert, ResponseOfGetMorMeldingen
+import logging
 from typing import Union
+from urllib.parse import urlparse
+
 import requests
 from requests import Request, Response
-from urllib.parse import urlparse
-import logging
+from schema_types import MorMeldingAanmakenRequest, MorMeldingVolgenRequest
 
 logger = logging.getLogger(__name__)
 
@@ -34,9 +35,7 @@ class BaseService:
             return url
         if f"{url_o.scheme}://{url_o.netloc}" == self._api_base_url:
             return f"{url_o.path}{url_o.query}"
-        raise BaseService.BasisUrlFout(
-            f"url: {url}, basis_url: {self._api_base_url}"
-        )
+        raise BaseService.BasisUrlFout(f"url: {url}, basis_url: {self._api_base_url}")
 
     def _get_url(self, url):
         return url
@@ -49,7 +48,9 @@ class BaseService:
                 f"Json antwoord verwacht, antwoord tekst: {response.text}"
             )
 
-    def _do_request(self, url, method="get", data={}, raw_response=True, extra_headers={}, params={}):
+    def _do_request(
+        self, url, method="get", data={}, raw_response=True, extra_headers={}, params={}
+    ):
         action: Request = getattr(requests, method)
         headers = self._get_headers()
         headers.update(extra_headers)
@@ -66,12 +67,17 @@ class BaseService:
             return response
         return response.json()
 
-
-    def aanmaken_melding(self, mor_melding: MorMeldingAanmakenRequest, validated_address: Union[dict, None] = {}):
+    def aanmaken_melding(
+        self,
+        mor_melding: MorMeldingAanmakenRequest,
+        validated_address: Union[dict, None] = {},
+    ):
         raise NotImplementedError
 
     def melding_volgen(self, melding_volgen: MorMeldingVolgenRequest):
         raise NotImplementedError
 
-    def meldingen_opvragen(self, dagenField: float, morIdField: Union[str, None] = None):
+    def meldingen_opvragen(
+        self, dagenField: float, morIdField: Union[str, None] = None
+    ):
         raise NotImplementedError
