@@ -14,7 +14,7 @@ class Bestand(BaseModel):
 
 class MorMeldingAanmakenRequest(BaseModel):
     aanvullendeInformatieField: Union[str, None] = None
-    aanvullendeVragenField: Union[List[Dict[str, str]], None] = None
+    aanvullendeVragenField: Union[List[Dict[str, Union[str, List[str]]]], None] = None
     bijlagenField: Union[list[Bestand], None] = None
     fotosField: Union[list[str], None]
     huisnummerField: Union[str, None] = None
@@ -51,7 +51,8 @@ class MorMeldingAanmakenRequest(BaseModel):
                 if (
                     not isinstance(question, dict)
                     or "question" not in question
-                    or "answer" not in question
+                    or "answers" not in question
+                    or not isinstance(question["answers"], list)
                 ):
                     raise ValueError(
                         "Invalid JSON format for aanvullendeVragenField: incorrect structure"
@@ -68,7 +69,9 @@ class MorMeldingAanmakenRequest(BaseModel):
         schema_extra = {
             "example": {
                 "aanvullendeInformatieField": "string",
-                "aanvullendeVragenField": [{"question": "string", "answer": "string"}],
+                "aanvullendeVragenField": [
+                    {"question": "string", "answers": ["string"]}
+                ],
                 "bijlagenField": [
                     {
                         "bytesField": "base64_string",
