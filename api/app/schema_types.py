@@ -1,4 +1,3 @@
-import json
 from datetime import datetime
 from typing import Any, Optional, Union
 
@@ -42,12 +41,11 @@ class MorMeldingAanmakenRequest(BaseModel):
     @validator("aanvullendeVragenField")
     def validate_aanvullendeVragenField(cls, v):
         try:
-            questions = json.loads(v)
-            if not isinstance(questions, list):
+            if not isinstance(v, list):
                 raise ValueError(
-                    "Invalid JSON format for aanvullendeVragenField: not a list"
+                    f"Invalid format for aanvullendeVragenField: not a list: {v}"
                 )
-            for question in questions:
+            for question in v:
                 if (
                     not isinstance(question, dict)
                     or "question" not in question
@@ -55,10 +53,12 @@ class MorMeldingAanmakenRequest(BaseModel):
                     or not isinstance(question["answers"], list)
                 ):
                     raise ValueError(
-                        "Invalid JSON format for aanvullendeVragenField: incorrect structure"
+                        f"Invalid format for aanvullendeVragenField: incorrect structure: {v}"
                     )
-        except (json.JSONDecodeError, TypeError):
-            raise ValueError("Invalid JSON format for aanvullendeVragenField")
+        except Exception as e:
+            raise ValueError(
+                f"An error occured validating aanvullendeVragenField: {str(e)}. {v}"
+            )
         return v
 
     class Config:
