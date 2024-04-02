@@ -1,5 +1,6 @@
+import json
 from datetime import datetime
-from typing import Any, Optional, Union
+from typing import Any, Dict, List, Optional, Union
 
 import pytz
 from pydantic import BaseModel, validator
@@ -13,6 +14,7 @@ class Bestand(BaseModel):
 
 class MorMeldingAanmakenRequest(BaseModel):
     aanvullendeInformatieField: Union[str, None] = None
+    aanvullendeVragenField: Union[List[Dict[str, Union[str, List[str]]]], None] = None
     bijlagenField: Union[list[Bestand], None] = None
     fotosField: Union[list[str], None]
     huisnummerField: Union[str, None] = None
@@ -37,6 +39,28 @@ class MorMeldingAanmakenRequest(BaseModel):
     def parse_aanmaakDatumField(cls, value):
         return value.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
 
+    @validator("aanvullendeVragenField")
+    def validate_aanvullendeVragenField(cls, v):
+        try:
+            questions = json.loads(v)
+            if not isinstance(questions, list):
+                raise ValueError(
+                    "Invalid JSON format for aanvullendeVragenField: not a list"
+                )
+            for question in questions:
+                if (
+                    not isinstance(question, dict)
+                    or "question" not in question
+                    or "answers" not in question
+                    or not isinstance(question["answers"], list)
+                ):
+                    raise ValueError(
+                        "Invalid JSON format for aanvullendeVragenField: incorrect structure"
+                    )
+        except (json.JSONDecodeError, TypeError):
+            raise ValueError("Invalid JSON format for aanvullendeVragenField")
+        return v
+
     class Config:
         json_encoders = {
             datetime: lambda v: v.isoformat(),
@@ -45,6 +69,9 @@ class MorMeldingAanmakenRequest(BaseModel):
         schema_extra = {
             "example": {
                 "aanvullendeInformatieField": "string",
+                "aanvullendeVragenField": [
+                    {"question": "string", "answers": ["string"]}
+                ],
                 "bijlagenField": [
                     {
                         "bytesField": "base64_string",

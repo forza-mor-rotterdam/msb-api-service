@@ -90,9 +90,9 @@ class MeldingenService(BaseService):
             "openstaand": "N",
             "in_behandeling": "I",
             "controle": "I",
-            "afgehandeld": "X"
-            if morcore_melding["resolutie"] == "niet_opgelost"
-            else "A",
+            "afgehandeld": (
+                "X" if morcore_melding["resolutie"] == "niet_opgelost" else "A"
+            ),
         }
         meldr_status_code = morcore_status_naar_meldr_status_codes.get(
             morcore_melding.get("status", {}).get("naam")
@@ -171,17 +171,17 @@ class MeldingenService(BaseService):
             if validators.email(mor_melding_dict.get("melderEmailField"))
             else ""
         )
-        omschrijving_kort = (
+        omschrijving_melder = (
             mor_melding_dict.get("omschrijvingField", "")
             if mor_melding_dict.get("omschrijvingField")
-            else "- geen korte omschrijving beschikbaar -"
+            else ""
         )
 
         geometrie = None
         try:
-            omschrijving_kort_json = json.loads(omschrijving_kort)
-            omschrijving_kort = omschrijving_kort_json["orgineleOmschrijving"]
-            geometrie = f"POINT({omschrijving_kort_json['longitude']} {omschrijving_kort_json['latitude']})"
+            omschrijving_melder_json = json.loads(omschrijving_melder)
+            omschrijving_melder = omschrijving_melder_json["orgineleOmschrijving"]
+            geometrie = f"POINT({omschrijving_melder_json['longitude']} {omschrijving_melder_json['latitude']})"
         except Exception:
             ...
 
@@ -205,10 +205,11 @@ class MeldingenService(BaseService):
                     )
                 }
             ],
-            "omschrijving_kort": omschrijving_kort[:500],
-            "omschrijving": mor_melding_dict.get("aanvullendeInformatieField", "")[
-                :5000
-            ] if mor_melding_dict.get("aanvullendeInformatieField") else "",
+            "omschrijving_melder": omschrijving_melder[:500],
+            "aanvullende_informatie": mor_melding_dict.get(
+                "aanvullendeInformatieField", ""
+            )[:5000],
+            "aanvullende_vragen": mor_melding_dict.get("aanvullendeVragenField", []),
             "meta": mor_melding_dict,
             "meta_uitgebreid": {},
             "adressen": [
@@ -236,9 +237,11 @@ class MeldingenService(BaseService):
                             "postcode": validated_address.get("postcode"),
                             "buurtnaam": validated_address.get("buurtnaam"),
                             "wijknaam": validated_address.get("wijknaam"),
-                            "geometrie": geometrie
-                            if geometrie
-                            else validated_address.get("geometrie"),
+                            "geometrie": (
+                                geometrie
+                                if geometrie
+                                else validated_address.get("geometrie")
+                            ),
                         },
                     ]
                 }
