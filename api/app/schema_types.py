@@ -1,6 +1,6 @@
 import json
 from datetime import datetime
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Optional, Union
 
 import pytz
 from pydantic import BaseModel, validator
@@ -14,7 +14,7 @@ class Bestand(BaseModel):
 
 class MorMeldingAanmakenRequest(BaseModel):
     aanvullendeInformatieField: Union[str, None] = None
-    aanvullendeVragenField: Union[List[Dict[str, Union[str, List[str]]]], None] = None
+    aanvullendeVragenField: Union[list[dict[str, Union[str, list[str]]]], None] = None
     bijlagenField: Union[list[Bestand], None] = None
     fotosField: Union[list[str], None]
     huisnummerField: Union[str, None] = None
