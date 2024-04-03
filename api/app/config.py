@@ -331,9 +331,102 @@ MORCORE_MELDR_ONDERWERPEN = {
             "Waalhaven-Eemhaven",
         ],
     },
+
     # plaagdierbestrijding
     "Overlast insecten": {},
     "Overlast ongedierte": {},
+
+    # handhaving
+    "Parkeeroverlast aanhangwagen": {
+        "wijken": [
+            # zuid
+            "Feijenoord",
+            "IJsselmonde",
+            "Charlois",
+            "Hoogvliet",
+            "Pernis",
+            "Rozenburg",
+            "Hoek van Holland",
+            "Botlek-Europoort-Maasvlakte",
+            "Vondelingenplaat",
+            "Waalhaven-Eemhaven",
+        ],
+    },
+    "Parkeeroverlast voertuig": {
+        "wijken": [
+            # zuid
+            "Feijenoord",
+            "IJsselmonde",
+            "Charlois",
+            "Hoogvliet",
+            "Pernis",
+            "Rozenburg",
+            "Hoek van Holland",
+            "Botlek-Europoort-Maasvlakte",
+            "Vondelingenplaat",
+            "Waalhaven-Eemhaven",
+        ],
+    },
+    "Voertuigwrak": {
+        "wijken": [
+            # zuid
+            "Feijenoord",
+            "IJsselmonde",
+            "Charlois",
+            "Hoogvliet",
+            "Pernis",
+            "Rozenburg",
+            "Hoek van Holland",
+            "Botlek-Europoort-Maasvlakte",
+            "Vondelingenplaat",
+            "Waalhaven-Eemhaven",
+        ],
+    },
+    "Parkeeroverlast (brom-)fiets": {
+        "wijken": [
+            # zuid
+            "Feijenoord",
+            "IJsselmonde",
+            "Charlois",
+            "Hoogvliet",
+            "Pernis",
+            "Rozenburg",
+            "Hoek van Holland",
+            "Botlek-Europoort-Maasvlakte",
+            "Vondelingenplaat",
+            "Waalhaven-Eemhaven",
+        ],
+    },
+    "Parkeeroverlast Deelscooter": {
+        "wijken": [
+            # zuid
+            "Feijenoord",
+            "IJsselmonde",
+            "Charlois",
+            "Hoogvliet",
+            "Pernis",
+            "Rozenburg",
+            "Hoek van Holland",
+            "Botlek-Europoort-Maasvlakte",
+            "Vondelingenplaat",
+            "Waalhaven-Eemhaven",
+        ],
+    },
+    "Parkeeroverlast Deel(bak-)fiets": {
+        "wijken": [
+            # zuid
+            "Feijenoord",
+            "IJsselmonde",
+            "Charlois",
+            "Hoogvliet",
+            "Pernis",
+            "Rozenburg",
+            "Hoek van Holland",
+            "Botlek-Europoort-Maasvlakte",
+            "Vondelingenplaat",
+            "Waalhaven-Eemhaven",
+        ],
+    },
 }
 
 ## buurten
