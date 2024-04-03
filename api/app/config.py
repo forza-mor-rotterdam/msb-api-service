@@ -331,11 +331,9 @@ MORCORE_MELDR_ONDERWERPEN = {
             "Waalhaven-Eemhaven",
         ],
     },
-
     # plaagdierbestrijding
     "Overlast insecten": {},
     "Overlast ongedierte": {},
-
     # handhaving
     "Parkeeroverlast aanhangwagen": {
         "wijken": [
