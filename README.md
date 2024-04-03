@@ -37,9 +37,10 @@ http://localhost:8001/docs
 ```http
   POST /AanmakenMelding/
 ```
-| Parameter | Type     | Reuired    |
+| Parameter | Type     | Required    |
 | :--------------------------- | :------- | :------- |
 | `aanvullendeInformatieField` | `string` | False
+| `aanvullendeVragenField` | `[{question: string, answers: string[]}]` | False
 | `bijlagenField` | `Bestand[]` |  False
 | `fotosField` | `string[]` | False
 | `huisnummerField` | `string` | False

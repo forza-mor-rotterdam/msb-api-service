@@ -13,6 +13,7 @@ class Bestand(BaseModel):
 
 class MorMeldingAanmakenRequest(BaseModel):
     aanvullendeInformatieField: Union[str, None] = None
+    aanvullendeVragenField: Union[list[dict[str, Union[str, list[str]]]], None] = None
     bijlagenField: Union[list[Bestand], None] = None
     fotosField: Union[list[str], None]
     huisnummerField: Union[str, None] = None
@@ -37,6 +38,29 @@ class MorMeldingAanmakenRequest(BaseModel):
     def parse_aanmaakDatumField(cls, value):
         return value.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
 
+    @validator("aanvullendeVragenField")
+    def validate_aanvullendeVragenField(cls, v):
+        try:
+            if not isinstance(v, list):
+                raise ValueError(
+                    f"Invalid format for aanvullendeVragenField: not a list: {v}"
+                )
+            for question in v:
+                if (
+                    not isinstance(question, dict)
+                    or "question" not in question
+                    or "answers" not in question
+                    or not isinstance(question["answers"], list)
+                ):
+                    raise ValueError(
+                        f"Invalid format for aanvullendeVragenField: incorrect structure: {v}"
+                    )
+        except Exception as e:
+            raise ValueError(
+                f"An error occured validating aanvullendeVragenField: {str(e)}. {v}"
+            )
+        return v
+
     class Config:
         json_encoders = {
             datetime: lambda v: v.isoformat(),
@@ -45,6 +69,9 @@ class MorMeldingAanmakenRequest(BaseModel):
         schema_extra = {
             "example": {
                 "aanvullendeInformatieField": "string",
+                "aanvullendeVragenField": [
+                    {"question": "string", "answers": ["string"]}
+                ],
                 "bijlagenField": [
                     {
                         "bytesField": "base64_string",
