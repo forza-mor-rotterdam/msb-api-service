@@ -73,6 +73,7 @@ async def validation_exception_handler(request, exc):
 
 @app.post(f"/{version}/AanmakenMelding/", response_model=ResponseOfInsert)
 def aanmaken_melding(mor_melding: MorMeldingAanmakenRequest):
+    logger.info(f"meldingsnummerField={mor_melding.get('meldingsnummerField')}, aanmaakDatumField={mor_melding.get('aanmaakDatumField')}")
     service: type[BaseService]
     validated_address: Union[dict, None]
     service, validated_address = Splitter(mor_melding).get_service()
@@ -93,9 +94,6 @@ def melding_volgen(melding_volgen: MorMeldingVolgenRequest):
 
 @app.get(f"/{version}/MeldingenOpvragen/", response_model=ResponseOfGetMorMeldingen)
 def meldingen_opvragen(dagenField: float, morIdField: Union[str, None] = None):
-    logger.info(
-        "meldingen_opvragen: msb en morecore meldingen opvragen en gecombineert teruggeven"
-    )
     msb_response = serialize_object(
         MSBService().meldingen_opvragen(dagenField=dagenField, morIdField=morIdField)
     )
@@ -112,8 +110,7 @@ def meldingen_opvragen(dagenField: float, morIdField: Union[str, None] = None):
         morcore_meldingen = morcore_response.get("morMeldingenField", {}).get(
             "MorMelding", []
         )
-    logger.info("msb_meldingen: %s", msb_meldingen)
-    logger.info("morcore_meldingen: %s", morcore_meldingen)
+    logger.info(f"morcore_signalen={[signaal.get('morIdField') for signaal in morcore_meldingen]}, msb_aantal={len(msb_meldingen)}")
 
     msb_errors = (
         msb_response.get("serviceResultField", {})

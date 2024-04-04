@@ -18,8 +18,6 @@ class OnderwerpenService(BaseService):
         super().__init__(*args, **kwargs)
 
     def get_category_url(self, meldr_onderwerp):
-        logger.info(f'onderwerpen url: {os.environ.get("ONDERWERPEN_URL")}')
-        logger.info(f"self._api_path: {self._api_path}")
         response = self._do_request(
             f"{self._api_path}/category/?name={meldr_onderwerp}",
         )

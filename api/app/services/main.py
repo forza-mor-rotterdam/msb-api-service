@@ -62,7 +62,6 @@ class BaseService:
             "timeout": self._timeout,
         }
         response: Response = action(**action_params)
-        logger.info(f"response url {response.url}")
         if raw_response:
             return response
         return response.json()

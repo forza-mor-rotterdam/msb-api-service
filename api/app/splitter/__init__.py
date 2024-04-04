@@ -30,7 +30,6 @@ class Splitter:
         self.filter_config = MORCORE_MELDR_ONDERWERPEN
         self.onderwerpen = [k for k in self.filter_config.keys()]
         data = dict(request_data)
-        logger.info(f"Splitter request_data: {data}")
         self.onderwerp = data.get("onderwerpField")
         self.straatnaam = data.get("straatnaamField")
         try:
@@ -45,9 +44,6 @@ class Splitter:
                         "y": data.get("yCoordField"),
                     }
                 }
-            )
-            logger.info(
-                f"validated_address: {json.dumps(self.validated_address, indent=4)}"
             )
             self.wijknaam = self.validated_address.get("wijknaam", None)
             self.buurtnaam = self.validated_address.get("buurtnaam", None)
@@ -72,5 +68,4 @@ class Splitter:
         return False
 
     def get_service(self) -> tuple[type[BaseService], Union[dict, None]]:
-        logger.info(f"Splitter using service: {self.service}")
         return self.service, self.validated_address
