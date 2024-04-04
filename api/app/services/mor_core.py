@@ -41,7 +41,6 @@ class MeldingenService(BaseService):
                     "password": password,
                 },
             )
-            logger.info(f"token response status code: {token_response.status_code}")
             if token_response.status_code == 200:
                 meldingen_token = token_response.json().get("token")
             else:
@@ -73,11 +72,10 @@ class MeldingenService(BaseService):
             f"{self._api_base_url}/api/v1/onderwerp/grofvuil-op-straat/"
         )
         mor_categories = OnderwerpenService().get_category_url(meldr_onderwerp)
-        logger.info(f"get_onderwerp_url: meldr_onderwerp={meldr_onderwerp}")
-        logger.info(f"get_onderwerp_url: response={mor_categories}")
         results = mor_categories.get("results", [])
-        if results:
+        if len(results) == 1:
             return results[0].get("_links", {}).get("self", default_onderwerp_url)
+        logger.error(f"Er zijn meerdere onderwerpen gevonden met deze naam: {json.dumps(results, indent=4)}")
         return default_onderwerp_url
 
     def get_signaal_url(self, meldr_meldingsnummer):
@@ -141,16 +139,14 @@ class MeldingenService(BaseService):
         mor_melding: MorMeldingAanmakenRequest,
         validated_address: Union[dict, None] = {},
     ):
+        logger.info(f"MOR Core: meldingsnummerField={mor_melding.meldingsnummerField}")
         existing_signalen_response = self.bestaande_signalen(
             mor_melding.meldingsnummerField
-        )
-        logger.info(
-            "bestaande signalen status_code: %s", existing_signalen_response.status_code
         )
         if existing_signalen_response.status_code == 200:
             existing_signalen_response_dict = self._to_json(existing_signalen_response)
             signalen = existing_signalen_response_dict.get("results", [])
-            logger.info("bestaande signalen: %s", signalen)
+            logger.warning("bestaande signalen: %s", signalen)
             if signalen:
                 return {
                     "messagesField": None,
@@ -164,7 +160,6 @@ class MeldingenService(BaseService):
                 }
 
         mor_melding_dict = dict(mor_melding)
-        logger.info(f"MeldR mor_melding: {json.dumps(mor_melding_dict, indent=4)}")
         fotos = mor_melding_dict.pop("fotosField", [])
         melderEmailField = (
             mor_melding_dict.get("melderEmailField")
@@ -225,8 +220,6 @@ class MeldingenService(BaseService):
             ],
         }
         if validated_address:
-            logger.info(f"new geo: {geometrie}")
-            logger.info(f"existing geo: {validated_address.get('geometrie')}")
             data.update(
                 {
                     "adressen": [
@@ -250,9 +243,9 @@ class MeldingenService(BaseService):
                     ]
                 }
             )
+        logger.info(f"MOR Core signaal aanmaken: data={json.dumps(data, indent=4)}, aantal foto's={len(fotos)}")
         data["bijlagen"] = [{"bestand": file} for file in fotos]
 
-        logger.info(f"morcore signaal_aanmaken data: {json.dumps(data, indent=4)}")
         response = self._do_request(
             f"{self._ontdbblr_url if self._enable_ontdbblr and os.environ.get('ONTDBBLR_URL') else self._mor_core_url}/signaal/",
             method="post",
@@ -260,7 +253,7 @@ class MeldingenService(BaseService):
         )
         if response.status_code == 201:
             response_dict = self._to_json(response)
-            logger.info("signaal_aanmaken antwoord: %s", response_dict)
+            logger.info(f"MOR Core signaal aangemaakt: bron_signaal_id={response_dict.get('bron_signaal_id')}")
             response_dict.update(
                 {
                     "messagesField": None,
@@ -275,7 +268,7 @@ class MeldingenService(BaseService):
             )
             return response_dict
 
-        logentry = f"morcore signaal_aanmaken error: status code: {response.status_code}, text: {response.text}"
+        logentry = f"MOR Core signaal_aanmaken error: status code: {response.status_code}, text: {response.text}"
         logger.error(logentry)
         return serialize_object(
             OrderedDict(
@@ -299,22 +292,18 @@ class MeldingenService(BaseService):
 
     def melding_volgen(self, data):
         morIdField = dict(data).get("morIdField")
+        logger.info(f"MOR Core: morIdField={morIdField}")
         errors = []
 
         signalen_response = self.bestaande_signalen(morIdField)
-        logger.info(
-            "meldingen_opvragen signalen response url: %s", signalen_response.url
-        )
         melding_url = None
         if signalen_response.status_code == 200:
             signalen_response_dict = self._to_json(signalen_response)
             signalen_results = signalen_response_dict.get("results", [])
             if signalen_results:
-                logger.info("morcore melding_volgen signalen: %s", signalen_results)
                 melding_url = signalen_results[0].get("_links", {}).get("melding")
             else:
                 logentry = f"morcore melding_volgen melding url is niet gevonden obv signaal url: {self.get_signaal_url(morIdField)}"
-                logger.info(logentry)
                 errors.append(logentry)
         else:
             logentry = f"morcore melding_volgen signalen error: {signalen_response.status_code}, {signalen_response.text}"
@@ -346,8 +335,6 @@ class MeldingenService(BaseService):
             method="get",
         )
         if response.status_code == 200:
-            response_dict = self._to_json(response)
-            logger.info("melding_volgen antwoord: %s", response_dict)
             return serialize_object(
                 OrderedDict(
                     [
@@ -372,7 +359,7 @@ class MeldingenService(BaseService):
         logentry = (
             f"morcore melding_volgen error: {response.status_code}, {response.text}"
         )
-        logger.info(logentry)
+        logger.error(logentry)
         return serialize_object(
             OrderedDict(
                 [
@@ -413,19 +400,13 @@ class MeldingenService(BaseService):
             method="get",
             params=filter_params,
         )
-        logger.info("morcore meldingen_opvragen response url: %s", response.url)
         if response.status_code == 200:
             response_dict = self._to_json(response)
-            logger.info("meldingen_opvragen antwoord: %s", response_dict)
-            logger.info(
-                "meldingen_opvragen meldingen: %s", response_dict.get("results", [])
-            )
             mapped_meldingen = [
                 MeldingenService.morcore_signaal_to_mormelding_response(m)
                 for m in response_dict.get("results", [])
             ]
 
-            logger.info("meldingen_opvragen mapped_meldingen: %s", mapped_meldingen)
             return serialize_object(
                 OrderedDict(
                     [

@@ -80,10 +80,7 @@ class PDOKReverseRD(BaseAddressValidation):
                     "centroide_ll",
                 ],
             }
-            logger.info(f"PDOK rd query_params: {query_params}")
             response = get(self.address_validation_url, query_params)
-
-            logger.info("pdok reverse response text: %s", response.text)
             response.raise_for_status()
         except RequestException as e:
             raise AddressValidationUnavailableException(e)
@@ -185,11 +182,9 @@ class PDOKAddressValidation(BaseAddressValidation):
             query_params = self._pdok_request_query_params(
                 address=address, lon=lon, lat=lat
             )
-            logger.info(f"PDOK search query_params: {query_params}")
             response = get(self.address_validation_url, query_params)
             # response_reverse = get(self.address_validation_reverse_url, {"lat": query_params.get("lat"), "lon": query_params.get("lon"), "fl": ["wijknaam", "straatnaam", "huisnummer", "huisletter", "toevoeging", "postcode", "buurtnaam", "geometrie"]})
 
-            logger.info("pdok response text: %s", response.text)
             response.raise_for_status()
         except RequestException as e:
             raise AddressValidationUnavailableException(e)
