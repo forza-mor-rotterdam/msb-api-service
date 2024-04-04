@@ -73,7 +73,7 @@ async def validation_exception_handler(request, exc):
 
 @app.post(f"/{version}/AanmakenMelding/", response_model=ResponseOfInsert)
 def aanmaken_melding(mor_melding: MorMeldingAanmakenRequest):
-    logger.info(f"meldingsnummerField={mor_melding.get('meldingsnummerField')}, aanmaakDatumField={mor_melding.get('aanmaakDatumField')}")
+    logger.info(f"meldingsnummerField={mor_melding.meldingsnummerField}, aanmaakDatumField={mor_melding.aanmaakDatumField}")
     service: type[BaseService]
     validated_address: Union[dict, None]
     service, validated_address = Splitter(mor_melding).get_service()
