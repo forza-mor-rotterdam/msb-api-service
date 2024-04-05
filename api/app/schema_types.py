@@ -38,30 +38,30 @@ class MorMeldingAanmakenRequest(BaseModel):
     def parse_aanmaakDatumField(cls, value):
         return value.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
 
-    @validator("aanvullendeVragenField")
-    def validate_aanvullendeVragenField(cls, v):
-        if not v:
-            return v
-        try:
-            if not isinstance(v, list):
-                raise ValueError(
-                    f"Invalid format for aanvullendeVragenField: not a list: {v}"
-                )
-            for qa in v:
-                if (
-                    not isinstance(qa, dict)
-                    or "question" not in qa
-                    or "answers" not in qa
-                    or not isinstance(qa["answers"], list)
-                ):
-                    raise ValueError(
-                        f"Invalid format for aanvullendeVragenField: incorrect structure: {v}"
-                    )
-        except Exception as e:
-            raise ValueError(
-                f"An error occured validating aanvullendeVragenField: {str(e)}. {v}"
-            )
-        return v
+    # @validator("aanvullendeVragenField")
+    # def validate_aanvullendeVragenField(cls, v):
+    #     if not v:
+    #         return v
+    #     try:
+    #         if not isinstance(v, list):
+    #             raise ValueError(
+    #                 f"Invalid format for aanvullendeVragenField: not a list: {v}"
+    #             )
+    #         for qa in v:
+    #             if (
+    #                 not isinstance(qa, dict)
+    #                 or "question" not in qa
+    #                 or "answers" not in qa
+    #                 or not isinstance(qa["answers"], list)
+    #             ):
+    #                 raise ValueError(
+    #                     f"Invalid format for aanvullendeVragenField: incorrect structure: {v}"
+    #                 )
+    #     except Exception as e:
+    #         raise ValueError(
+    #             f"An error occured validating aanvullendeVragenField: {str(e)}. {v}"
+    #         )
+    #     return v
 
     class Config:
         json_encoders = {
