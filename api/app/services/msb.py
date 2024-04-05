@@ -1,7 +1,7 @@
 import logging
 import os
-from typing import Union
 from collections import OrderedDict
+from typing import Union
 
 from fastapi.templating import Jinja2Templates
 from jinja2 import Environment, PackageLoader
@@ -75,7 +75,10 @@ class MSBService(BaseService):
                             OrderedDict(
                                 [
                                     ("codeField", "000"),
-                                    ("errorsField", OrderedDict([("Error", [logentry])])),
+                                    (
+                                        "errorsField",
+                                        OrderedDict([("Error", [logentry])]),
+                                    ),
                                     ("messageField", None),
                                 ]
                             ),

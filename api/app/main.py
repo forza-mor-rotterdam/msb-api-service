@@ -73,7 +73,9 @@ async def validation_exception_handler(request, exc):
 
 @app.post(f"/{version}/AanmakenMelding/", response_model=ResponseOfInsert)
 def aanmaken_melding(mor_melding: MorMeldingAanmakenRequest):
-    logger.info(f"meldingsnummerField={mor_melding.meldingsnummerField}, aanmaakDatumField={mor_melding.aanmaakDatumField}")
+    logger.info(
+        f"meldingsnummerField={mor_melding.meldingsnummerField}, aanmaakDatumField={mor_melding.aanmaakDatumField}"
+    )
     service: type[BaseService]
     validated_address: Union[dict, None]
     service, validated_address = Splitter(mor_melding).get_service()
@@ -110,7 +112,9 @@ def meldingen_opvragen(dagenField: float, morIdField: Union[str, None] = None):
         morcore_meldingen = morcore_response.get("morMeldingenField", {}).get(
             "MorMelding", []
         )
-    logger.info(f"morcore_signalen={[signaal.get('morIdField') for signaal in morcore_meldingen]}, msb_aantal={len(msb_meldingen)}")
+    logger.info(
+        f"morcore_signalen={[signaal.get('morIdField') for signaal in morcore_meldingen]}, msb_aantal={len(msb_meldingen)}"
+    )
 
     msb_errors = (
         msb_response.get("serviceResultField", {})

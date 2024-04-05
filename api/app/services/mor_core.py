@@ -75,7 +75,9 @@ class MeldingenService(BaseService):
         results = mor_categories.get("results", [])
         if len(results) == 1:
             return results[0].get("_links", {}).get("self", default_onderwerp_url)
-        logger.error(f"Er zijn meerdere onderwerpen gevonden met deze naam: {json.dumps(results, indent=4)}")
+        logger.error(
+            f"Er zijn meerdere onderwerpen gevonden met deze naam: {json.dumps(results, indent=4)}"
+        )
         return default_onderwerp_url
 
     def get_signaal_url(self, meldr_meldingsnummer):
@@ -243,7 +245,9 @@ class MeldingenService(BaseService):
                     ]
                 }
             )
-        logger.info(f"MOR Core signaal aanmaken: data={json.dumps(data, indent=4)}, aantal foto's={len(fotos)}")
+        logger.info(
+            f"MOR Core signaal aanmaken: data={json.dumps(data, indent=4)}, aantal foto's={len(fotos)}"
+        )
         data["bijlagen"] = [{"bestand": file} for file in fotos]
 
         response = self._do_request(
@@ -253,7 +257,9 @@ class MeldingenService(BaseService):
         )
         if response.status_code == 201:
             response_dict = self._to_json(response)
-            logger.info(f"MOR Core signaal aangemaakt: bron_signaal_id={response_dict.get('bron_signaal_id')}")
+            logger.info(
+                f"MOR Core signaal aangemaakt: bron_signaal_id={response_dict.get('bron_signaal_id')}"
+            )
             response_dict.update(
                 {
                     "messagesField": None,
