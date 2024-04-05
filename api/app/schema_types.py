@@ -13,7 +13,9 @@ class Bestand(BaseModel):
 
 class MorMeldingAanmakenRequest(BaseModel):
     aanvullendeInformatieField: Union[str, None] = None
-    aanvullendeVragenField: Union[list[Union[dict[str, list[str]], None]], None] = None
+    aanvullendeVragenField: Union[
+        list[Union[dict[str, Union[str, list[str]]], None]], None
+    ] = None
     bijlagenField: Union[list[Bestand], None] = None
     fotosField: Union[list[str], None]
     huisnummerField: Union[str, None] = None
