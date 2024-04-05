@@ -13,7 +13,7 @@ class Bestand(BaseModel):
 
 class MorMeldingAanmakenRequest(BaseModel):
     aanvullendeInformatieField: Union[str, None] = None
-    aanvullendeVragenField: Union[list[dict[str, Union[str, list[str]]]], None] = None
+    aanvullendeVragenField: Optional[list[Optional[dict[str, list[str]]]]] = None
     bijlagenField: Union[list[Bestand], None] = None
     fotosField: Union[list[str], None]
     huisnummerField: Union[str, None] = None
@@ -40,17 +40,19 @@ class MorMeldingAanmakenRequest(BaseModel):
 
     @validator("aanvullendeVragenField")
     def validate_aanvullendeVragenField(cls, v):
+        if not v:
+            return v
         try:
             if not isinstance(v, list):
                 raise ValueError(
                     f"Invalid format for aanvullendeVragenField: not a list: {v}"
                 )
-            for question in v:
+            for qa in v:
                 if (
-                    not isinstance(question, dict)
-                    or "question" not in question
-                    or "answers" not in question
-                    or not isinstance(question["answers"], list)
+                    not isinstance(qa, dict)
+                    or "question" not in qa
+                    or "answers" not in qa
+                    or not isinstance(qa["answers"], list)
                 ):
                     raise ValueError(
                         f"Invalid format for aanvullendeVragenField: incorrect structure: {v}"
