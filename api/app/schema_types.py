@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Any, Optional, Union
+from typing import Any, List, Optional, Union
 
 import pytz
 from pydantic import BaseModel, validator
@@ -11,11 +11,16 @@ class Bestand(BaseModel):
     naamField: Union[str, None]
 
 
+class QuestionAnswerPair(BaseModel):
+    question: str
+    answers: List[str]
+
+
 class MorMeldingAanmakenRequest(BaseModel):
     aanvullendeInformatieField: Union[str, None] = None
-    aanvullendeVragenField: Optional[list[Optional[dict[str, list[str]]]]] = None
     bijlagenField: Union[list[Bestand], None] = None
     fotosField: Union[list[str], None]
+    aanvullendeVragenField: Optional[List[Optional[QuestionAnswerPair]]] = None
     huisnummerField: Union[str, None] = None
     kanaalField: Union[str, None]
     onderwerpField: Union[str, None]
