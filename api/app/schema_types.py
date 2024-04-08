@@ -53,18 +53,13 @@ class MorMeldingAanmakenRequest(BaseModel):
                     f"Invalid format for aanvullendeVragenField: not a list: {v}"
                 )
             for qa in v:
-                if (
-                    not isinstance(qa, dict)
-                    or "question" not in qa
-                    or "answers" not in qa
-                    or not isinstance(qa["answers"], list)
-                ):
+                if not isinstance(qa, QuestionAnswerPair):
                     raise ValueError(
                         f"Invalid format for aanvullendeVragenField: incorrect structure: {v}"
                     )
         except Exception as e:
             raise ValueError(
-                f"An error occured validating aanvullendeVragenField: {str(e)}. {v}"
+                f"An error occurred validating aanvullendeVragenField: {str(e)}. {v}"
             )
         return v
 
