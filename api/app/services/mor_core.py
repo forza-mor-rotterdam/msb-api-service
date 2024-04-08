@@ -142,6 +142,7 @@ class MeldingenService(BaseService):
         validated_address: Union[dict, None] = {},
     ):
         logger.info(f"MOR Core: meldingsnummerField={mor_melding.meldingsnummerField}")
+
         existing_signalen_response = self.bestaande_signalen(
             mor_melding.meldingsnummerField
         )
@@ -162,6 +163,10 @@ class MeldingenService(BaseService):
                 }
 
         mor_melding_dict = dict(mor_melding)
+        if mor_melding_dict.get("aanvullendeVragenField"):
+            logger.warning(
+                f"aanvullendeVragenField: {mor_melding.aanvullendeVragenField}"
+            )
         fotos = mor_melding_dict.pop("fotosField", [])
         melderEmailField = (
             mor_melding_dict.get("melderEmailField")
