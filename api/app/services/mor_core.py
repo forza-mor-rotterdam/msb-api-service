@@ -9,11 +9,7 @@ from typing import Union
 import pytz
 import requests
 import validators
-from schema_types import (
-    MorMeldingAanmakenRequest,
-    QuestionAnswerPairEncoder,
-    ResponseOfGetMorMeldingen,
-)
+from schema_types import MorMeldingAanmakenRequest, ResponseOfGetMorMeldingen
 from services.main import BaseService
 from services.onderwerpen import OnderwerpenService
 from zeep.helpers import serialize_object
@@ -225,7 +221,8 @@ class MeldingenService(BaseService):
                 "aanvullendeInformatieField", ""
             )[:5000],
             "aanvullende_vragen": [
-                qa.json() for qa in mor_melding_dict.get("aanvullendeVragenField", [])
+                qa.to_json()
+                for qa in mor_melding_dict.get("aanvullendeVragenField", [])
             ],
             "meta": mor_melding_dict,
             "meta_uitgebreid": {},
@@ -261,8 +258,10 @@ class MeldingenService(BaseService):
                     ]
                 }
             )
+        logger.warning(f"Data: {data}")
+
         logger.info(
-            f"MOR Core signaal aanmaken: data={json.dumps(data, indent=4, cls=QuestionAnswerPairEncoder)}, aantal foto's={len(fotos)}"
+            f"MOR Core signaal aanmaken: data={json.dumps(data, indent=4)}, aantal foto's={len(fotos)}"
         )
         data["bijlagen"] = [{"bestand": file} for file in fotos]
 
