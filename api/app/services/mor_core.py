@@ -141,7 +141,16 @@ class MeldingenService(BaseService):
         mor_melding: MorMeldingAanmakenRequest,
         validated_address: Union[dict, None] = {},
     ):
-        logger.info(f"MOR Core: meldingsnummerField={mor_melding.meldingsnummerField}")
+        logger.warning(
+            f"MOR Core: meldingsnummerField={mor_melding.meldingsnummerField}"
+        )
+        if mor_melding:
+            try:
+                logger.warning(
+                    f"aanvullendeVragenField: {mor_melding.aanvullendeVragenField}"
+                )
+            except Exception as e:
+                logger.warning(f"AanvullendevragenField error: {e}")
 
         existing_signalen_response = self.bestaande_signalen(
             mor_melding.meldingsnummerField
