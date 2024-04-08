@@ -220,9 +220,11 @@ class MeldingenService(BaseService):
             "aanvullende_informatie": mor_melding_dict.get(
                 "aanvullendeInformatieField", ""
             )[:5000],
-            "aanvullende_vragen": [
-                qa.dict() for qa in mor_melding_dict.get("aanvullendeVragenField", [])
-            ],
+            "aanvullende_vragen": (
+                mor_melding_dict.get("aanvullendeVragenField", [])
+                if mor_melding_dict.get("aanvullendeVragenField")
+                else []
+            ),
             "meta": mor_melding_dict,
             "meta_uitgebreid": {},
             "adressen": [
@@ -258,8 +260,7 @@ class MeldingenService(BaseService):
                 }
             )
         logger.warning(f"Data: {data}")
-
-        logger.info(
+        logger.warning(
             f"MOR Core signaal aanmaken: data={json.dumps(data, indent=4)}, aantal foto's={len(fotos)}"
         )
         data["bijlagen"] = [{"bestand": file} for file in fotos]

@@ -1,5 +1,4 @@
 from datetime import datetime
-from json import JSONEncoder
 from typing import Any, List, Optional, Union
 
 import pytz
@@ -12,25 +11,9 @@ class Bestand(BaseModel):
     naamField: Union[str, None]
 
 
-class QuestionAnswerPairEncoder(JSONEncoder):
-    def default(self, obj):
-        if isinstance(obj, QuestionAnswerPair):
-            return {"question": obj.question, "answers": obj.answers}
-        return super().default(obj)
-
-
 class QuestionAnswerPair(BaseModel):
     question: str
     answers: List[str]
-
-    class Config:
-        json_encoder = QuestionAnswerPairEncoder
-
-    def to_json(self):
-        return {
-            "question": self.question if self.question else "",
-            "answers": self.answers if self.answers else [],
-        }
 
 
 class MorMeldingAanmakenRequest(BaseModel):
@@ -78,15 +61,10 @@ class MorMeldingAanmakenRequest(BaseModel):
             raise ValueError(
                 f"An error occurred validating aanvullendeVragenField: {str(e)}. {v}"
             )
-        return v
+        return [qa.dict() for qa in v]
 
     class Config:
-        json_encoders = {
-            datetime: lambda v: v.isoformat(),
-            QuestionAnswerPair: lambda v: (
-                v.dict() if isinstance(v, QuestionAnswerPair) else v
-            ),
-        }
+        json_encoders = {datetime: lambda v: v.isoformat()}
         now = datetime.now(pytz.timezone("Europe/Amsterdam")).isoformat()
         schema_extra = {
             "example": {
