@@ -15,6 +15,12 @@ class QuestionAnswerPair(BaseModel):
     question: str
     answers: List[str]
 
+    def json(self):
+        return {
+            "question": self.question if self.question else "",
+            "answers": self.answers if self.answers else [],
+        }
+
 
 class MorMeldingAanmakenRequest(BaseModel):
     aanvullendeInformatieField: Union[str, None] = None
@@ -66,6 +72,9 @@ class MorMeldingAanmakenRequest(BaseModel):
     class Config:
         json_encoders = {
             datetime: lambda v: v.isoformat(),
+            QuestionAnswerPair: lambda v: (
+                v.json() if isinstance(v, QuestionAnswerPair) else v
+            ),
         }
         now = datetime.now(pytz.timezone("Europe/Amsterdam")).isoformat()
         schema_extra = {

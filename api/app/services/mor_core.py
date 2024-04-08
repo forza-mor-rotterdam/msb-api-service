@@ -221,11 +221,7 @@ class MeldingenService(BaseService):
                 "aanvullendeInformatieField", ""
             )[:5000],
             "aanvullende_vragen": [
-                {
-                    "question": qa.question if qa.question else "",
-                    "answers": qa.answers if qa.answers else [],
-                }
-                for qa in mor_melding_dict.get("aanvullendeVragenField", [])
+                qa.json() for qa in mor_melding_dict.get("aanvullendeVragenField", [])
             ],
             "meta": mor_melding_dict,
             "meta_uitgebreid": {},
