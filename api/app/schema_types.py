@@ -1,4 +1,5 @@
 from datetime import datetime
+from json import JSONEncoder
 from typing import Any, List, Optional, Union
 
 import pytz
@@ -11,9 +12,19 @@ class Bestand(BaseModel):
     naamField: Union[str, None]
 
 
+class QuestionAnswerPairEncoder(JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, QuestionAnswerPair):
+            return {"question": obj.question, "answers": obj.answers}
+        return super().default(obj)
+
+
 class QuestionAnswerPair(BaseModel):
     question: str
     answers: List[str]
+
+    class Config:
+        json_encoder = QuestionAnswerPairEncoder
 
     def to_json(self):
         return {
