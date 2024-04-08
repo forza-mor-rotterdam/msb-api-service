@@ -15,7 +15,7 @@ class QuestionAnswerPair(BaseModel):
     question: str
     answers: List[str]
 
-    def json(self):
+    def to_json(self):
         return {
             "question": self.question if self.question else "",
             "answers": self.answers if self.answers else [],
@@ -73,7 +73,7 @@ class MorMeldingAanmakenRequest(BaseModel):
         json_encoders = {
             datetime: lambda v: v.isoformat(),
             QuestionAnswerPair: lambda v: (
-                v.json() if isinstance(v, QuestionAnswerPair) else v
+                v.to_json() if isinstance(v, QuestionAnswerPair) else v
             ),
         }
         now = datetime.now(pytz.timezone("Europe/Amsterdam")).isoformat()
