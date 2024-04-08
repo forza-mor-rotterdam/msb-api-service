@@ -76,14 +76,6 @@ def aanmaken_melding(mor_melding: MorMeldingAanmakenRequest):
     logger.warning(
         f"meldingsnummerField={mor_melding.meldingsnummerField}, aanmaakDatumField={mor_melding.aanmaakDatumField}"
     )
-    if mor_melding:
-        try:
-            logger.warning(
-                f"aanvullendeVragenField: {mor_melding.aanvullendeVragenField}"
-            )
-        except Exception as e:
-            logger.warning(f"AanvullendevragenField error: {e}")
-
     service: type[BaseService]
     validated_address: Union[dict, None]
     service, validated_address = Splitter(mor_melding).get_service()
