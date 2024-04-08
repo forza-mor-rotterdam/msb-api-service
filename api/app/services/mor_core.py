@@ -141,17 +141,7 @@ class MeldingenService(BaseService):
         mor_melding: MorMeldingAanmakenRequest,
         validated_address: Union[dict, None] = {},
     ):
-        logger.warning(
-            f"MOR Core: meldingsnummerField={mor_melding.meldingsnummerField}"
-        )
-        if mor_melding:
-            try:
-                logger.warning(
-                    f"aanvullendeVragenField: {mor_melding.aanvullendeVragenField}"
-                )
-            except Exception as e:
-                logger.warning(f"AanvullendevragenField error: {e}")
-
+        logger.info(f"MOR Core: meldingsnummerField={mor_melding.meldingsnummerField}")
         existing_signalen_response = self.bestaande_signalen(
             mor_melding.meldingsnummerField
         )
@@ -172,10 +162,6 @@ class MeldingenService(BaseService):
                 }
 
         mor_melding_dict = dict(mor_melding)
-        if mor_melding_dict.get("aanvullendeVragenField"):
-            logger.warning(
-                f"aanvullendeVragenField: {mor_melding.aanvullendeVragenField}"
-            )
         fotos = mor_melding_dict.pop("fotosField", [])
         melderEmailField = (
             mor_melding_dict.get("melderEmailField")
@@ -259,7 +245,6 @@ class MeldingenService(BaseService):
                     ]
                 }
             )
-        logger.warning(f"Data: {data}")
         logger.warning(
             f"MOR Core signaal aanmaken: data={json.dumps(data, indent=4)}, aantal foto's={len(fotos)}"
         )
