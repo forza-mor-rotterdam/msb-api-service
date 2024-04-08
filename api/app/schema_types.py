@@ -84,7 +84,7 @@ class MorMeldingAanmakenRequest(BaseModel):
         json_encoders = {
             datetime: lambda v: v.isoformat(),
             QuestionAnswerPair: lambda v: (
-                v.to_json() if isinstance(v, QuestionAnswerPair) else v
+                v.dict() if isinstance(v, QuestionAnswerPair) else v
             ),
         }
         now = datetime.now(pytz.timezone("Europe/Amsterdam")).isoformat()
