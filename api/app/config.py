@@ -425,6 +425,8 @@ MORCORE_MELDR_ONDERWERPEN = {
             "Waalhaven-Eemhaven",
         ],
     },
+    "Gevaarlijk afval": {},
+    "Drugsafval": {},
 }
 
 ## buurten
