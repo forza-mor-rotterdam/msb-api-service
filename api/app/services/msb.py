@@ -1,5 +1,6 @@
 import logging
 import os
+from collections import OrderedDict
 from typing import Union
 
 from fastapi.templating import Jinja2Templates
@@ -30,10 +31,7 @@ class MSBService(BaseService):
         validated_address: Union[dict, None] = {},
     ):
         message_id = generate_message_identification()
-
-        logger.info("New aanmaken melding request, message_id=%s", message_id)
-        logger.info("Client meldingsnummer=%s", mor_melding.meldingsnummerField)
-        logger.info("Request content=%s", mor_melding)
+        logger.info(f"MSB: meldingsnummerField={mor_melding.meldingsnummerField}")
 
         Jinja2Templates(directory="templates")
         env = Environment(loader=PackageLoader("main"))
@@ -52,7 +50,6 @@ class MSBService(BaseService):
 
         body = AanmakenMelding_template.render(context_data)
         encoded_body = body.encode("utf-8")
-        logger.info("Generated body=%s", encoded_body)
 
         headers = {
             "content-type": "text/xml",
@@ -63,12 +60,35 @@ class MSBService(BaseService):
             self._api_base_url, method="post", data=encoded_body, extra_headers=headers
         )
 
-        logger.info("MSB HTTP status code=%s", response.status_code)
-        logger.info("MSB HTTP response=%s", response.text)
-        logger.info("MSB HTTP headers=%s", response.headers)
-
         response.raise_for_status()
-        return parse_mor_melding_aanmaken_response(response.text)
+
+        try:
+            return parse_mor_melding_aanmaken_response(response.text)
+        except Exception as e:
+            logentry = f"parse_mor_melding_aanmaken_response: Exception={e}, response text={response.text}"
+            logger.error(logentry)
+            return serialize_object(
+                OrderedDict(
+                    [
+                        (
+                            "serviceResultField",
+                            OrderedDict(
+                                [
+                                    ("codeField", "000"),
+                                    (
+                                        "errorsField",
+                                        OrderedDict([("Error", [logentry])]),
+                                    ),
+                                    ("messageField", None),
+                                ]
+                            ),
+                        ),
+                        ("messagesField", None),
+                        ("dataField", None),
+                        ("newIdField", None),
+                    ]
+                )
+            )
 
     def melding_volgen(self, data):
         response = self.client.service.MeldingVolgen(dict(data))
@@ -77,13 +97,8 @@ class MSBService(BaseService):
     def meldingen_opvragen(
         self, dagenField: float, morIdField: Union[str, None] = None
     ):
-        logger.info(
-            f"meldingen_opvragen request, dagenField={dagenField}, morIdField={morIdField}"
-        )
         response = self.client.service.MeldingenOpvragen(locals())
-        logger.info(f"meldingen_opvragen response={response}")
         serialized_object = serialize_object(response)
-        logger.info(f"meldingen_opvragen serialized_object={serialized_object}")
         meldr_status = {
             "MORS": "Z",
             "MORN": "X",

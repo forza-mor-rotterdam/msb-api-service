@@ -25,7 +25,6 @@ def get_validated_address(data):
             rd_y=data["locatie"]["y"],
         )
     except Exception:
-        logger.info("PDOKReverseRD failed, try PDOKAddressValidation")
         try:
             location_validator = PDOKAddressValidation()
             validated_address = location_validator.validate_address(

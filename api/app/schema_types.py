@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Any, Optional, Union
+from typing import Any, List, Optional, Union
 
 import pytz
 from pydantic import BaseModel, validator
@@ -11,11 +11,16 @@ class Bestand(BaseModel):
     naamField: Union[str, None]
 
 
+class QuestionAnswerPair(BaseModel):
+    question: str
+    answers: List[str]
+
+
 class MorMeldingAanmakenRequest(BaseModel):
     aanvullendeInformatieField: Union[str, None] = None
-    aanvullendeVragenField: Union[list[dict[str, Union[str, list[str]]]], None] = None
     bijlagenField: Union[list[Bestand], None] = None
     fotosField: Union[list[str], None]
+    aanvullendeVragenField: Optional[List[Optional[QuestionAnswerPair]]] = None
     huisnummerField: Union[str, None] = None
     kanaalField: Union[str, None]
     onderwerpField: Union[str, None]
@@ -40,31 +45,26 @@ class MorMeldingAanmakenRequest(BaseModel):
 
     @validator("aanvullendeVragenField")
     def validate_aanvullendeVragenField(cls, v):
+        if not v:
+            return v
         try:
             if not isinstance(v, list):
                 raise ValueError(
                     f"Invalid format for aanvullendeVragenField: not a list: {v}"
                 )
-            for question in v:
-                if (
-                    not isinstance(question, dict)
-                    or "question" not in question
-                    or "answers" not in question
-                    or not isinstance(question["answers"], list)
-                ):
+            for qa in v:
+                if not isinstance(qa, QuestionAnswerPair):
                     raise ValueError(
                         f"Invalid format for aanvullendeVragenField: incorrect structure: {v}"
                     )
         except Exception as e:
             raise ValueError(
-                f"An error occured validating aanvullendeVragenField: {str(e)}. {v}"
+                f"An error occurred validating aanvullendeVragenField: {str(e)}. {v}"
             )
-        return v
+        return [qa.dict() for qa in v]
 
     class Config:
-        json_encoders = {
-            datetime: lambda v: v.isoformat(),
-        }
+        json_encoders = {datetime: lambda v: v.isoformat()}
         now = datetime.now(pytz.timezone("Europe/Amsterdam")).isoformat()
         schema_extra = {
             "example": {
