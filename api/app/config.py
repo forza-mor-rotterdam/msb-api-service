@@ -32,6 +32,9 @@ MORCORE_MELDR_ONDERWERPEN = {
     # T&H Milieu
     "Gevaarlijk afval": {},
     "Drugsafval": {},
+
+    # Overige onderwerpen
+    "Iets anders": {},
 }
 
 ## buurten
