@@ -38,7 +38,6 @@ MORCORE_MELDR_ONDERWERPEN = {
 
     # Nacht & waak
     "Verkeers- of straatnaambord": {},
-    "Vervuiling in het water": {},
     "Bestrating ongelijk of beschadigd": {},
     "Gat in de weg": {},
 }
