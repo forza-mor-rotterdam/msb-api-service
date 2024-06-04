@@ -35,6 +35,12 @@ MORCORE_MELDR_ONDERWERPEN = {
 
     # Overige onderwerpen
     "Iets anders": {},
+
+    # Nacht & waak
+    "Verkeers- of straatnaambord": {},
+    "Vervuiling in het water": {},
+    "Bestrating ongelijk of beschadigd": {},
+    "Gat in de weg": {},
 }
 
 ## buurten
