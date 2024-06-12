@@ -88,8 +88,8 @@ class MeldingenService(BaseService):
         morcore_melding = morcore_signaal.get("melding")
         morcore_status_naar_meldr_status_codes = {
             "openstaand": "N",
-            "in_behandeling": "I",
-            "controle": "I",
+            "in_behandeling": "N",
+            "controle": "N",
             "afgehandeld": (
                 "X" if morcore_melding["resolutie"] == "niet_opgelost" else "A"
             ),
