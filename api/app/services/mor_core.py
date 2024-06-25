@@ -95,7 +95,8 @@ class MeldingenService(BaseService):
             ),
         }
         meldr_status_code = morcore_status_naar_meldr_status_codes.get(
-            morcore_melding.get("status", {}).get("naam")
+            morcore_melding.get("status", {}).get("naam"),
+            "N"
         )
         afgesloten_op = morcore_melding.get("afgesloten_op")
         aangepast_op = morcore_melding.get("aangepast_op")
