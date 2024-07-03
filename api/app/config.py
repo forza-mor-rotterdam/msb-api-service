@@ -40,6 +40,13 @@ MORCORE_MELDR_ONDERWERPEN = {
     "Verkeers- of straatnaambord": {},
     "Bestrating ongelijk of beschadigd": {},
     "Gat in de weg": {},
+
+    # Luminizer
+    "Verlichting doet het niet": {},
+    "Verlichting brandt overdag": {},
+    "Verlichting overig": {},
+    "Verlichting beschadigd": {},
+
 }
 
 ## buurten
