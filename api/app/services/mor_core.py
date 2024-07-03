@@ -163,6 +163,7 @@ class MeldingenService(BaseService):
                 }
 
         mor_melding_dict = dict(mor_melding)
+        logger.info(f"MOR Core: mor_melding_dict={mor_melding_dict}")
         fotos = mor_melding_dict.pop("fotosField", [])
         melderEmailField = (
             mor_melding_dict.get("melderEmailField")
