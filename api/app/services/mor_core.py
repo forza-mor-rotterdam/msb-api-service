@@ -222,6 +222,12 @@ class MeldingenService(BaseService):
                     "huisnummer": mor_melding_dict.get("huisnummerField"),
                 },
             ],
+            "lichtmasten": [
+                {
+                    "lichtmast_id": lichtmast,
+                }
+                for lichtmast in mor_melding_dict.get("lichtpuntenField", [])
+            ],
         }
         if validated_address:
             data.update(
