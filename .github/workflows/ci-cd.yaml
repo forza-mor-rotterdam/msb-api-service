@@ -95,7 +95,7 @@ jobs:
           KUBE_CERTIFICATE: ${{ vars.KUBE_CERTIFICATE }}
           KUBE_TOKEN: ${{ secrets.KUBE_TOKEN }}
         with:
-          args: rollout restart deployment/app deployment/worker --namespace=${{ vars.KUBE_NAMESPACE }}
+          args: rollout restart deployment/app --namespace=${{ vars.KUBE_NAMESPACE }}
 
       - name: Status rollout on k8s platform
         uses: actions-hub/kubectl@master
