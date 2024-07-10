@@ -68,17 +68,13 @@ class MeldingenService(BaseService):
         super().__init__(*args, **kwargs)
 
     def get_onderwerp_url(self, meldr_onderwerp):
-        default_onderwerp_url = (
-            f"{self._api_base_url}/api/v1/onderwerp/grofvuil-op-straat/"
-        )
         mor_categories = OnderwerpenService().get_category_url(meldr_onderwerp)
         results = mor_categories.get("results", [])
         if len(results) == 1:
-            return results[0].get("_links", {}).get("self", default_onderwerp_url)
-        logger.error(
-            f"Er zijn meerdere onderwerpen gevonden met deze naam: {json.dumps(results, indent=4)}"
-        )
-        return default_onderwerp_url
+            return results[0].get("_links", {}).get("self")
+        if results:
+            raise OnderwerpenService.MeerdereOnderwerpenGevonden(f"Onderwerp: {meldr_onderwerp}, aantal gevonden: {len(results)}")
+        raise OnderwerpenService.OnderwerpNietGevonden(f"Onderwerp: {meldr_onderwerp}")
 
     def get_signaal_url(self, meldr_meldingsnummer):
         return f"https://meldr.rotterdam.nl/melding/{meldr_meldingsnummer}"
