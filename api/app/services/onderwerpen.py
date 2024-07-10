@@ -10,6 +10,11 @@ class OnderwerpenService(BaseService):
     _v = "v1"
     _api_path: str = f"/api/{_v}"
 
+    class MeerdereOnderwerpenGevonden(Exception):
+        ...
+    class OnderwerpNietGevonden(Exception):
+        ...
+
     def _get_url(self, url):
         return f"{self._api_base_url}{self._relatieve_url(url)}"
 
