@@ -8,6 +8,7 @@ from typing import Union
 
 import pytz
 import requests
+import urllib3
 import validators
 from schema_types import MorMeldingAanmakenRequest, ResponseOfGetMorMeldingen
 from services.main import BaseService
@@ -39,6 +40,9 @@ class MeldingenService(BaseService):
                 json={
                     "username": email,
                     "password": password,
+                },
+                headers={
+                    "user-agent": urllib3.util.SKIP_HEADER,
                 },
             )
             if token_response.status_code == 200:
