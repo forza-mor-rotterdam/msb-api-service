@@ -40,6 +40,12 @@ MORCORE_MELDR_ONDERWERPEN = {
     "Verkeers- of straatnaambord": {},
     "Bestrating ongelijk of beschadigd": {},
     "Gat in de weg": {},
+
+    "Bank of tafel": {},
+    "Sport- of speeltoestel": {},
+    "Dode dieren": {},
+    "Kade of kant beschadigd": {},
+    "Fontein": {},
 }
 
 ## buurten
