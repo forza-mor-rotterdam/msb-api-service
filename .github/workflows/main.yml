@@ -53,7 +53,7 @@ jobs:
           KUBE_CERTIFICATE: ${{ vars.KUBE_CERTIFICATE }}
           KUBE_TOKEN: ${{ secrets.KUBE_TOKEN }}
         with:
-          args: rollout restart deployment/app --namespace=msb-api-service-prod
+          args: rollout restart deployment/app --namespace=${{ vars.KUBE_NAMESPACE }}
 
       - name: Start rollout on k8s platform
         uses: actions-hub/kubectl@master
@@ -62,4 +62,4 @@ jobs:
           KUBE_CERTIFICATE: ${{ vars.KUBE_CERTIFICATE }}
           KUBE_TOKEN: ${{ secrets.KUBE_TOKEN }}
         with:
-          args: rollout status deployment/app --namespace=msb-api-service-prod
+          args: rollout status deployment/app --namespace=${{ vars.KUBE_NAMESPACE }}

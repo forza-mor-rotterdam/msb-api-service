@@ -8,6 +8,7 @@ from typing import Union
 
 import pytz
 import requests
+import urllib3
 import validators
 from schema_types import MorMeldingAanmakenRequest, ResponseOfGetMorMeldingen
 from services.main import BaseService
@@ -40,6 +41,9 @@ class MeldingenService(BaseService):
                     "username": email,
                     "password": password,
                 },
+                headers={
+                    "user-agent": urllib3.util.SKIP_HEADER,
+                },
             )
             if token_response.status_code == 200:
                 meldingen_token = token_response.json().get("token")
@@ -68,17 +72,13 @@ class MeldingenService(BaseService):
         super().__init__(*args, **kwargs)
 
     def get_onderwerp_url(self, meldr_onderwerp):
-        default_onderwerp_url = (
-            f"{self._api_base_url}/api/v1/onderwerp/grofvuil-op-straat/"
-        )
         mor_categories = OnderwerpenService().get_category_url(meldr_onderwerp)
         results = mor_categories.get("results", [])
         if len(results) == 1:
-            return results[0].get("_links", {}).get("self", default_onderwerp_url)
-        logger.error(
-            f"Er zijn meerdere onderwerpen gevonden met deze naam: {json.dumps(results, indent=4)}"
-        )
-        return default_onderwerp_url
+            return results[0].get("_links", {}).get("self")
+        if results:
+            raise OnderwerpenService.MeerdereOnderwerpenGevonden(f"Onderwerp: {meldr_onderwerp}, aantal gevonden: {len(results)}")
+        raise OnderwerpenService.OnderwerpNietGevonden(f"Onderwerp: {meldr_onderwerp}")
 
     def get_signaal_url(self, meldr_meldingsnummer):
         return f"https://meldr.rotterdam.nl/melding/{meldr_meldingsnummer}"
@@ -163,6 +163,7 @@ class MeldingenService(BaseService):
                 }
 
         mor_melding_dict = dict(mor_melding)
+        logger.info(f"MOR Core: mor_melding_dict={mor_melding_dict}")
         fotos = mor_melding_dict.pop("fotosField", [])
         melderEmailField = (
             mor_melding_dict.get("melderEmailField")
@@ -221,6 +222,12 @@ class MeldingenService(BaseService):
                     "huisnummer": mor_melding_dict.get("huisnummerField"),
                 },
             ],
+            "lichtmasten": [
+                {
+                    "lichtmast_id": lichtmast,
+                }
+                for lichtmast in mor_melding_dict.get("lichtpuntenField", [])
+            ],
         }
         if validated_address:
             data.update(
@@ -259,7 +266,7 @@ class MeldingenService(BaseService):
         if response.status_code == 201:
             response_dict = self._to_json(response)
             logger.info(
-                f"MOR Core signaal aangemaakt: bron_signaal_id={response_dict.get('bron_signaal_id')}"
+                f"MOR Core signaal aangemaakt: bron_signaal_id={response_dict.get('bron_signaal_id')}, mor-core signaal_url={response_dict.get('_links', {}).get('self')}"
             )
             response_dict.update(
                 {
@@ -270,7 +277,7 @@ class MeldingenService(BaseService):
                         "messageField": "Het signaal is aangemaakt in MOR CORE",
                     },
                     "dataField": copy.deepcopy(response_dict),
-                    "newIdField": response_dict.get("_links", {}).get("melding"),
+                    "newIdField": response_dict.get("_links", {}).get("self"),
                 }
             )
             return response_dict

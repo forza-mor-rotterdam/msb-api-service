@@ -4,6 +4,7 @@ import os
 
 from geojson import Point
 from requests import get
+import urllib3
 from requests.exceptions import RequestException
 from services.rd_convert import rd_to_wgs
 
@@ -80,7 +81,13 @@ class PDOKReverseRD(BaseAddressValidation):
                     "centroide_ll",
                 ],
             }
-            response = get(self.address_validation_url, query_params)
+            response = get(
+                self.address_validation_url, 
+                query_params, 
+                headers={
+                    "user-agent": urllib3.util.SKIP_HEADER,
+                },
+            )
             response.raise_for_status()
         except RequestException as e:
             raise AddressValidationUnavailableException(e)
