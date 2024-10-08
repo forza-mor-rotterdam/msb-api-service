@@ -51,6 +51,12 @@ MORCORE_MELDR_ONDERWERPEN = {
     "Bomen": {},
     "Gras": {},
     "Planten": {},
+
+    # Luminizer
+    "Verlichting doet het niet": {},
+    "Verlichting brandt overdag": {},
+    "Verlichting overig": {},
+    "Verlichting beschadigd": {},
 }
 
 ## buurten
