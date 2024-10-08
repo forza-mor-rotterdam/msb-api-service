@@ -47,6 +47,11 @@ MORCORE_MELDR_ONDERWERPEN = {
     "Kade of kant beschadigd": {},
     "Fontein": {},
 
+    # Groen
+    "Bomen": {},
+    "Gras": {},
+    "Planten": {},
+
     # Luminizer
     "Verlichting doet het niet": {},
     "Verlichting brandt overdag": {},
