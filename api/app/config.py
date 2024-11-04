@@ -53,10 +53,10 @@ MORCORE_MELDR_ONDERWERPEN = {
     "Planten": {},
 
     # Luminizer
-#    "Verlichting doet het niet": {},
-#    "Verlichting brandt overdag": {},
-#    "Verlichting overig": {},
-#    "Verlichting beschadigd": {},
+    "Verlichting doet het niet": {},
+    "Verlichting brandt overdag": {},
+    "Verlichting overig": {},
+    "Verlichting beschadigd": {},
 
     # Seizoen
     "Kerstboom": {},
