@@ -57,6 +57,10 @@ MORCORE_MELDR_ONDERWERPEN = {
     "Verlichting brandt overdag": {},
     "Verlichting overig": {},
     "Verlichting beschadigd": {},
+
+    # Seizoen
+    "Kerstboom": {},
+    "Vuurwerkoverlast": {}
 }
 
 ## buurten
