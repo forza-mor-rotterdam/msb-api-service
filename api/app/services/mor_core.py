@@ -204,10 +204,10 @@ class MeldingenService(BaseService):
                     )
                 }
             ],
-            "omschrijving_melder": omschrijving_melder[:500],
+            "omschrijving_melder": omschrijving_melder,
             "aanvullende_informatie": mor_melding_dict.get(
                 "aanvullendeInformatieField", ""
-            )[:5000],
+            ),
             "aanvullende_vragen": (
                 mor_melding_dict.get("aanvullendeVragenField", [])
                 if mor_melding_dict.get("aanvullendeVragenField")
