@@ -60,7 +60,13 @@ MORCORE_MELDR_ONDERWERPEN = {
 
     # Seizoen
     "Kerstboom": {},
-    "Vuurwerkoverlast": {}
+    "Vuurwerkoverlast": {},
+
+    # Water
+    "Gemaal of sluis": {},
+    "Rioolafvoer verstopt": {},
+    "Rioollucht": {},
+    "Wateroverlast": {}
 
 }
 
