@@ -28,6 +28,7 @@ MORCORE_MELDR_ONDERWERPEN = {
     "Parkeeroverlast (brom-)fiets": {},
     "Parkeeroverlast Deelscooter": {},
     "Parkeeroverlast Deel(bak-)fiets": {},
+    "Winkelwagen": {},
 
     # T&H Milieu
     "Gevaarlijk afval": {},
