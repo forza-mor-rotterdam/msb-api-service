@@ -49,9 +49,11 @@ class BaseAddressValidation:
 
     def rd_to_address(self, rd_x, rd_y, *args, **kwargs):
         results = self._search(rd_x, rd_y, *args, **kwargs)
+
         if len(results) == 0:
             raise NoResultsException("No results found!")
         return self._search_result_to_address(results[0])
+
 
 
 class PDOKReverseRD(BaseAddressValidation):
@@ -61,6 +63,8 @@ class PDOKReverseRD(BaseAddressValidation):
         self.address_validation_url = (
             f'{os.environ.get("PDOK_API_URL", self.PDOK_API_URL)}/reverse'
         )
+        self.gemeente_code = os.environ.get("WIJKEN_EN_BUURTEN_GEMEENTECODE", "0599")
+        self.adres_max_afstand = os.environ.get("ADRES_MAX_AFSTAND", "50")
 
     def _search(self, rd_x=None, rd_y=None, *args, **kwargs):
         self.rd_x = rd_x
@@ -111,8 +115,118 @@ class PDOKReverseRD(BaseAddressValidation):
         lat, lon = rd_to_wgs(self.rd_x, self.rd_y)
         sia_address_dict["geometrie"] = Point((lon, lat))
         return sia_address_dict
+    
+    def search_address_with_distance(self, rd_x, rd_y):
+        self.rd_x = rd_x
+        self.rd_y = rd_y
+        try:
+            query_params = {
+                "X": rd_x,
+                "Y": rd_y,
+                "rows": 10,
+                "distance": self.adres_max_afstand,
+                "fq": [
+                    f"gemeentecode:{self.gemeente_code}",
+                ],
+                "fl": [
+                    "id",
+                    "straatnaam",
+                    "postcode",
+                    "huisnummer",
+                    "huisletter",
+                    "huisnummertoevoeging",
+                    "woonplaatsnaam",
+                    "gemeentenaam",
+                    "wijknaam",
+                    "buurtnaam",
+                    "zijde",
+                    "afstand",
+                    "huis_nlt",
+                    "centroide_ll",
+                ],
+            }
+            response = get(
+                self.address_validation_url, 
+                query_params, 
+                headers={
+                    "user-agent": urllib3.util.SKIP_HEADER,
+                },
+            )
 
+        except RequestException as e:
+            raise AddressValidationUnavailableException(e)
+        return response.json()["response"]["docs"]
+    
 
+    def search_object_with_distance(self, rd_x, rd_y):
+        self.rd_x = rd_x
+        self.rd_y = rd_y
+        try:
+            query_params = {
+                "X": rd_x,
+                "Y": rd_y,
+                "rows": 100,
+                "type": ["weg"],
+                "fq": [
+                    f"gemeentecode:{self.gemeente_code}",
+                ],
+                "fl": [
+                    "id",
+                    "type",
+                    "straatnaam",
+                    "postcode",
+                    "huisnummer",
+                    "huisletter",
+                    "huisnummertoevoeging",
+                    "woonplaatsnaam",
+                    "gemeentenaam",
+                    "wijknaam",
+                    "buurtnaam",
+                    "afstand",
+                    "bron",
+                    "centroide_ll",
+                ],
+            }
+            response = get(
+                self.address_validation_url, 
+                query_params, 
+                headers={
+                    "user-agent": urllib3.util.SKIP_HEADER,
+                },
+            )
+        except RequestException as e:
+            raise AddressValidationUnavailableException(e)
+        return [entry for entry in response.json()["response"]["docs"] if "BAG" in entry["bron"]]
+
+    def search_free(self, lat, lon):
+        url = (
+            f'{os.environ.get("PDOK_API_URL", self.PDOK_API_URL)}/free'
+        )
+        try:
+            query_params = {
+                "lat": lat,
+                "lon": lon,
+                "rows": 10,
+                "fq": [
+                    f"gemeentecode:{self.gemeente_code}",
+                    "type:weg",
+                    "bron:BAG",
+                ],
+                "sort": "distance desc",
+                "fl": "*",
+            }
+            response = get(
+                url, 
+                query_params, 
+                headers={
+                    "user-agent": urllib3.util.SKIP_HEADER,
+                },
+            )
+            response.raise_for_status()
+
+        except RequestException as e:
+            raise AddressValidationUnavailableException(e)
+        return response.json()["response"]["docs"]
 class PDOKAddressValidation(BaseAddressValidation):
     PDOK_API_URL = "https://api.pdok.nl/bzk/locatieserver/search/v3_1"
 
