@@ -36,6 +36,7 @@ MORCORE_MELDR_ONDERWERPEN = {
 
     # Overige onderwerpen
     "Iets anders": {},
+    "Wildplakken": {},
 
     # Nacht & waak
     "Verkeers- of straatnaambord": {},
@@ -47,6 +48,7 @@ MORCORE_MELDR_ONDERWERPEN = {
     "Dode dieren": {},
     "Kade of kant beschadigd": {},
     "Fontein": {},
+    "Informatie- of reclamezuil": {},
 
     # Groen
     "Bomen": {},
