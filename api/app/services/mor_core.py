@@ -143,6 +143,19 @@ class MeldingenService(BaseService):
         validated_address: Union[dict, None] = {},
     ):
         logger.info(f"MOR Core: meldingsnummerField={mor_melding.meldingsnummerField}")
+
+        if not validated_address:
+            return {
+                "messagesField": None,
+                "serviceResultField": {
+                    "codeField": "A100",
+                    "errorsField": None,
+                    "messageField": f"Er is geen valide Rotterdam adres of weg gevonden bij melding: {mor_melding.meldingsnummerField}",
+                },
+                "dataField": None,
+                "newIdField": None,
+            }
+
         existing_signalen_response = self.bestaande_signalen(
             mor_melding.meldingsnummerField
         )
@@ -230,13 +243,14 @@ class MeldingenService(BaseService):
             ],
         }
         if validated_address:
+            huisnummer = validated_address.get("huisnummer") if validated_address.get("huisnummer") else None
             data.update(
                 {
                     "adressen": [
                         {
                             "plaatsnaam": validated_address.get("woonplaats"),
                             "straatnaam": validated_address.get("straatnaam"),
-                            "huisnummer": validated_address.get("huisnummer"),
+                            "huisnummer": huisnummer,
                             "huisletter": validated_address.get("huisletter"),
                             "toevoeging": validated_address.get(
                                 "huisnummer_toevoeging"
