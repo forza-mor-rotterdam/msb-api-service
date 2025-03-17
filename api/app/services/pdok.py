@@ -64,7 +64,7 @@ class PDOKReverseRD(BaseAddressValidation):
             f'{os.environ.get("PDOK_API_URL", self.PDOK_API_URL)}/reverse'
         )
         self.gemeente_code = os.environ.get("WIJKEN_EN_BUURTEN_GEMEENTECODE", "0599")
-        self.adres_max_afstand = os.environ.get("ADRES_MAX_AFSTAND", "50")
+        self.adres_max_afstand = os.environ.get("ADRES_MAX_AFSTAND", "75")
 
     def _search(self, rd_x=None, rd_y=None, *args, **kwargs):
         self.rd_x = rd_x
