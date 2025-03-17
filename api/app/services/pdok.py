@@ -159,14 +159,15 @@ class PDOKReverseRD(BaseAddressValidation):
     
 
     def search_object_with_distance(self, rd_x, rd_y):
-        self.rd_x = rd_x
-        self.rd_y = rd_y
+        headers = {
+            "user-agent": urllib3.util.SKIP_HEADER,
+        }
         try:
             query_params = {
                 "X": rd_x,
                 "Y": rd_y,
                 "rows": 100,
-                "type": ["weg"],
+                "type": ["weg", "buurt"],
                 "fq": [
                     f"gemeentecode:{self.gemeente_code}",
                 ],
@@ -190,13 +191,29 @@ class PDOKReverseRD(BaseAddressValidation):
             response = get(
                 self.address_validation_url, 
                 query_params, 
-                headers={
-                    "user-agent": urllib3.util.SKIP_HEADER,
-                },
+                headers=headers,
+
             )
         except RequestException as e:
             raise AddressValidationUnavailableException(e)
-        return [entry for entry in response.json()["response"]["docs"] if "BAG" in entry["bron"]]
+
+        wegen_en_buurten = response.json()["response"]["docs"]
+        wegen = [weg_of_buurt for weg_of_buurt in wegen_en_buurten if weg_of_buurt["type"] == "weg"]
+        buurten = [weg_of_buurt for weg_of_buurt in wegen_en_buurten if weg_of_buurt["type"] == "buurt"]
+        if not buurten:
+            return []
+        wegen_bag = [weg for weg in wegen if "BAG" in weg["bron"]]
+        wegen_bag_met_buurten_en_wijken = [
+            {
+                **weg_bag,
+                **{
+                    "buurtnaam": buurten[0]["buurtnaam"],
+                    "wijknaam": buurten[0]["wijknaam"],
+                }
+            }
+            for weg_bag in wegen_bag 
+        ]
+        return wegen_bag_met_buurten_en_wijken
 
     def search_free(self, lat, lon):
         url = (
