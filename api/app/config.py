@@ -69,7 +69,11 @@ MORCORE_MELDR_ONDERWERPEN = {
     "Gemaal of sluis": {},
     "Rioolafvoer verstopt": {},
     "Rioollucht": {},
-    "Wateroverlast": {}
+    "Wateroverlast": {},
+
+    # Overige
+    "Informatie- of reclamezuil": {},
+    "Wildplakken": {}
 
 }
 
