@@ -14,11 +14,8 @@ logger = logging.getLogger(__name__)
 class Splitter:
     service = MSBService
     filter_config = {}
-    morcore_pdok_wijken = []
-    morcore_pdok_buurten = []
     validated_address: Union[dict, None] = None
     onderwerp = None
-    straatnaam = None
     wijknaam = None
     buurtnaam = None
 
@@ -30,19 +27,10 @@ class Splitter:
         self.onderwerpen = [k for k in self.filter_config.keys()]
         data = dict(request_data)
         self.onderwerp = data.get("onderwerpField")
-        self.straatnaam = data.get("straatnaamField")
         try:
             self.validated_address = get_validated_address(
-                {
-                    "locatie": {
-                        "adres": {
-                            "straatNaam": self.straatnaam,
-                            "huisnummer": data.get("huisnummerField"),
-                        },
-                        "x": data.get("xCoordField"),
-                        "y": data.get("yCoordField"),
-                    }
-                }
+                rd_x=data.get("xCoordField"),
+                rd_y=data.get("yCoordField"),
             )
             self.wijknaam = self.validated_address.get("wijknaam", None)
             self.buurtnaam = self.validated_address.get("buurtnaam", None)

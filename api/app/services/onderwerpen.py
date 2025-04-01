@@ -24,7 +24,7 @@ class OnderwerpenService(BaseService):
 
     def get_category_url(self, meldr_onderwerp):
         response = self._do_request(
-            f"{self._api_path}/category/?name={meldr_onderwerp}",
+            f"{self._api_path}/category/?name={meldr_onderwerp}&is_active=true",
         )
         if response.status_code == 200:
             return self._to_json(response)
