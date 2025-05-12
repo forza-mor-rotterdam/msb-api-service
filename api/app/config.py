@@ -58,7 +58,7 @@ MORCORE_MELDR_ONDERWERPEN = {
     # Luminizer
 #    "Verlichting doet het niet": {},
 #    "Verlichting brandt overdag": {},
-#    "Verlichting overig": {},
+    "Verlichting overig": {},
 #    "Verlichting beschadigd": {},
 
     # Seizoen
