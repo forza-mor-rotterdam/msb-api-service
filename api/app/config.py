@@ -47,6 +47,7 @@ MORCORE_MELDR_ONDERWERPEN = {
     "Dode dieren": {},
     "Kade of kant beschadigd": {},
     "Fontein": {},
+    "Klok": {},
 
     # Groen
     "Bomen": {},
